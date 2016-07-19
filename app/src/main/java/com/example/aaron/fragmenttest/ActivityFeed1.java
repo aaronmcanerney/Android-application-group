@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+//i added a comment
 public class ActivityFeed1 extends AppCompatActivity {
     private AlphaAnimation buttonClick = new AlphaAnimation(3F, .8F);
     @Override
