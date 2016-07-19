@@ -61,6 +61,7 @@ public class ActivityFeed1 extends AppCompatActivity {
             tv.setId(View.generateViewId());
             p1.addRule(RelativeLayout.BELOW, tv.getId());
             loc.setLayoutParams(p1);
+            //random commments
 
             rl.addView(time);
             RelativeLayout.LayoutParams p2 = (RelativeLayout.LayoutParams) time.getLayoutParams();
