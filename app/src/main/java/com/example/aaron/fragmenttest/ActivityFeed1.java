@@ -27,6 +27,7 @@ public class ActivityFeed1 extends AppCompatActivity {
         setContentView(R.layout.activity_activity_feed1);
         Display d = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
+        //hello
         LinearLayout linearLayout = (LinearLayout) this.findViewById(R.id.fragment_layout);
         for(int i = 0; i < 100; i++){
             RelativeLayout rl = new RelativeLayout(this);
