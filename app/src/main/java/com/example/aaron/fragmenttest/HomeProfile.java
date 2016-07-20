@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.NoSuchElementException;
@@ -44,7 +47,7 @@ public class HomeProfile extends Fragment {
     @Override
     public void onStart(){
         MainActivity activity = (MainActivity) getActivity();
-
+        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.home_profile_relative);
         // Set profile information
         ImageView img = (ImageView) activity.findViewById(R.id.profilePicture);
         img.setImageBitmap(activity.profilePicture);
@@ -54,7 +57,21 @@ public class HomeProfile extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(img, p);
-
+        GridLayout grid = new GridLayout(this.getActivity());
+        grid.setColumnCount(2);
+        rl.addView(grid);
+        Button connections = new Button(this.getActivity());
+        connections.setText("Connections");
+        connections.setWidth(p.x/2);
+        connections.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                toConnections(v);
+            }
+        });
+        grid.addView(connections);
 
 
 
