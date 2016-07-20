@@ -59,9 +59,10 @@ public class HomeProfile extends Fragment {
         scaleImage(img, p);
         GridLayout grid = new GridLayout(this.getActivity());
         grid.setColumnCount(2);
+        rl.addView(grid);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) grid.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_BOTTOM);
-        rl.addView(grid, params);
+        grid.setLayoutParams(params);
         Button connections = new Button(this.getActivity());
         connections.setText("Connections");
         connections.setWidth(p.x/2);
