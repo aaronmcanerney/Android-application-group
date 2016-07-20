@@ -37,8 +37,8 @@ public class Connections extends AppCompatActivity {
 
         FirebaseStorage mFileStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
-        for (int i = 1; i < 3; i++) {
-            storageRef.child("profile-pictures/friend" + Integer.toString(i) + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        for (int i = 0; i < 20; i++) {
+            storageRef.child("profile-pictures/friend" + Integer.toString(i % 2 + 1) + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     addImageButton(uri);
@@ -56,11 +56,11 @@ public class Connections extends AppCompatActivity {
         GridLayout gridLayout = (GridLayout) this.findViewById(R.id.connections_container);
         gridLayout.setColumnCount(colNum);
         ImageButton button = new ImageButton(this);
-        Picasso.with(this).load(profilePictureURI).into(button);
-        button.setScaleType(ImageView.ScaleType.CENTER);
+        //button.setScaleType(ImageView.ScaleType.CENTER_CROP);
         button.setClickable(true);
         gridLayout.addView(button);
-        scaleImage(button);
+        Point p = scaleImage(button);
+        Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.y * 2 / 7).into(button);
     }
 
     public void alert(String title, String message) {
@@ -76,7 +76,7 @@ public class Connections extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void scaleImage(ImageView view) throws NoSuchElementException {
+    private Point scaleImage(ImageView view) throws NoSuchElementException {
         Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         GridLayout.LayoutParams params = (GridLayout.LayoutParams) view.getLayoutParams();
@@ -84,6 +84,7 @@ public class Connections extends AppCompatActivity {
         params.width = p.x/3 - 15;
         params.height = p.y * 2 / 7 ;
         view.setLayoutParams(params);
+        return p;
     }
     private static Point getDisplaySize(final Display display) {
         final Point point = new Point();
