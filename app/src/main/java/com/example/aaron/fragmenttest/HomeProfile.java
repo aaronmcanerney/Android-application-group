@@ -61,8 +61,7 @@ public class HomeProfile extends Fragment {
                             alert("Firebase", "ERROR: Invalid username or password!");
                             return;
                         }
-
-                        alert("Firebase", "Logged in successfully!");
+                        
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user == null) return;
                         String name = user.getDisplayName();
