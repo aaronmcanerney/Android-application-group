@@ -53,12 +53,14 @@ public class HomeProfile extends Fragment {
         img.setImageBitmap(activity.profilePicture);
         TextView nameView = (TextView) activity.findViewById(R.id.textView);
         nameView.setText(activity.displayName);
-
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(img, p);
-        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.ButtonContainer);
+        GridLayout grid = new GridLayout(this.getActivity());
+        grid.setColumnCount(2);
+        rl.addView(grid);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) grid.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         Button connections = new Button(this.getActivity());
         connections.setText("Connections");
         connections.setWidth(p.x/2);
@@ -71,7 +73,18 @@ public class HomeProfile extends Fragment {
             }
         });
         grid.addView(connections);
-
+        Button activityFeed = new Button(this.getActivity());
+        activityFeed.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                toActivityFeed(v);
+            }
+        });
+        activityFeed.setText("Activity Feed");
+        activityFeed.setWidth(p.x/2);
+        grid.addView(activityFeed);
 
 
 
