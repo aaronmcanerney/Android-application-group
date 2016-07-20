@@ -1,15 +1,41 @@
 package com.example.aaron.fragmenttest;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 
+// Firebase imports
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainActivity extends FragmentActivity {
+
+    private static final int REQUIRED_GOOGLE_PLAY_SERVICES_VERSION = 9256000;
+    private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
+    private static final long MAX_FILE_SIZE_MB = 1024 * 1024 * 10; //
+
+    private boolean authenticated;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    public FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference mDatabase;
+    private FirebaseStorage mFileStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +45,76 @@ public class MainActivity extends FragmentActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
+    }
+
+    /*public void signIn(View view) {
+        AutoCompleteTextView emailView = (AutoCompleteTextView) findViewById(R.id.email);
+        EditText passwordView = (EditText) findViewById(R.id.password);
+        String email = emailView.getText().toString();
+        String password = passwordView.getText().toString();
+
+        if (! supportsFirebase()) return;
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (! task.isSuccessful()) {
+                            alert("Firebase", "ERROR: Invalid username or password!");
+                        }
+                    }
+                });
+    }
+
+    public void register(View view) {
+        AutoCompleteTextView emailView = (AutoCompleteTextView) findViewById(R.id.email);
+        EditText passwordView = (EditText) findViewById(R.id.password);
+        String email = emailView.getText().toString();
+        String password = passwordView.getText().toString();
+
+        if (! supportsFirebase()) return;
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (! task.isSuccessful()) {
+                            alert("Firebase", "ERROR: Email in use or password too weak!");
+                        }
+                    }
+                });
+    }
+
+    public void signOut(View view) {
+        if (getGooglePlayServicesVersion() < REQUIRED_GOOGLE_PLAY_SERVICES_VERSION) return;
+        FirebaseAuth.getInstance().signOut();
+    }*/
+
+    public void alert(String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    public boolean supportsFirebase() {
+        return getGooglePlayServicesVersion() >= REQUIRED_GOOGLE_PLAY_SERVICES_VERSION;
+    }
+
+    public int getGooglePlayServicesVersion() {
+        try {
+            return getPackageManager().getPackageInfo("com.google.android.gms", 0 ).versionCode;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

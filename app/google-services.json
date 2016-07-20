@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "510249330379",
+    "firebase_url": "https://unisin-1351.firebaseio.com",
+    "project_id": "unisin-1351",
+    "storage_bucket": "unisin-1351.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510249330379:android:cf4f10b44698f1c9",
+        "android_client_info": {
+          "package_name": "com.unison.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510249330379-h6dposg18s76p7u5prhvnip80mq862md.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_ET-oSlRL4RC5gUbFIIKti715NOEiYc8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510249330379:android:f9249d27d70a37bb",
+        "android_client_info": {
+          "package_name": "com.example.aaron.fragmenttest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510249330379-h6dposg18s76p7u5prhvnip80mq862md.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_ET-oSlRL4RC5gUbFIIKti715NOEiYc8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

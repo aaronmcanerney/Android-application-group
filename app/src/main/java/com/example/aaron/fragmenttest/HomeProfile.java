@@ -1,12 +1,15 @@
 package com.example.aaron.fragmenttest;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +19,19 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.NoSuchElementException;
 
 
 public class HomeProfile extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home_profile
@@ -39,6 +50,27 @@ public class HomeProfile extends Fragment {
     }
     @Override
     public void onStart(){
+        // Authenticate with a generic user
+        MainActivity activity = (MainActivity) getActivity();
+        final FirebaseAuth mAuth = activity.mAuth;
+        mAuth.signInWithEmailAndPassword("admin@gmail.com", "password")
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (! task.isSuccessful()) {
+                            alert("Firebase", "ERROR: Invalid username or password!");
+                            return;
+                        }
+
+                        alert("Firebase", "Logged in successfully!");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user == null) return;
+                        String name = user.getDisplayName();
+                        TextView view = (TextView) getActivity().findViewById(R.id.textView);
+                        view.setText(name);
+                    }
+                });
+
         ImageView img = (ImageView) getActivity().findViewById(R.id.profilePicture);
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
@@ -78,6 +110,10 @@ public class HomeProfile extends Fragment {
         super.onStart();
     }
 
+    public void alert(String title, String message) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.alert(title, message);
+    }
 
     private static Point getDisplaySize(final Display display) {
 
