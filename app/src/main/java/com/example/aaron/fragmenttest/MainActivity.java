@@ -2,6 +2,9 @@ package com.example.aaron.fragmenttest;
 
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 // Firebase imports
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,14 +42,67 @@ public class MainActivity extends FragmentActivity {
     private DatabaseReference mDatabase;
     private FirebaseStorage mFileStorage;
 
+    public Bitmap profilePicture;
+    public String displayName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        // Authenticate with a generic user
+        mAuth.signInWithEmailAndPassword("admin@gmail.com", "password")
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (! task.isSuccessful()) {
+                            alert("Firebase", "ERROR: Invalid username or password!");
+                            return;
+                        }
 
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user == null) return;
+                        String name = user.getDisplayName();
+                        if (name == null || name.length() == 0) {
+                            // Set display name
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName("Administrator")
+                                    .setPhotoUri(Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5"))
+                                    .build();
+
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                alert("Firebase", "User profile updated.");
+                                            }
+                                        }
+                                    });
+                        }
+                        displayName = name;
+
+                        // Set profile picture
+                        mFileStorage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
+                        storageRef.child("profile-pictures/test.jpg").getBytes(MAX_FILE_SIZE_MB)
+                                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        // Save profile picture
+                                        profilePicture = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                                        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+                                        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                alert("Firebase", "Failed to download profile picture!");
+                            }
+                        });
+                    }
+                });
     }
 
     /*public void signIn(View view) {
@@ -135,7 +193,8 @@ public class MainActivity extends FragmentActivity {
                     return MyCalendar.newInstance("ThirdFragment, Instance 1", "Extra string");
 
                 default:
-                    return HomeProfile.newInstance("ThirdFragment, Default");
+                    //return HomeProfile.newInstance("ThirdFragment, Default");
+                    return null;
             }
         }
 

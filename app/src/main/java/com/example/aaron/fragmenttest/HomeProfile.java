@@ -21,16 +21,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.net.Uri;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.NoSuchElementException;
 
 
 public class HomeProfile extends Fragment {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,31 +58,17 @@ public class HomeProfile extends Fragment {
     }
     @Override
     public void onStart(){
-        // Authenticate with a generic user
         MainActivity activity = (MainActivity) getActivity();
-        final FirebaseAuth mAuth = activity.mAuth;
-        mAuth.signInWithEmailAndPassword("admin@gmail.com", "password")
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (! task.isSuccessful()) {
-                            alert("Firebase", "ERROR: Invalid username or password!");
-                            return;
-                        }
-                        
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user == null) return;
-                        String name = user.getDisplayName();
-                        TextView view = (TextView) getActivity().findViewById(R.id.textView);
-                        view.setText(name);
-                    }
-                });
 
-        ImageView img = (ImageView) getActivity().findViewById(R.id.profilePicture);
+        // Set profile information
+        ImageView img = (ImageView) activity.findViewById(R.id.profilePicture);
+        img.setImageBitmap(activity.profilePicture);
+        TextView nameView = (TextView) activity.findViewById(R.id.textView);
+        nameView.setText(activity.displayName);
+
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(img, p);
-
         GridLayout grid = (GridLayout) getActivity().findViewById(R.id.ButtonContainer);
         Button connections = new Button(this.getActivity());
         connections.setText("Connections");
@@ -84,7 +78,6 @@ public class HomeProfile extends Fragment {
             @Override
             public void onClick(View v)
             {
-
                 toConnections(v);
             }
         });
@@ -129,9 +122,6 @@ public class HomeProfile extends Fragment {
     private void scaleImage(ImageView view, Point point) throws NoSuchElementException {
 
        // ImageView imageView = (ImageView) this.getActivity().findViewById(R.id.imageView);
-        Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.mipmap.sample);
-        Bitmap scaled = Bitmap.createScaledBitmap(bmap, point.x,point.y,true);
-        view.setImageBitmap(scaled);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
         params.width = point.x;
         params.height = point.x;
