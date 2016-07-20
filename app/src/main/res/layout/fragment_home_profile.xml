@@ -41,16 +41,9 @@
 
     </LinearLayout>
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/ButtonContainer"
-        android:rowCount="1"
-        android:columnCount="2">
 
-    </GridLayout>
+
+
 
 
 </RelativeLayout>
