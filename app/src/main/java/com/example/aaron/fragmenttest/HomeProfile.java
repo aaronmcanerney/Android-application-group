@@ -57,12 +57,8 @@ public class HomeProfile extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(img, p);
-        GridLayout grid = new GridLayout(this.getActivity());
-        grid.setColumnCount(2);
-        rl.addView(grid);
+        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.ButtonContainer);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) grid.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_BOTTOM);
-        grid.setLayoutParams(params);
         Button connections = new Button(this.getActivity());
         connections.setText("Connections");
         connections.setWidth(p.x/2);
