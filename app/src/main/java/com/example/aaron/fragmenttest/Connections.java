@@ -57,7 +57,6 @@ public class Connections extends AppCompatActivity {
         gridLayout.setColumnCount(colNum);
         ImageButton button = new ImageButton(this);
         Picasso.with(this).load(profilePictureURI).into(button);
-        //button.setImageResource(R.mipmap.connect);
         button.setScaleType(ImageView.ScaleType.CENTER);
         button.setClickable(true);
         gridLayout.addView(button);
