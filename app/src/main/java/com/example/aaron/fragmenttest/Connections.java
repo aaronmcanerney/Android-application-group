@@ -19,6 +19,13 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -35,10 +42,31 @@ public class Connections extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connections);
 
+        // Set connections (users who aren't you)
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+        String uid = user.getUid();
+        mDatabase.child("connections/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String connectionId = child.getKey();
+                    loadConnectionPicture(connectionId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadConnectionPicture(String connectionId) {
         FirebaseStorage mFileStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
-        for (int i = 0; i < 20; i++) {
-            storageRef.child("profile-pictures/friend" + Integer.toString(i % 2 + 1) + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageRef.child("profile-pictures/" + connectionId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     addImageButton(uri);
@@ -49,7 +77,6 @@ public class Connections extends AppCompatActivity {
                     // Handle any errors
                 }
             });
-        }
     }
 
     public void addImageButton(Uri profilePictureURI) {

@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,9 +23,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 // Firebase imports
 
@@ -37,7 +46,7 @@ public class MainActivity extends FragmentActivity {
     private boolean authenticated;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private FirebaseStorage mFileStorage;
 
     public Bitmap profilePicture;
@@ -60,6 +69,25 @@ public class MainActivity extends FragmentActivity {
 
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user == null) return;
+
+                        // Set connections (users who aren't you)
+                        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                for (DataSnapshot child: snapshot.getChildren()) {
+                                    String connectionId = child.getKey();
+                                    addConnection(connectionId);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                        // Get display name (if it exists)
                         String name = user.getDisplayName();
                         if (name == null || name.length() == 0) {
                             // Set display name
@@ -82,8 +110,9 @@ public class MainActivity extends FragmentActivity {
 
                         // Set profile picture
                         mFileStorage = FirebaseStorage.getInstance();
+                        String uid = user.getUid();
                         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
-                        storageRef.child("profile-pictures/test.jpg").getBytes(MAX_FILE_SIZE_MB)
+                        storageRef.child("profile-pictures/" + uid + ".jpg").getBytes(MAX_FILE_SIZE_MB)
                                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {
@@ -101,6 +130,14 @@ public class MainActivity extends FragmentActivity {
                         });
                     }
                 });
+    }
+
+    public void addConnection(String connectionId) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) return;
+        String uid = user.getUid();
+        if (uid.equals(connectionId)) return;
+        mDatabase.child("connections/" + uid + "/" + connectionId).setValue("");
     }
 
     /*public void signIn(View view) {
