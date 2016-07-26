@@ -10,6 +10,7 @@ public class Event {
     private String name;
     private String description;
     private Location location;
+    private Tim
     private ArrayList<String> invitees; // ArrayList of uid's
 
     public Event(String creatorId, String name, String description) {
@@ -19,7 +20,13 @@ public class Event {
     }
 
     public void setLocation(Location location) {
-        
+        this.location = location;
+    }
+
+    public void set
+
+    public Location getLocation() {
+        return this.location;
     }
 
 }
