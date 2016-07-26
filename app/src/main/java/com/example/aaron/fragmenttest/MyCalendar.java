@@ -85,7 +85,7 @@ public class MyCalendar extends Fragment {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String eventId = child.getKey();
                     String status = child.getValue(String.class);
-                    RelativeLayout event = buildCalendarEvent();
+                    RelativeLayout event = buildCalendarEvent(status);
                     myEvents.put(eventId, event);
                     loadEvent(eventId);
                 }
@@ -126,6 +126,12 @@ public class MyCalendar extends Fragment {
                         if (textView != null) textView.setText(value);
                     }
                 }
+
+                TextView status = (TextView) event.findViewWithTag("status");
+                String eventStatus = (String) status.getText();
+
+                // What should we do with this status? Change background color?
+                // If so, we can do that in 'buildCalendarEvent'
             }
 
             @Override
@@ -135,7 +141,7 @@ public class MyCalendar extends Fragment {
         });
     }
 
-    private RelativeLayout buildCalendarEvent() {
+    private RelativeLayout buildCalendarEvent(String eventStatus) {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
@@ -154,6 +160,13 @@ public class MyCalendar extends Fragment {
                 Toast.makeText(getActivity(), "Clicked layout " , Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Add status (pending, accepted, rejected), but hide; will be useful later
+        TextView status = new TextView(this.getActivity());
+        status.setTag("status");
+        status.setText(eventStatus);
+        status.setVisibility(View.GONE);
+        rl.addView(status);
 
         TextView name = new TextView(this.getActivity());
         name.setTag("name");
