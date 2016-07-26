@@ -1,23 +1,16 @@
 package com.example.aaron.fragmenttest;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.NoSuchElementException;
 
@@ -48,9 +41,10 @@ public class EventCreation extends Fragment {
             @Override
             public void onClick(View v)
             {
-              CreateEvent(v);
+                CreateEvent(v);
             }
         });
+
         super.onStart();
     }
     private void scaleImage(ImageView view, Point point) throws NoSuchElementException {
@@ -76,7 +70,7 @@ public class EventCreation extends Fragment {
         return point;
     }
     public void CreateEvent(View view){
-        Intent intent = new Intent(this.getActivity(), OnEventCreation.class);
+        Intent intent = new Intent(this.getActivity(), SelectLocation.class);
         startActivity(intent);
     }
 
