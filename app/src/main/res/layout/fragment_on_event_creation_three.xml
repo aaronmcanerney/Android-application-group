@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/event_creation_one"
+    android:id="@+id/event_creation_three"
     tools:context="com.example.aaron.fragmenttest.OnEventCreationOne"
     android:background="@android:color/holo_blue_bright">
 
@@ -12,5 +12,11 @@
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
 
-</RelativeLayout>
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/timePicker"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
+</RelativeLayout>

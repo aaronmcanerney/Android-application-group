@@ -1,12 +1,13 @@
 package com.example.aaron.fragmenttest;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 
 public class OnEventCreationTwo extends Fragment {
@@ -25,5 +26,27 @@ public class OnEventCreationTwo extends Fragment {
         f.setArguments(b);
 
         return f;
+    }
+    public void onStart(){
+        Button button = new Button(this.getActivity());
+        button.setText("Next");
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                toEventCreationThree(v);
+            }
+        });
+        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
+        rl.addView(button);
+
+        super.onStart();
+    }
+    public void toEventCreationThree(View view){
+        Fragment fragment = new OnEventCreationThree();
+        FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
     }
 }

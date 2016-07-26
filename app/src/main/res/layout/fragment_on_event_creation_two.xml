@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id = "@+id/event_creation_two"
     tools:context="com.example.aaron.fragmenttest.OnEventCreationTwo"
     android:background="@android:color/holo_purple">
 
@@ -10,5 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="241dp"
+        android:layout_marginBottom="134dp" />
 
 </RelativeLayout>
