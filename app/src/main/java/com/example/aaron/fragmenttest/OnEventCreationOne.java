@@ -30,6 +30,7 @@ public class OnEventCreationOne extends Fragment {
     }
     @Override
     public void onStart(){
+
         Button button = new Button(this.getActivity());
         button.setText("Next");
         button.setOnClickListener(new View.OnClickListener()
