@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.NoSuchElementException;
 
@@ -44,7 +41,7 @@ public class EventCreation extends Fragment {
             @Override
             public void onClick(View v)
             {
-                CreateEvent(v);
+                toOnEventCreation(v);
             }
         });
 
@@ -72,20 +69,9 @@ public class EventCreation extends Fragment {
         }
         return point;
     }
-    public void CreateEvent(View view){
-        int PLACE_PICKER_REQUEST = 1;
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            startActivityForResult(builder.build(this.getActivity()), PLACE_PICKER_REQUEST);
-        }
-        catch(GooglePlayServicesRepairableException e){
-            e.printStackTrace();
-        }
-        catch(GooglePlayServicesNotAvailableException e){
-            e.printStackTrace();
-        }
-       // Intent intent = new Intent(this.getActivity(), SelectLocation.class);
-       // startActivity(intent);
+    public void toOnEventCreation(View view){
+        Intent intent = new Intent(this.getActivity(), OnEventCreation.class) ;
+        startActivity(intent);
     }
 
 
