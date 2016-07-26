@@ -108,9 +108,16 @@ public class MainActivity extends FragmentActivity {
                         }
                         displayName = name;
 
+                        // Create event
+                        String uid = user.getUid();
+                        Event e = new Event(uid, "Boys Night In", "Wii Bowling");
+                        e.addConnection("Darth Vader");
+                        e.addConnection("Luke Skywalker");
+                        e.addConnection("Han Solo");
+                        e.push();
+
                         // Set profile picture
                         mFileStorage = FirebaseStorage.getInstance();
-                        String uid = user.getUid();
                         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
                         storageRef.child("profile-pictures/" + uid + ".jpg").getBytes(MAX_FILE_SIZE_MB)
                                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
