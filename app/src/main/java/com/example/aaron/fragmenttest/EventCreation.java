@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -11,11 +12,18 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.NoSuchElementException;
 
 
 public class EventCreation extends Fragment {
+    public static int PLACE_PICKER_REQUEST = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_creation, container, false);
@@ -70,8 +78,29 @@ public class EventCreation extends Fragment {
         return point;
     }
     public void toOnEventCreation(View view){
-        Intent intent = new Intent(this.getActivity(), OnEventCreation.class) ;
-        startActivity(intent);
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this.getActivity()), PLACE_PICKER_REQUEST);
+        }
+        catch(GooglePlayServicesRepairableException e){
+            e.printStackTrace();
+        }
+        catch(GooglePlayServicesNotAvailableException e){
+            e.printStackTrace();
+        }
+
+
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this.getActivity());
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+            }
+            Intent intent = new Intent(this.getActivity(), OnEventCreation.class) ;
+            startActivity(intent);
+        }
     }
 
 

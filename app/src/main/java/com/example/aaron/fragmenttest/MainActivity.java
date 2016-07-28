@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,14 +30,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 // Firebase imports
 
 public class MainActivity extends FragmentActivity {
-
+    Uri profileIMG;
     private static final int REQUIRED_GOOGLE_PLAY_SERVICES_VERSION = 9256000;
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     private static final long MAX_FILE_SIZE_MB = 1024 * 1024 * 10; //
@@ -91,6 +86,7 @@ public class MainActivity extends FragmentActivity {
                         String name = user.getDisplayName();
                         if (name == null || name.length() == 0) {
                             // Set display name
+                            profileIMG = Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5");
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName("Administrator")
                                     .setPhotoUri(Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5"))

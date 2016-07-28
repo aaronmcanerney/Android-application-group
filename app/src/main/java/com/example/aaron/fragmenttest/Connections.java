@@ -2,15 +2,12 @@ package com.example.aaron.fragmenttest;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.GridLayout;
