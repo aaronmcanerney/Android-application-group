@@ -2,15 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/event_creation_one"
-    tools:context="com.example.aaron.fragmenttest.OnEventCreationOne"
-    android:background="@android:color/holo_blue_bright">
+    android:id="@+id/event_creation_one_linear_layout"
+    android:orientation="vertical"
+    tools:context="com.example.aaron.fragmenttest.OnEventCreationOne">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+
 
 </RelativeLayout>
 
