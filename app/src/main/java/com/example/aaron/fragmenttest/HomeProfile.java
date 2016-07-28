@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.NoSuchElementException;
 
 
@@ -56,7 +58,7 @@ public class HomeProfile extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(img, p);
-        //Picasso.with(activity).load(activity.profileIMG).transform(new CircleTransform()).into(img);
+        Picasso.with(activity).load(activity.profileIMG).transform(new CircleTransform()).into(img);
         GridLayout grid = new GridLayout(this.getActivity());
         grid.setColumnCount(2);
         rl.addView(grid);

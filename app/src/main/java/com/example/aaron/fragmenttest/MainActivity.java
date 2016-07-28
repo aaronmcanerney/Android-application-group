@@ -86,7 +86,6 @@ public class MainActivity extends FragmentActivity {
                         String name = user.getDisplayName();
                         if (name == null || name.length() == 0) {
                             // Set display name
-                            profileIMG = Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5");
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName("Administrator")
                                     .setPhotoUri(Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5"))
@@ -113,6 +112,7 @@ public class MainActivity extends FragmentActivity {
                         e.push();
 
                         // Set profile picture
+                        profileIMG = Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5");
                         mFileStorage = FirebaseStorage.getInstance();
                         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
                         storageRef.child("profile-pictures/" + uid + ".jpg").getBytes(MAX_FILE_SIZE_MB)
