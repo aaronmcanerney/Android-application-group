@@ -84,7 +84,9 @@ public class Connections extends AppCompatActivity {
         button.setClickable(true);
         gridLayout.addView(button);
         Point p = scaleImage(button);
-        Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.y * 2 / 7).into(button);
+       // Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.y * 2 / 7).into(button);
+        Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.x/3 - 15).transform(new CircleTransform()).into(button);
+        button.getBackground().setAlpha(0);
     }
 
     public void alert(String title, String message) {
