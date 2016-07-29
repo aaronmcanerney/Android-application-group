@@ -39,6 +39,8 @@ public class Event {
         String eventId = events.push().getKey();
         DatabaseReference event = events.child(eventId);
         event.child("creatorId").setValue(creatorId);
+        event.child("placeName").setValue(placeName);
+        event.child("placeAddress").setValue(placeAddress);
         event.child("name").setValue(name);
         event.child("description").setValue(description);
 

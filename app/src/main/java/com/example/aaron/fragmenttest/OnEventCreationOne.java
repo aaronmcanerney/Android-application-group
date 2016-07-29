@@ -29,8 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class OnEventCreationOne extends Fragment {
 
-    RelativeLayout enameRL;
-    RelativeLayout descriptionRL;
+    EditText editName;
+    EditText editDescription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class OnEventCreationOne extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         //create first rl
-        enameRL = new RelativeLayout(this.getActivity());
+        RelativeLayout enameRL = new RelativeLayout(this.getActivity());
         rl.addView(enameRL);
         //set the height and background
         enameRL.getLayoutParams().height = point.y/5;
@@ -80,9 +80,8 @@ public class OnEventCreationOne extends Fragment {
         //enameRL.setBackgroundResource(R.mipmap.back_layout);
         //event name and edit text added to relative layout
         TextView ename = new TextView(this.getActivity());
-        ename.setTag("name");
         ename.setText(nameFormatted);
-        EditText editName = new EditText(this.getActivity());
+        editName = new EditText(this.getActivity());
         enameRL.addView(ename);
         enameRL.addView(editName);
 
@@ -105,7 +104,7 @@ public class OnEventCreationOne extends Fragment {
         placeParam.addRule(RelativeLayout.ALIGN_BASELINE);
         */
 
-        descriptionRL = new RelativeLayout(this.getActivity());
+        RelativeLayout descriptionRL = new RelativeLayout(this.getActivity());
         rl.addView(descriptionRL);
         descriptionRL.setBackgroundColor(Color.BLUE);
         descriptionRL.setBackground(rectShapeDrawable);
@@ -114,8 +113,7 @@ public class OnEventCreationOne extends Fragment {
         descriptionRL.getLayoutParams().height = point.y/3;
         TextView eDescription = new TextView(this.getActivity());
         eDescription.setText("Description: ");
-        eDescription.setTag("desc");
-        EditText editDescription = new EditText(this.getActivity());
+        editDescription = new EditText(this.getActivity());
         descriptionRL.addView(eDescription);
         descriptionRL.addView(editDescription);
         RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) eDescription.getLayoutParams();
@@ -162,10 +160,8 @@ public class OnEventCreationOne extends Fragment {
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
 
         // Update event to add name and description
-        TextView nameView = (TextView) enameRL.findViewWithTag("name");
-        TextView descView = (TextView) descriptionRL.findViewWithTag("desc");
-        String name = nameView.getText().toString();
-        String desc = (String) descView.getText();
+        String name = editName.getText().toString();
+        String desc = editDescription.getText().toString();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
