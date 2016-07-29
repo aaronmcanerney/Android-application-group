@@ -61,9 +61,9 @@ public class HomeProfile extends Fragment {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
         // Set profile information
-        ImageView img = (ImageView) activity.findViewById(R.id.profilePicture);
-        img.setImageBitmap(activity.profilePicture);
-        img.getBackground().setAlpha(0);
+
+        ImageView img = new ImageView(this.getActivity());
+        rl.addView(img);
         //img.setBackground(rectShapeDrawable);
         TextView nameView = (TextView) activity.findViewById(R.id.textView);
         nameView.setText(activity.displayName);

@@ -47,19 +47,22 @@ public class OnEventCreationTwo extends Fragment {
             }
         });
         RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
-        DatePicker date = new DatePicker(this.getActivity());
-        rl.addView(date);
+        DatePicker datePicker = new DatePicker(this.getActivity());
+        rl.addView(datePicker);
 
-        RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
+
+        RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) datePicker.getLayoutParams();
         dateParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        date.getLayoutParams().height = point.y *3/4;
-        date.getLayoutParams().width = point.x;
+        datePicker.getLayoutParams().height = point.y *3/4;
+        datePicker.getLayoutParams().width = point.x;
         //dateParams.topMargin = point.y/10;
-        date.setLayoutParams(dateParams);
+        datePicker.setLayoutParams(dateParams);
         rl.addView(button);
         RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+
 
 
         super.onStart();
@@ -81,4 +84,5 @@ public class OnEventCreationTwo extends Fragment {
         }
         return point;
     }
+
 }
