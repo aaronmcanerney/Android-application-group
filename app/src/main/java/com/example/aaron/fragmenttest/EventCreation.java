@@ -18,11 +18,16 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.NoSuchElementException;
 
 
 public class EventCreation extends Fragment {
+
     public static int PLACE_PICKER_REQUEST = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,9 +102,12 @@ public class EventCreation extends Fragment {
                 Place place = PlacePicker.getPlace(data, this.getActivity());
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(this.getActivity(), OnEventCreation.class);
+                intent.putExtra("placeName", place.getName());
+                intent.putExtra("placeAddress", place.getAddress());
+                startActivity(intent);
             }
-            Intent intent = new Intent(this.getActivity(), OnEventCreation.class) ;
-            startActivity(intent);
         }
     }
 

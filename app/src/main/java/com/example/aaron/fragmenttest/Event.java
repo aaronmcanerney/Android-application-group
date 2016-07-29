@@ -9,36 +9,24 @@ import java.util.ArrayList;
 public class Event {
 
     private String creatorId;
+    private String placeName;
+    private String placeAddress;
     private String name;
     private String description;
-    private Place place;
     private ArrayList<String> connections; // ArrayList of uid's
 
-    public Event(String creatorId, String name, String description) {
+    public Event(String creatorId) {
         this.creatorId = creatorId;
-        this.name = name;
-        this.description = description;
         this.connections = new ArrayList<>();
 
         // Add creator as connection
         addConnection(creatorId);
     }
 
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Place getPlace() {
-        return place;
-    }
+    public void setPlaceName(String placeName) { this.placeName = placeName; }
+    public void setPlaceAddress(String placeAddress) { this.placeAddress = placeAddress; }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
 
     public void addConnection(String connectionId) {
         connections.add(connectionId);

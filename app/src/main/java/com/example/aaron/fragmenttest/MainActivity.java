@@ -105,11 +105,11 @@ public class MainActivity extends FragmentActivity {
 
                         // Create event
                         String uid = user.getUid();
-                        Event e = new Event(uid, "Boys Night In", "Wii Bowling");
+                        /*Event e = new Event(uid);
                         e.addConnection("Darth Vader");
                         e.addConnection("Luke Skywalker");
                         e.addConnection("Han Solo");
-                        e.push();
+                        e.push();*/
 
                         // Set profile picture
                         profileIMG = Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5");
