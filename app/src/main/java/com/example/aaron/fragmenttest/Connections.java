@@ -9,10 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,6 +89,14 @@ public class Connections extends AppCompatActivity {
        // Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.y * 2 / 7).into(button);
         Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.x/3 - 15).transform(new CircleTransform()).into(button);
         button.getBackground().setAlpha(0);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(Connections.this, "Hello you clicked your friend", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void alert(String title, String message) {

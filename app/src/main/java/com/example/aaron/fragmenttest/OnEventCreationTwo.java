@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -13,6 +14,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class OnEventCreationTwo extends Fragment {
@@ -36,20 +42,27 @@ public class OnEventCreationTwo extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         Button button = new Button(this.getActivity());
+        final Activity activity = this.getActivity();
         button.setText("Next");
+        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
+        DatePicker datePicker = new DatePicker(this.getActivity());
+        rl.addView(datePicker);
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final Calendar c = Calendar.getInstance();
+        c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+        final String date = (c.getTime() +"").substring(0,10);
+
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
+                Toast.makeText(activity, date, Toast.LENGTH_LONG).show();
                 toEventCreationThree(v);
             }
         });
-        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
-        DatePicker datePicker = new DatePicker(this.getActivity());
-        rl.addView(datePicker);
 
+        //datePicker
 
         RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) datePicker.getLayoutParams();
         dateParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
