@@ -70,7 +70,7 @@ public class HomeProfile extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
         scaleImage(backdrop, p, p.x, p.y/2);
-        scaleImage(img, p, p.x * 4 /5);
+        scaleImage(img, p, p.x * 3/5);
         Picasso.with(activity).load(activity.profileIMG).transform(new CircleTransform()).into(img);
         GridLayout grid = new GridLayout(this.getActivity());
         grid.setColumnCount(2);

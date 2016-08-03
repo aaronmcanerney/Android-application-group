@@ -2,8 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id = "@+id/event_creation_two"
-    tools:context="com.example.aaron.fragmenttest.OnEventCreationTwo"
-    >
+    android:id="@+id/event_creation_one_linear_layout"
+    android:orientation="vertical"
+    tools:context=".UserSetEventInfo">
+
+    <!-- TODO: Update blank fragment layout -->
+
 
 </RelativeLayout>
+
