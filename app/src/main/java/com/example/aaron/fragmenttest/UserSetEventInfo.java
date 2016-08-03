@@ -27,20 +27,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class OnEventCreationOne extends Fragment {
+public class UserSetEventInfo extends Fragment {
 
     EditText editName;
     EditText editDescription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_on_event_creation_one
+        View v = inflater.inflate(R.layout.fragment_user_set_event_info
                 , container, false);
         return v;
     }
-    public static OnEventCreationOne newInstance(String text) {
+    public static UserSetEventInfo newInstance(String text) {
 
-        OnEventCreationOne f = new OnEventCreationOne();
+        UserSetEventInfo f = new UserSetEventInfo();
         Bundle b = new Bundle();
         b.putString("msg", text);
 
@@ -155,7 +155,7 @@ public class OnEventCreationOne extends Fragment {
         super.onStart();
     }
     public void toEventCreationTwo(View view){
-        Fragment fragment = new OnEventCreationTwo();
+        Fragment fragment = new UserPickDate();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
 
@@ -168,7 +168,7 @@ public class OnEventCreationOne extends Fragment {
             Toast.makeText(getActivity(), "Fatal error: no user", Toast.LENGTH_SHORT).show();
             return;
         }
-        OnEventCreation activity = (OnEventCreation) getActivity();
+        UserCreateEvent activity = (UserCreateEvent) getActivity();
         activity.event.setName(name);
         activity.event.setDescription(desc);
         activity.event.push();

@@ -60,7 +60,7 @@ public class SelectLocation extends FragmentActivity implements OnMapReadyCallba
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
     public void toOnEventCreation(View view){
-        Intent intent = new Intent(this, OnEventCreation.class);
+        Intent intent = new Intent(this, UserCreateEvent.class);
         startActivity(intent);
     }
 }

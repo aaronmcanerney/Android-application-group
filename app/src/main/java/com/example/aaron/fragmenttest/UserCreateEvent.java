@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class OnEventCreation extends AppCompatActivity {
+public class UserCreateEvent extends AppCompatActivity {
 
     public Event event;
 
@@ -19,7 +19,7 @@ public class OnEventCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_event_creation);
-        Fragment fragment = new OnEventCreationOne();
+        Fragment fragment = new UserSetEventInfo();
         FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
 

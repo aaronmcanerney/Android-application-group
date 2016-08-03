@@ -28,10 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/profilePicture"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/sample"
-
-            android:background="#000000"
             android:padding="1dp"
             android:layout_gravity="center_horizontal"
             android:layout_centerVertical="true"
