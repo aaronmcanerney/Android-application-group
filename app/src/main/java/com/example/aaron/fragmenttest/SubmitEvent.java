@@ -62,7 +62,9 @@ public class SubmitEvent extends Fragment {
         dateParams.topMargin = p.x/20;
         date.setId(View.generateViewId());
         dateParams.leftMargin = p.x/16;
-//hh
+
+
+
         TextView where = new TextView(getActivity());
         container.addView(where);
         where.setBackgroundResource(R.drawable.bluerounded);
@@ -95,19 +97,20 @@ public class SubmitEvent extends Fragment {
         RelativeLayout.LayoutParams friendsParams = (RelativeLayout.LayoutParams) friends.getLayoutParams();
         friendsParams.height = p.y * 3 /20;
         friendsParams.width = p.x * 7 / 16 ;
-        friendsParams.addRule(RelativeLayout.BELOW, description.getId());
+        friendsParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, description.getId());
         friendsParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         friendsParams.leftMargin = p.x/16;
 
         Button next = new Button(getActivity());
         container.addView(next);
         next.setTextColor(Color.WHITE);
+        next.setText("Submit");
         next.setBackgroundResource(R.drawable.bluerounded);
         RelativeLayout.LayoutParams nextParams = (RelativeLayout.LayoutParams) next.getLayoutParams();
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         nextParams.height = p.y/10;
-        nextParams.width = p.x/5;
+        nextParams.width = p.x/4;
 
         super.onStart();
     }

@@ -192,7 +192,7 @@ public class UserPickDate extends Fragment {
             public void onClick(View v)
             {
 
-                toEventCreationThree(v);
+                toSubmitEvent(v);
             }
         });
 
@@ -208,8 +208,8 @@ public class UserPickDate extends Fragment {
 
 
 
-    public void toEventCreationThree(View view){
-        Fragment fragment = new UserPickTime();
+    public void toSubmitEvent(View view){
+        Fragment fragment = new SubmitEvent();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
     }
@@ -225,6 +225,8 @@ public class UserPickDate extends Fragment {
         }
         return point;
     }
+
+
 
 
 
