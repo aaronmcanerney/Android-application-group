@@ -146,7 +146,7 @@ public class MyCalendar extends Fragment {
         Point point = getDisplaySize(d);
         LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
         RelativeLayout rl = new RelativeLayout(this.getActivity());
-        linearLayout.addView(rl);
+        linearLayout.addView(rl, 0);
         rl.getLayoutParams().height = point.y/4;
 
         // Build Calendar Image
@@ -187,8 +187,7 @@ public class MyCalendar extends Fragment {
         desc.setLayoutParams(pdesc);
 
         TextView loc = new TextView(this.getActivity());
-        loc.setTag("location");
-        loc.setText("location"); // Delete later
+        loc.setTag("placeName");
         loc.setId(View.generateViewId());
         rl.addView(loc);
         RelativeLayout.LayoutParams ploc = (RelativeLayout.LayoutParams) loc.getLayoutParams();

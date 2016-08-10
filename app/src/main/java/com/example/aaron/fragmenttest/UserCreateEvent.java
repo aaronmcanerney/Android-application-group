@@ -41,7 +41,6 @@ public class UserCreateEvent extends AppCompatActivity {
         event = new Event(user.getUid());
         event.setPlaceName(placeName);
         event.setPlaceAddress(placeAddress);
-        event.push();
     }
 
 
