@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,14 +17,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.squareup.picasso.Picasso;
 
 import java.util.NoSuchElementException;
 
 
 public class HomeProfile extends Fragment {
-
+    public static int PLACE_PICKER_REQUEST = 1;
     /*  @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -117,6 +123,14 @@ public class HomeProfile extends Fragment {
         editParams.addRule(RelativeLayout.ALIGN_BOTTOM, tagContainer.getId());
         editParams.leftMargin = 20;
         edit.setBackgroundResource(R.drawable.roundedlayout);
+        edit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                toOnEventCreation(v);
+            }
+        });
 
         RelativeLayout friends = new RelativeLayout(getActivity());
         container.addView(friends);
@@ -147,75 +161,16 @@ public class HomeProfile extends Fragment {
         eventParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         eventParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         eventParams.rightMargin = 20;
-
-        /*
-        //Image View border
-        ShapeDrawable rectShapeDrawable = new ShapeDrawable();
-        Paint paint = rectShapeDrawable.getPaint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
-        // Set profile information
-
-        ImageView img = new ImageView(this.getActivity());
-        rl.addView(img);
-        //img.setBackground(rectShapeDrawable);
-        TextView nameView = (TextView) activity.findViewById(R.id.textView);
-        nameView.setText(activity.displayName);
-        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point p = getDisplaySize(d);
-        scaleImage(backdrop, p, p.x, p.y/2);
-        scaleImage(img, p, p.x * 3/5);
-        Picasso.with(activity).load(activity.profileIMG).transform(new CircleTransform()).into(img);
-        GridLayout grid = new GridLayout(this.getActivity());
-        grid.setColumnCount(2);
-        rl.addView(grid);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) grid.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        Button connections = new Button(this.getActivity());
-        connections.setText("Connections");
-        connections.setWidth(p.x/2);
-        connections.setOnClickListener(new View.OnClickListener()
+        addEvent.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                toConnections(v);
+               toOnEventCreation(v);
+
             }
         });
-        grid.addView(connections);
-        Button activityFeed = new Button(this.getActivity());
-        activityFeed.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                toActivityFeed(v);
-            }
-        });
-        activityFeed.setText("Activity Feed");
-        activityFeed.setWidth(p.x/2);
-        grid.addView(activityFeed);
-        RelativeLayout.LayoutParams backParam = (RelativeLayout.LayoutParams) backdrop.getLayoutParams();
-        backParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        backdrop.setLayoutParams(backParam);
-        RelativeLayout.LayoutParams imgParam = (RelativeLayout.LayoutParams) img.getLayoutParams();
-        imgParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-        //((RelativeLayout.LayoutParams) img.getLayoutParams()).topMargin = p.x + p.x /3;
-        RelativeLayout.LayoutParams gridParam = (RelativeLayout.LayoutParams) grid.getLayoutParams();
-        gridParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        img.setId(View.generateViewId());
-        RelativeLayout.LayoutParams textParam = (RelativeLayout.LayoutParams) nameView.getLayoutParams();
-        textParam.addRule(RelativeLayout.BELOW, img.getId());
-        textParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        textParam.topMargin = p.x /10;
-        nameView.setLayoutParams(textParam);
-        backdrop.setImageResource(R.mipmap.backgroundprofileimg);
 
-
-
-
-        */
 
         super.onStart();
     }
@@ -259,9 +214,36 @@ public class HomeProfile extends Fragment {
         Intent intent = new Intent(this.getActivity(), Connections.class) ;
         startActivity(intent);
     }
-    public void toActivityFeed(View view){
-        Intent intent = new Intent(this.getActivity(), ActivityFeed1.class) ;
-        startActivity(intent);
+
+
+    public void toOnEventCreation(View view){
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this.getActivity()), PLACE_PICKER_REQUEST);
+        }
+        catch(GooglePlayServicesRepairableException e){
+            e.printStackTrace();
+        }
+        catch(GooglePlayServicesNotAvailableException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this.getActivity());
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(this.getActivity(), UserCreateEvent.class);
+                intent.putExtra("placeName", place.getName());
+                intent.putExtra("placeAddress", place.getAddress());
+                startActivity(intent);
+            }
+        }
     }
 
 

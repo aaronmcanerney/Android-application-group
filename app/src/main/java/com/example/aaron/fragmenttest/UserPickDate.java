@@ -9,13 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -23,9 +24,8 @@ import java.util.Calendar;
 
 
 public class UserPickDate extends Fragment {
-    int hour_x;
-    int minute_x;
-    static final int DIALOG_ID = 0;
+    TextView display;
+    String displayedDate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_user_pick_date
@@ -45,34 +45,36 @@ public class UserPickDate extends Fragment {
     public void onStart(){
 
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point point = getDisplaySize(d);
+        Point p = getDisplaySize(d);
 
-        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
+        RelativeLayout container = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_two);
 
-        RelativeLayout setDateLayout = new RelativeLayout(getActivity());
-        rl.addView(setDateLayout);
-        RelativeLayout.LayoutParams dateLayoutParams = (RelativeLayout.LayoutParams) setDateLayout.getLayoutParams();
-        dateLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        setDateLayout.setLayoutParams(dateLayoutParams);
-        setDateLayout.getLayoutParams().height = point.y/3;
-        setDateLayout.getLayoutParams().width = point.x /2;
-        setDateLayout.setBackgroundColor(Color.parseColor("#e1e1e1"));
-        ImageView img1 = new ImageView(getActivity());
-        setDateLayout.addView(img1);
-        RelativeLayout.LayoutParams img1Params = (RelativeLayout.LayoutParams) img1.getLayoutParams();
-        img1Params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        img1.setBackgroundResource(R.drawable.roundedlayout);
-        setDateLayout.setBackgroundResource(R.drawable.roundedlayout);
-        Button date = new Button(getActivity());
-        date.setClickable(false);
-        date.setText("Select your date");
-        setDateLayout.addView(date);
-        date.setTextColor(Color.WHITE);
-        date.setBackgroundResource(R.drawable.roundedbutton);
-        RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
-        dateParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        date.setLayoutParams(dateParams);
-        setDateLayout.setOnClickListener(new View.OnClickListener()
+        container.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+        RelativeLayout timeDateButtons = new RelativeLayout(getActivity());
+        container.addView(timeDateButtons);
+        timeDateButtons.setBackgroundResource(R.drawable.roundedlayout);
+        RelativeLayout.LayoutParams timeDateButtonsParams = (RelativeLayout.LayoutParams) timeDateButtons.getLayoutParams();
+        timeDateButtonsParams.height = p.y * 5 /16;
+        timeDateButtonsParams.width = p.x * 15/16;
+        timeDateButtonsParams.leftMargin = p.x/32;
+        timeDateButtonsParams.topMargin = p.y /32;
+        timeDateButtons.setId(View.generateViewId());
+
+        Button dateSelect = new Button(getActivity());
+        timeDateButtons.addView(dateSelect);
+        dateSelect.setBackgroundResource(R.drawable.bluerounded);
+        dateSelect.setTextColor(Color.WHITE);
+        dateSelect.setText("Select a Date");
+        RelativeLayout.LayoutParams dateSelectParams = (RelativeLayout.LayoutParams) dateSelect.getLayoutParams();
+        dateSelectParams.height = p.y / 5;
+        dateSelectParams.width = p.x * 6 / 16 ;
+        dateSelectParams.leftMargin = p.x / 32;
+        dateSelectParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        dateSelectParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+
+        dateSelect.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -83,30 +85,19 @@ public class UserPickDate extends Fragment {
             }
         });
 
-        RelativeLayout setTimeLayout = new RelativeLayout(getActivity());
-        rl.addView(setTimeLayout);
-        RelativeLayout.LayoutParams timeLayoutParams = (RelativeLayout.LayoutParams) setTimeLayout.getLayoutParams();
-        timeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        setTimeLayout.setLayoutParams(timeLayoutParams);
-        setTimeLayout.getLayoutParams().height = point.y/3;
-        setTimeLayout.getLayoutParams().width = point.x/2;
-        setTimeLayout.setBackgroundColor(Color.parseColor("#e1e1e1"));
-        ImageView img2 = new ImageView(getActivity());
-        setTimeLayout.addView(img2);
-        RelativeLayout.LayoutParams img2Params = (RelativeLayout.LayoutParams) img2.getLayoutParams();
-        img2Params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        img2.setBackgroundResource(R.drawable.roundedlayout);
-        setTimeLayout.setBackgroundResource(R.drawable.roundedlayout);
-        Button time = new Button(getActivity());
-        time.setClickable(false);
-        time.setText("Select your time");
-        setTimeLayout.addView(time);
-        time.setBackground(getActivity().getResources().getDrawable(R.drawable.roundedbutton));
-        time.setTextColor(Color.WHITE);
-        RelativeLayout.LayoutParams timeParams = (RelativeLayout.LayoutParams) time.getLayoutParams();
-        timeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        time.setLayoutParams(timeParams);
-        setTimeLayout.setOnClickListener(new View.OnClickListener() {
+        Button timeSelect = new Button(getActivity());
+        timeDateButtons.addView(timeSelect);
+        timeSelect.setBackgroundResource(R.drawable.bluerounded);
+        timeSelect.setTextColor(Color.WHITE);
+        timeSelect.setText("Select a Time");
+        RelativeLayout.LayoutParams timeSelectParams = (RelativeLayout.LayoutParams) timeSelect.getLayoutParams();
+        timeSelectParams.height = p.y / 5;
+        timeSelectParams.width = p.x * 6 / 16 ;
+        timeSelectParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        timeSelectParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        timeSelectParams.rightMargin = p.x / 32;
+
+        timeSelect.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -115,10 +106,19 @@ public class UserPickDate extends Fragment {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
+
                 mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
+                        String temp = " pm";
+                        if(selectedHour > 12) {
+                            selectedHour = selectedMinute - 12;
+                        }
+                        else{
+                            temp = " am";
+                        }
+                        display.setText(selectedHour + ":" + selectedMinute + temp);
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -129,17 +129,63 @@ public class UserPickDate extends Fragment {
 
 
 
+        RelativeLayout background = new RelativeLayout(getActivity());
+        container.addView(background);
+        background.setBackgroundResource(R.drawable.roundedlayout);
+        RelativeLayout.LayoutParams backgroundParams = (RelativeLayout.LayoutParams) background.getLayoutParams();
+        backgroundParams.height = p.y *6/16;
+        backgroundParams.width = p.x * 15/16;
+        backgroundParams.topMargin = p.y / 32;
+        backgroundParams.addRule(RelativeLayout.BELOW, timeDateButtons.getId());
+        backgroundParams.leftMargin = p.x / 32;
+
+
+        String[] months = new String[]{"January" , "February", "March", "April", "May", "June",
+        "July", "August", "Semptember", "October", "November", "December"};
+        Calendar intitialTime = Calendar.getInstance();
+        int day = intitialTime.get(Calendar.DAY_OF_MONTH);
+        int month = intitialTime.get(Calendar.MONTH);
+        int year = intitialTime.get(Calendar.YEAR);
+        int hour = intitialTime.get(Calendar.HOUR_OF_DAY);
+        int minute = intitialTime.get(Calendar.MINUTE);
+        String temp = " pm";
+        if(hour > 12){
+            hour -= 12;
+        }
+        else{temp = " am";}
+
+        String date = months[month] + " " + day + ", " + year;
+        String at = " @ ";
+        String time = hour + ":" + minute + temp;
+
+
+
+        display = new TextView(getActivity());
+        background.addView(display);
+        display.setBackgroundResource(R.drawable.bluerounded);
+        display.setTextColor(Color.WHITE);
+        display.setGravity(Gravity.CENTER);
+        display.setText(date + at + time);
+        RelativeLayout.LayoutParams displayParams = (RelativeLayout.LayoutParams) display.getLayoutParams();
+        displayParams.width = p.x * 5 /8;
+        displayParams.height = p.y /5;
+        //displayParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        displayParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+       // displayParams.bottomMargin = p.y / 10;
 
 
         Button next = new Button(getActivity());
-        next.setText("Next");
-        rl.addView(next);
+        container.addView(next);
         next.setTextColor(Color.WHITE);
-        next.setBackground(getActivity().getResources().getDrawable(R.drawable.roundedbutton));
+        next.setText("Next");
+        next.setGravity(Gravity.CENTER);
+        next.setBackgroundResource(R.drawable.bluerounded);
         RelativeLayout.LayoutParams nextParams = (RelativeLayout.LayoutParams) next.getLayoutParams();
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        next.setLayoutParams(nextParams);
+        nextParams.height = p.y/15;
+        nextParams.width = p.x/4;
+        nextParams.rightMargin = p.x/32;
         next.setOnClickListener(new View.OnClickListener()
         {
             @Override

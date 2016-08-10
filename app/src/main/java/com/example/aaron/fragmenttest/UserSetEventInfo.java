@@ -2,10 +2,8 @@ package com.example.aaron.fragmenttest;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,13 +11,13 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,8 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class UserSetEventInfo extends Fragment {
 
-    RelativeLayout enameRL;
-    RelativeLayout descriptionRL;
+
+    RelativeLayout container;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,12 +49,7 @@ public class UserSetEventInfo extends Fragment {
     }
     @Override
     public void onStart(){
-        //add a border to the relative layout
-        ShapeDrawable rectShapeDrawable = new ShapeDrawable();
-        Paint paint = rectShapeDrawable.getPaint();
-        paint.setColor(Color.GRAY);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
+
 
         //format the name again
         SpannableString nameFormatted = new SpannableString("Event Name: ");
@@ -64,86 +57,91 @@ public class UserSetEventInfo extends Fragment {
         nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
         nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
         //get the linear layout so everything is aligned vertical
-        RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_one_linear_layout);
+
 
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point point = getDisplaySize(d);
-        //create first rl
-        enameRL = new RelativeLayout(this.getActivity());
-        rl.addView(enameRL);
-        //set the height and background
-        enameRL.getLayoutParams().height = point.y/5;
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) enameRL.getLayoutParams();
-        params.topMargin = point.x /15;
-        enameRL.setId(View.generateViewId());
-        enameRL.requestLayout();
-        enameRL.setBackground(rectShapeDrawable);
-        //enameRL.setBackgroundColor(Color.BLUE);
-        //enameRL.setBackgroundResource(R.mipmap.back_layout);
-        //event name and edit text added to relative layout
-        TextView ename = new TextView(this.getActivity());
-        ename.setTag("name");
-        ename.setText(nameFormatted);
-        EditText editName = new EditText(this.getActivity());
-        enameRL.addView(ename);
-        enameRL.addView(editName);
+        Point p = getDisplaySize(d);
 
-        //Create relative layout params for Event name
-        RelativeLayout.LayoutParams pname = (RelativeLayout.LayoutParams) ename.getLayoutParams();
-        pname.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        ename.setLayoutParams(pname);
-        ename.setId(View.generateViewId());
-        RelativeLayout.LayoutParams pEditName = (RelativeLayout.LayoutParams) editName.getLayoutParams();
-        pEditName.addRule(RelativeLayout.BELOW, ename.getId());
-        pEditName.width = point.x;
-        pEditName.height = point.y /5;
-        editName.setLayoutParams(pEditName);
+        container = (RelativeLayout) getActivity().findViewById(R.id.user_set_info_relative);
+        container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        //Creating Relative layout for description
-        /*RelativeLayout placeHolder = new RelativeLayout(this.getActivity());
-        rl.addView(placeHolder);
-        placeHolder.getLayoutParams().height = point.y/10;
-        RelativeLayout.LayoutParams placeParam = (RelativeLayout.LayoutParams) placeHolder.getLayoutParams();
-        placeParam.addRule(RelativeLayout.ALIGN_BASELINE);
-        */
+        TextView eventName = new TextView(getActivity());
+        container.addView(eventName);
+        eventName.setText("Event Name");
+        eventName.setBackgroundResource(R.drawable.bluerounded);
+        eventName.setTextColor(Color.WHITE);
+        eventName.setGravity(Gravity.CENTER);
+        RelativeLayout.LayoutParams eventNameParams = (RelativeLayout.LayoutParams) eventName.getLayoutParams();
+        eventNameParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        eventNameParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        eventNameParams.leftMargin = p.x/32;
+        eventNameParams.width = p.x /2;
+        eventNameParams.height = p.y / 16;
+        eventNameParams.topMargin = p.y/32;
+       // need top margin
+        eventName.setId(View.generateViewId());
 
-        descriptionRL = new RelativeLayout(this.getActivity());
-        rl.addView(descriptionRL);
-        ImageView img1 = new ImageView(getActivity());
-        descriptionRL.addView(img1);
-        descriptionRL.setBackgroundResource(R.drawable.roundedlayout);
-        descriptionRL.setBackground(rectShapeDrawable);
-        //descriptionRL.setBackgroundColor(Color.GRAY);
-        //set the height and background
-        descriptionRL.getLayoutParams().height = point.y/3;
-        TextView eDescription = new TextView(this.getActivity());
-        eDescription.setText("Description: ");
-        eDescription.setTag("desc");
-        EditText editDescription = new EditText(this.getActivity());
-        descriptionRL.addView(eDescription);
-        descriptionRL.addView(editDescription);
-        RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) eDescription.getLayoutParams();
-        pname.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        eDescription.setLayoutParams(descriptionParams);
-        eDescription.setId(View.generateViewId());
+        EditText editName = new EditText(getActivity());
+        container.addView(editName);
+        RelativeLayout.LayoutParams editNameParams = (RelativeLayout.LayoutParams) editName.getLayoutParams();
+        editNameParams.height = p.y/6;
+        editNameParams.width = p.x * 15/16;
+        editNameParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        editNameParams.addRule(RelativeLayout.BELOW, eventName.getId());
+       // editNameParams.topMargin = p.y/ constant;
+        editNameParams.leftMargin = p.x/32;
+        editName.setBackgroundResource(R.drawable.roundedlayout);
+        editName.setId(View.generateViewId());
+        editNameParams.topMargin = p.y/32;
+        editName.setTag("name");
+
+
+
+
+
+        TextView description = new TextView(getActivity());
+        container.addView(description);
+        description.setText("Description");
+        description.setBackgroundResource(R.drawable.bluerounded);
+        description.setTextColor(Color.WHITE);
+        description.setGravity(Gravity.CENTER);
+        RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) description.getLayoutParams();
+        descriptionParams.addRule(RelativeLayout.BELOW, editName.getId());
+        descriptionParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        descriptionParams.leftMargin = p.x/32;
+        descriptionParams.width = p.x /2;
+        descriptionParams.height = p.y / 16;
+        descriptionParams.topMargin = p.y/32;
+
+       // need top margin
+        description.setId(View.generateViewId());
+
+        EditText editDescription = new EditText(getActivity());
+        container.addView(editDescription);
         RelativeLayout.LayoutParams editDescriptionParams = (RelativeLayout.LayoutParams) editDescription.getLayoutParams();
-        editDescriptionParams.addRule(RelativeLayout.BELOW, eDescription.getId());
-        editDescriptionParams.width = point.x;
-        editDescriptionParams.height = point.y /3;
-        editDescription.setLayoutParams(editDescriptionParams);
-        enameRL.setId(View.generateViewId());
-        RelativeLayout.LayoutParams alignDescription = (RelativeLayout.LayoutParams) descriptionRL.getLayoutParams();
-       // alignDescription.addRule(RelativeLayout.ABOVE, enameRL.getId());
-        alignDescription.addRule(RelativeLayout.BELOW, enameRL.getId());
-        alignDescription.topMargin = point.y/10;
-        descriptionRL.setLayoutParams(alignDescription);
+        editDescriptionParams.height = p.y/3;
+        editDescriptionParams.width = p.x * 15/16;
+        editDescriptionParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        editDescriptionParams.addRule(RelativeLayout.BELOW, description.getId());
+       // editDescriptionParams.topMargin = p.y/ constant;
+        editDescriptionParams.leftMargin = p.x/32;
+        editDescriptionParams.topMargin = p.y/32;
+        editDescription.setBackgroundResource(R.drawable.roundedlayout);
+        editDescription.setId(View.generateViewId());
+        editDescription.setTag("desc");
 
-
-        Button button = new Button(this.getActivity());
-        rl.addView(button);
-        button.setText("Next");
-        button.setBackgroundResource(R.drawable.roundedbutton);
-        button.setOnClickListener(new View.OnClickListener()
+        Button next = new Button(getActivity());
+        container.addView(next);
+        next.setTextColor(Color.WHITE);
+        next.setText("Next");
+        next.setBackgroundResource(R.drawable.bluerounded);
+        RelativeLayout.LayoutParams nextParams = (RelativeLayout.LayoutParams) next.getLayoutParams();
+        nextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        nextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        nextParams.height = p.y/15;
+        nextParams.width = p.x/4;
+        nextParams.rightMargin = p.x/32;
+        next.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -152,11 +150,6 @@ public class UserSetEventInfo extends Fragment {
                 toEventCreationTwo(v);
             }
         });
-        RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
-        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        button.setLayoutParams(buttonParams);
-        button.setBackgroundResource(R.drawable.roundedbutton);
 
 
 
@@ -168,10 +161,10 @@ public class UserSetEventInfo extends Fragment {
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
 
         // Update event to add name and description
-        TextView nameView = (TextView) enameRL.findViewWithTag("name");
-        TextView descView = (TextView) descriptionRL.findViewWithTag("desc");
+        TextView nameView = (TextView) container.findViewWithTag("name");
+        TextView descView = (TextView) container.findViewWithTag("desc");
         String name = nameView.getText().toString();
-        String desc = (String) descView.getText();
+        String desc = descView.getText().toString();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
