@@ -80,7 +80,6 @@ public class UserPickDate extends Fragment {
             @Override
             public void onClick(View v)
             {
-
                 onButtonClicked(v);
             }
         });
