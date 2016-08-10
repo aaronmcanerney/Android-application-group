@@ -58,21 +58,11 @@ public class Connections extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if(count < 3) {
-                        count++;
+
+
                         String connectionId = child.getKey();
                         loadConnectionPicture(connectionId);
-                    }
-                    else{
-                        count++;
-                        RelativeLayout temp = new RelativeLayout(activity);
-                        container.addView(temp);
-                        temp.setBackgroundResource(R.drawable.roundedlayout);
-                        temp.getLayoutParams().width = p.x;
-                        temp.getLayoutParams().height = p.y /4 -20;
-                        String connectionId = child.getKey();
-                        loadConnectionPicture(connectionId);
-                    }
+
 
                 }
             }
