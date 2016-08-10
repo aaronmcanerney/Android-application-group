@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:id = "@+id/event_creation_two"
     tools:context=".UserPickDate"
-    >
+    android:background="#e1e1e1">
 
 </RelativeLayout>

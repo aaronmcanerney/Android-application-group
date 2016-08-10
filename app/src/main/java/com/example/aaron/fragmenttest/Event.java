@@ -1,6 +1,5 @@
 package com.example.aaron.fragmenttest;
 
-import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -13,6 +12,8 @@ public class Event {
     private String placeAddress;
     private String name;
     private String description;
+    private String date;
+    private String time;
     private ArrayList<String> connections; // ArrayList of uid's
 
     public Event(String creatorId) {
@@ -27,7 +28,8 @@ public class Event {
     public void setPlaceAddress(String placeAddress) { this.placeAddress = placeAddress; }
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
-
+    public void setDate(String date) { this.date = date; }
+    public void setTime(String time) {this.time = time;}
     public void addConnection(String connectionId) {
         connections.add(connectionId);
     }
@@ -44,10 +46,16 @@ public class Event {
 
         // Push requests for event
         DatabaseReference requests = database.child("requests");
-        for (String connectionId: connections) {
+        for (String connectionId : connections) {
             String response = (connectionId.equals(creatorId)) ? "accepted" : "pending";
             requests.child(connectionId).child(eventId).setValue(response);
         }
+    }
+    public String getTime(){
+        return time;
+    }
+    public String getDate(){
+        return date;
     }
 
 }

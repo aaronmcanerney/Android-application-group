@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,8 +63,9 @@ public class UserSetEventInfo extends Fragment {
         nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
         nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
         nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
-        //get the linear layout so everything is aligned vertically
+        //get the linear layout so everything is aligned vertical
         RelativeLayout rl = (RelativeLayout) this.getActivity().findViewById(R.id.event_creation_one_linear_layout);
+
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         //create first rl
@@ -76,7 +78,7 @@ public class UserSetEventInfo extends Fragment {
         enameRL.setId(View.generateViewId());
         enameRL.requestLayout();
         enameRL.setBackground(rectShapeDrawable);
-        enameRL.setBackgroundColor(Color.BLUE);
+        //enameRL.setBackgroundColor(Color.BLUE);
         //enameRL.setBackgroundResource(R.mipmap.back_layout);
         //event name and edit text added to relative layout
         TextView ename = new TextView(this.getActivity());
@@ -107,7 +109,9 @@ public class UserSetEventInfo extends Fragment {
 
         descriptionRL = new RelativeLayout(this.getActivity());
         rl.addView(descriptionRL);
-        descriptionRL.setBackgroundColor(Color.BLUE);
+        ImageView img1 = new ImageView(getActivity());
+        descriptionRL.addView(img1);
+        descriptionRL.setBackgroundResource(R.drawable.roundedlayout);
         descriptionRL.setBackground(rectShapeDrawable);
         //descriptionRL.setBackgroundColor(Color.GRAY);
         //set the height and background
@@ -138,6 +142,7 @@ public class UserSetEventInfo extends Fragment {
         Button button = new Button(this.getActivity());
         rl.addView(button);
         button.setText("Next");
+        button.setBackgroundResource(R.drawable.roundedbutton);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -151,6 +156,7 @@ public class UserSetEventInfo extends Fragment {
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         button.setLayoutParams(buttonParams);
+        button.setBackgroundResource(R.drawable.roundedbutton);
 
 
 
