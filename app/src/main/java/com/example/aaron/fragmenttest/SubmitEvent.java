@@ -62,7 +62,7 @@ public class SubmitEvent extends Fragment {
         dateParams.topMargin = p.x/20;
         date.setId(View.generateViewId());
         dateParams.leftMargin = p.x/16;
-
+//hh
         TextView where = new TextView(getActivity());
         container.addView(where);
         where.setBackgroundResource(R.drawable.bluerounded);
