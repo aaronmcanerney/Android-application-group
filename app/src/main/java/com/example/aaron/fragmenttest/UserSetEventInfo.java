@@ -171,7 +171,6 @@ public class UserSetEventInfo extends Fragment {
         UserCreateEvent activity = (UserCreateEvent) getActivity();
         activity.event.setName(name);
         activity.event.setDescription(desc);
-        activity.event.push();
     }
     private static Point getDisplaySize(final Display display) {
 

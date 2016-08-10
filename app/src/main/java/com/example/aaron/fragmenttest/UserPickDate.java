@@ -99,6 +99,9 @@ public class UserPickDate extends Fragment {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
+                        UserCreateEvent activity = (UserCreateEvent) getActivity();
+                        activity.event.setHour(selectedHour);
+                        activity.event.setMinute(selectedMinute);
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
