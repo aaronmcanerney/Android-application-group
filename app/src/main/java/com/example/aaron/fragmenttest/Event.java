@@ -1,6 +1,5 @@
 package com.example.aaron.fragmenttest;
 
-import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -61,7 +60,7 @@ public class Event {
 
         // Push requests for event
         DatabaseReference requests = database.child("requests");
-        for (String connectionId: connections) {
+        for (String connectionId : connections) {
             String response = (connectionId.equals(creatorId)) ? "accepted" : "pending";
             requests.child(connectionId).child(eventId).setValue(response);
         }

@@ -7,31 +7,8 @@
     android:id = "@+id/home_profile_relative"
    >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Aaron Mcanerney \n Santa Cruz, CA"
-            android:id="@+id/textView"
-            android:lines = "2"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold|italic"
-            android:typeface="serif" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/drop"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profilePicture"
-            android:padding="1dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+
 
 
 

@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,12 +48,22 @@ public class Connections extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;
         String uid = user.getUid();
+        final Activity activity = new Connections();
+        final RelativeLayout container = new RelativeLayout(this);
+        Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        final Point p = getDisplaySize(d);
         mDatabase.child("connections/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            int count = 0;
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    String connectionId = child.getKey();
-                    loadConnectionPicture(connectionId);
+
+
+                        String connectionId = child.getKey();
+                        loadConnectionPicture(connectionId);
+
+
                 }
             }
 
