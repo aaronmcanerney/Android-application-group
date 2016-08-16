@@ -23,7 +23,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -33,9 +32,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         Toast.makeText(getActivity(), date, Toast.LENGTH_LONG).show();
 
         UserCreateEvent activity = (UserCreateEvent) getActivity();
-        activity.event.setMonth(Integer.toString(month));
+        /*activity.event.setMonth(Integer.toString(month));
         activity.event.setDay(Integer.toString(day));
-        activity.event.setYear(Integer.toString(year));
+        activity.event.setYear(Integer.toString(year));*/
 
         /*
         tv.setText("Date changed...");

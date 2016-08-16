@@ -12,11 +12,11 @@ public class Event {
     private String placeAddress;
     private String name;
     private String description;
-    private String hour;
-    private String minute;
-    private String year;
-    private String month;
-    private String day;
+    private int hour;
+    private int minute;
+    private int year;
+    private int month;
+    private int day;
     private ArrayList<String> connections; // ArrayList of uid's
 
     public Event(String creatorId) {
@@ -31,11 +31,11 @@ public class Event {
     public void setPlaceAddress(String placeAddress) { this.placeAddress = placeAddress; }
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
-    public void setHour(String hour) { this.hour = hour; }
-    public void setMinute(String minute) { this.minute = minute; }
-    public void setYear(String year) { this.year = year; }
-    public void setMonth(String month) { this.month = month; }
-    public void setDay(String day) { this.day = day; }
+    public void setHour(int hour) { this.hour = hour; }
+    public void setMinute(int minute) { this.minute = minute; }
+    public void setYear(int year) { this.year = year; }
+    public void setMonth(int month) { this.month = month; }
+    public void setDay(int day) { this.day = day; }
 
     public void addConnection(String connectionId) {
         connections.add(connectionId);

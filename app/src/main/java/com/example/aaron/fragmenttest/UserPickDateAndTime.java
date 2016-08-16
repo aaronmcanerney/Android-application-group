@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -44,14 +46,12 @@ public class UserPickDateAndTime extends Fragment {
         return f;
     }
     public void onStart(){
-
-
-        Calendar intitialTime = Calendar.getInstance();
-        int day = intitialTime.get(Calendar.DAY_OF_MONTH);
-        int month = intitialTime.get(Calendar.MONTH);
-        int year = intitialTime.get(Calendar.YEAR);
-        int hour = intitialTime.get(Calendar.HOUR_OF_DAY);
-        int minute = intitialTime.get(Calendar.MINUTE);
+        Calendar initialTime = Calendar.getInstance();
+        int day = initialTime.get(Calendar.DAY_OF_MONTH);
+        int month = initialTime.get(Calendar.MONTH);
+        int year = initialTime.get(Calendar.YEAR);
+        int hour = initialTime.get(Calendar.HOUR_OF_DAY);
+        int minute = initialTime.get(Calendar.MINUTE);
 
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
@@ -82,14 +82,33 @@ public class UserPickDateAndTime extends Fragment {
         dateSelectParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         dateSelectParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        DatePickerDialog mDatePicker;
         dateSelect.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick(View v)
             {
-                pickDate(v);
+                //pickDate(v);
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        Toast.makeText(getActivity(), month + "/" + day + "/" + year, Toast.LENGTH_LONG).show();
+                        display.setText(Utilities.formatDate(year, month, day));
+
+                        // Set event data (firebase)
+                        UserCreateEvent activity = (UserCreateEvent) getActivity();
+                        activity.event.setMonth(month);
+                        activity.event.setDay(day);
+                        activity.event.setYear(year);
+                    }
+                }, year, month, day);
+                datePicker.setTitle("Select Time");
+                datePicker.show();
             }
         });
 
@@ -110,36 +129,25 @@ public class UserPickDateAndTime extends Fragment {
 
             @Override
             public void onClick(View v) {
-                pickTime(v);
-                if (0 == 0) return;
-
-                // TODO Auto-generated method stub
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
-                        String temp = " pm";
-                        if(selectedHour > 12) {
-                            selectedHour = selectedMinute - 12;
-                        }
-                        else{
-                            temp = " am";
-                        }
-                        display.setText(selectedHour + ":" + selectedMinute + temp);
+                        display.setText(Utilities.formatTime(selectedHour, selectedMinute));
+
+                        // Set event data (firebase)
+                        UserCreateEvent activity = (UserCreateEvent) getActivity();
+                        activity.event.setHour(selectedHour);
+                        activity.event.setMinute(selectedMinute);
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
-
             }
         });
-
-
 
         RelativeLayout background = new RelativeLayout(getActivity());
         container.addView(background);
@@ -151,19 +159,9 @@ public class UserPickDateAndTime extends Fragment {
         backgroundParams.addRule(RelativeLayout.BELOW, timeDateButtons.getId());
         backgroundParams.leftMargin = p.x / 32;
 
-
-        String[] months = new String[]{"January" , "February", "March", "April", "May", "June",
-        "July", "August", "Semptember", "October", "November", "December"};
-
-        String temp = " pm";
-        if(hour > 12){
-            hour -= 12;
-        }
-        else{temp = " am";}
-
-        String date = months[month] + " " + day + ", " + year;
+        String date = Utilities.formatDate(year, month, day);
         String at = " @ ";
-        String time = hour + ":" + minute + temp;
+        String time = Utilities.formatTime(hour, minute);
 
 
 
@@ -198,24 +196,22 @@ public class UserPickDateAndTime extends Fragment {
             @Override
             public void onClick(View v)
             {
-
                 toSubmitEvent(v);
             }
         });
-
-
 
         super.onStart();
     }
 
     public void pickDate(View v){
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getActivity().getFragmentManager(),"Date Picker");
+        //DialogFragment newFragment = new DatePickerFragment();
+        //newFragment.show(getActivity().getFragmentManager(),"Date Picker");
     }
 
-    public void pickTime(View w) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getActivity().getFragmentManager(),"Time Picker");
+    public void pickTime(View v) {
+        //DialogFragment newFragment = new TimePickerFragment();
+        //newFragment.
+        //newFragment.show(getActivity().getFragmentManager(),"Time Picker");
     }
 
     public void toSubmitEvent(View view){

@@ -109,23 +109,50 @@ public class MyCalendar extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 String eventId = snapshot.getKey();
                 RelativeLayout event = myEvents.get(eventId);
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    String field = child.getKey();
-                    String value = child.getValue(String.class);
-                    TextView textView;
+                Map<String, Object> map = new HashMap<>();
 
-                    if (field.equals("name")) {
-                        SpannableString nameFormatted = new SpannableString(value);
-                        nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
-                        nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
-                        nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
-                        textView = (TextView) event.findViewWithTag("name");
-                        textView.setText(nameFormatted);
-                    } else {
-                        textView = (TextView) event.findViewWithTag(field);
-                        if (textView != null) textView.setText(value);
-                    }
+                // Get all data from firebase
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String key = child.getKey();
+                    Object value = child.getValue(Object.class);
+                    map.put(key, value);
                 }
+
+                if (map.isEmpty()) return;
+
+                // Populate name
+                String name = (String) map.get("name");
+                SpannableString nameFormatted = new SpannableString(name);
+                nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
+                nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
+                nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
+                TextView textView = (TextView) event.findViewWithTag("name");
+                textView.setText(nameFormatted);
+
+                // Populate description
+                String desc = (String) map.get("description");
+                textView = (TextView) event.findViewWithTag("description");
+                textView.setText(desc);
+
+                // Populate place name
+                String placeName = (String) map.get("placeName");
+                textView = (TextView) event.findViewWithTag("placeName");
+                textView.setText(placeName);
+
+                // Populate date
+                Long year = (Long) map.get("year");
+                Long month = (Long) map.get("month");
+                Long day = (Long) map.get("day");
+                String date = Utilities.formatDate(year, month, day);
+                textView = (TextView) event.findViewWithTag("date");
+                textView.setText(date);
+
+                // Populate time
+                Long hour = (Long) map.get("hour");
+                Long minute = (Long) map.get("minute");
+                String time = Utilities.formatTime(hour, minute);
+                textView = (TextView) event.findViewWithTag("time");
+                textView.setText(time);
 
                 TextView status = (TextView) event.findViewWithTag("status");
                 String eventStatus = (String) status.getText();
@@ -195,14 +222,22 @@ public class MyCalendar extends Fragment {
         ploc.addRule(RelativeLayout.BELOW, desc.getId());
         loc.setLayoutParams(ploc);
 
+        TextView date = new TextView(this.getActivity());
+        date.setTag("date");
+        date.setId(View.generateViewId());
+        rl.addView(date);
+        RelativeLayout.LayoutParams pdate = (RelativeLayout.LayoutParams) date.getLayoutParams();
+        pdate.leftMargin = point.x / 2;
+        pdate.addRule(RelativeLayout.BELOW, loc.getId());
+        date.setLayoutParams(pdate);
+
         TextView time = new TextView(this.getActivity());
         time.setTag("time");
         time.setId(View.generateViewId());
-        time.setText("time"); // Delete later
         rl.addView(time);
         RelativeLayout.LayoutParams ptime = (RelativeLayout.LayoutParams) time.getLayoutParams();
         ptime.leftMargin = point.x / 2;
-        ptime.addRule(RelativeLayout.BELOW, loc.getId());
+        ptime.addRule(RelativeLayout.BELOW, date.getId());
         time.setLayoutParams(ptime);
 
         return rl;

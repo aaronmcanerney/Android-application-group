@@ -31,7 +31,7 @@ public class TimePickerFragment extends DialogFragment
         Toast.makeText(getActivity(), date, Toast.LENGTH_LONG).show();
 
         UserCreateEvent activity = (UserCreateEvent) getActivity();
-        activity.event.setDay(Integer.toString(hourOfDay));
-        activity.event.setMinute(Integer.toString(minute));
+        //activity.event.setHour(hourOfDay);
+        //activity.event.setMinute(Integer.toString(minute));
     }
 }
