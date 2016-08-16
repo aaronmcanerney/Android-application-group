@@ -28,7 +28,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Connections"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityFeed1"
+        <activity android:name=".NeedsToBeDeleted"
             android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"/>

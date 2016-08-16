@@ -1,10 +1,8 @@
 package com.example.aaron.fragmenttest;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -28,6 +26,9 @@ import java.util.Calendar;
 
 public class UserPickDateAndTime extends Fragment {
     TextView display;
+    String date;
+    String time;
+    String at;
     String displayedDate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,7 +98,7 @@ public class UserPickDateAndTime extends Fragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Toast.makeText(getActivity(), month + "/" + day + "/" + year, Toast.LENGTH_LONG).show();
-                        display.setText(Utilities.formatDate(year, month, day));
+                        display.setText(Utilities.formatDate(year, month, day) + at + time);
 
                         // Set event data (firebase)
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
@@ -135,7 +136,7 @@ public class UserPickDateAndTime extends Fragment {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
-                        display.setText(Utilities.formatTime(selectedHour, selectedMinute));
+                        display.setText( date + at + Utilities.formatTime(selectedHour, selectedMinute));
 
                         // Set event data (firebase)
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
@@ -158,9 +159,9 @@ public class UserPickDateAndTime extends Fragment {
         backgroundParams.addRule(RelativeLayout.BELOW, timeDateButtons.getId());
         backgroundParams.leftMargin = p.x / 32;
 
-        String date = Utilities.formatDate(year, month, day);
-        String at = " @ ";
-        String time = Utilities.formatTime(hour, minute);
+        date = Utilities.formatDate(year, month, day);
+         at = " @ ";
+         time = Utilities.formatTime(hour, minute);
 
 
 
