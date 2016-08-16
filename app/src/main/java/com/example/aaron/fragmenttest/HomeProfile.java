@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Display;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.NoSuchElementException;
@@ -70,13 +72,14 @@ public class HomeProfile extends Fragment {
         ((RelativeLayout.LayoutParams) profileContent.getLayoutParams()).leftMargin = 20;
         ((RelativeLayout.LayoutParams) profileContent.getLayoutParams()).rightMargin = 20;
 
-
+        FirebaseUser user = activity.getCurrentUser();
+        Uri profilePictureUri = user.getPhotoUrl();
         ImageView profilePicture = new ImageView(getActivity());
         profilePicture.setId(View.generateViewId());
         profileContent.addView(profilePicture);
         scaleImage(profilePicture, p, p.y / 4);
         profilePicture.setId(View.generateViewId());
-        Picasso.with(activity).load(activity.profileIMG).transform(new CircleTransform()).into(profilePicture);
+        Picasso.with(activity).load(profilePictureUri).transform(new CircleTransform()).into(profilePicture);
         RelativeLayout.LayoutParams picture = (RelativeLayout.LayoutParams) profilePicture.getLayoutParams();
         picture.addRule(RelativeLayout.CENTER_IN_PARENT);
         picture.addRule(RelativeLayout.ALIGN_PARENT_LEFT);

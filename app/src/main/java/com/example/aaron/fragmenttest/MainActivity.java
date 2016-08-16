@@ -33,114 +33,19 @@ import com.google.firebase.storage.StorageReference;
 // Firebase imports
 
 public class MainActivity extends FragmentActivity {
-    Uri profileIMG;
     private static final int REQUIRED_GOOGLE_PLAY_SERVICES_VERSION = 9256000;
-    private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
-    private static final long MAX_FILE_SIZE_MB = 1024 * 1024 * 10; //
-
-    private boolean authenticated;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    public FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private FirebaseStorage mFileStorage;
-
-    public Bitmap profilePicture;
-    public String displayName;
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Authenticate with a generic user
-        mAuth.signInWithEmailAndPassword("admin@gmail.com", "password")
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (! task.isSuccessful()) {
-                            alert("Firebase", "ERROR: Invalid username or password!");
-                            return;
-                        }
-
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user == null) return;
-
-                        // Set connections (users who aren't you)
-                        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                for (DataSnapshot child: snapshot.getChildren()) {
-                                    String connectionId = child.getKey();
-                                    addConnection(connectionId);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-                        // Get display name (if it exists)
-                        String name = user.getDisplayName();
-                        if (name == null || name.length() == 0) {
-                            // Set display name
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName("Administrator")
-                                    .setPhotoUri(Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5"))
-                                    .build();
-
-                            user.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                alert("Firebase", "User profile updated.");
-                                            }
-                                        }
-                                    });
-                        }
-                        displayName = name;
-
-                        // Create event
-                        String uid = user.getUid();
-                        /*Event e = new Event(uid);
-                        e.addConnection("Darth Vader");
-                        e.addConnection("Luke Skywalker");
-                        e.addConnection("Han Solo");
-                        e.push();*/
-
-                        // Set profile picture
-                        profileIMG = Uri.parse("https://scontent.fsnc1-1.fna.fbcdn.net/v/t1.0-9/13332832_10205404552187061_2395478814231725043_n.jpg?oh=0a394a19309cc0cb7ab3c0cf4f720e8f&oe=57EA48B5");
-                        mFileStorage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
-                        storageRef.child("profile-pictures/" + uid + ".jpg").getBytes(MAX_FILE_SIZE_MB)
-                                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        // Save profile picture
-                                        profilePicture = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                                        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-                                        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                alert("Firebase", "Failed to download profile picture!");
-                            }
-                        });
-                    }
-                });
+        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
     }
 
-    public void addConnection(String connectionId) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) return;
-        String uid = user.getUid();
-        if (uid.equals(connectionId)) return;
-        mDatabase.child("connections/" + uid + "/" + connectionId).setValue("");
+    public FirebaseUser getCurrentUser() {
+        return mAuth.getCurrentUser();
     }
 
     /*public void signIn(View view) {

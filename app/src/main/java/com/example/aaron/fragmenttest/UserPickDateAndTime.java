@@ -88,7 +88,6 @@ public class UserPickDateAndTime extends Fragment {
             @Override
             public void onClick(View v)
             {
-                //pickDate(v);
                 final Calendar c = Calendar.getInstance();
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
