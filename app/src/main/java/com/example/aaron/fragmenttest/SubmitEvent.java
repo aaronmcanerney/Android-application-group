@@ -1,10 +1,13 @@
 package com.example.aaron.fragmenttest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class SubmitEvent extends Fragment {
@@ -111,6 +115,17 @@ public class SubmitEvent extends Fragment {
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         nextParams.height = p.y/10;
         nextParams.width = p.x/4;
+        next.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                SubmitEvent();
+
+                Toast.makeText(getActivity(), "Hello you attempted to submit an event", Toast.LENGTH_LONG).show();
+            }
+        });
 
         super.onStart();
     }
@@ -128,5 +143,22 @@ public class SubmitEvent extends Fragment {
             point.y = display.getHeight();
         }
         return point;
+    }
+
+
+    public void SubmitEvent(){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = manager.beginTransaction();
+        for(int i = 0; i < 4; i++) {
+            manager.popBackStack();
+        }
+        //add firebase transaction here to complete event submission
+        UserCreateEvent activity = (UserCreateEvent) getActivity();
+        activity.event.push();
+
+        Intent intent  =  new Intent(getActivity().getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+        //may need to call finish one more time here
     }
 }

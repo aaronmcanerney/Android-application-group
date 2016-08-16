@@ -231,8 +231,7 @@ public class MainActivity extends FragmentActivity {
                     return MyCalendar.newInstance("ThirdFragment, Instance 1", "Extra string");
 
                 default:
-                    //return HomeProfile.newInstance("ThirdFragment, Default");
-                    return null;
+                    return HomeProfile.newInstance("ThirdFragment, Default");
             }
         }
 

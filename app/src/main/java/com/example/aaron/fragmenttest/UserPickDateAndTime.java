@@ -1,5 +1,6 @@
 package com.example.aaron.fragmenttest;
 
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -44,6 +45,14 @@ public class UserPickDateAndTime extends Fragment {
     }
     public void onStart(){
 
+
+        Calendar intitialTime = Calendar.getInstance();
+        int day = intitialTime.get(Calendar.DAY_OF_MONTH);
+        int month = intitialTime.get(Calendar.MONTH);
+        int year = intitialTime.get(Calendar.YEAR);
+        int hour = intitialTime.get(Calendar.HOUR_OF_DAY);
+        int minute = intitialTime.get(Calendar.MINUTE);
+
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
 
@@ -72,6 +81,8 @@ public class UserPickDateAndTime extends Fragment {
         dateSelectParams.leftMargin = p.x / 32;
         dateSelectParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         dateSelectParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+        DatePickerDialog mDatePicker;
         dateSelect.setOnClickListener(new View.OnClickListener()
 
         {
@@ -81,6 +92,7 @@ public class UserPickDateAndTime extends Fragment {
                 pickDate(v);
             }
         });
+
 
         Button timeSelect = new Button(getActivity());
         timeDateButtons.addView(timeSelect);
@@ -142,12 +154,7 @@ public class UserPickDateAndTime extends Fragment {
 
         String[] months = new String[]{"January" , "February", "March", "April", "May", "June",
         "July", "August", "Semptember", "October", "November", "December"};
-        Calendar intitialTime = Calendar.getInstance();
-        int day = intitialTime.get(Calendar.DAY_OF_MONTH);
-        int month = intitialTime.get(Calendar.MONTH);
-        int year = intitialTime.get(Calendar.YEAR);
-        int hour = intitialTime.get(Calendar.HOUR_OF_DAY);
-        int minute = intitialTime.get(Calendar.MINUTE);
+
         String temp = " pm";
         if(hour > 12){
             hour -= 12;
