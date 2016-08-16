@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class SubmitEvent extends Fragment {
@@ -111,6 +112,14 @@ public class SubmitEvent extends Fragment {
         nextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         nextParams.height = p.y/10;
         nextParams.width = p.x/4;
+        next.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(getActivity(), "Hello you attempted to submit an event", Toast.LENGTH_LONG).show();
+            }
+        });
 
         super.onStart();
     }
