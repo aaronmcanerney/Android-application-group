@@ -23,7 +23,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 
-public class UserPickDate extends Fragment {
+public class UserPickDateAndTime extends Fragment {
     TextView display;
     String displayedDate;
     @Override
@@ -32,9 +32,9 @@ public class UserPickDate extends Fragment {
                 , container, false);
         return v;
     }
-    public static UserPickDate newInstance(String text) {
+    public static UserPickDateAndTime newInstance(String text) {
 
-        UserPickDate f = new UserPickDate();
+        UserPickDateAndTime f = new UserPickDateAndTime();
         Bundle b = new Bundle();
         b.putString("msg", text);
 
@@ -72,15 +72,13 @@ public class UserPickDate extends Fragment {
         dateSelectParams.leftMargin = p.x / 32;
         dateSelectParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         dateSelectParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-
         dateSelect.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick(View v)
             {
-                onButtonClicked(v);
+                pickDate(v);
             }
         });
 
@@ -100,6 +98,9 @@ public class UserPickDate extends Fragment {
 
             @Override
             public void onClick(View v) {
+                pickTime(v);
+                if (0 == 0) return;
+
                 // TODO Auto-generated method stub
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -200,12 +201,15 @@ public class UserPickDate extends Fragment {
         super.onStart();
     }
 
-    public void onButtonClicked(View v){
+    public void pickDate(View v){
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getActivity().getFragmentManager(),"Date Picker");
     }
 
-
+    public void pickTime(View w) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getActivity().getFragmentManager(),"Time Picker");
+    }
 
     public void toSubmitEvent(View view){
         Fragment fragment = new SubmitEvent();

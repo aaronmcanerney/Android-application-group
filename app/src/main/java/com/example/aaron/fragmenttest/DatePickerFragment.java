@@ -33,9 +33,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         Toast.makeText(getActivity(), date, Toast.LENGTH_LONG).show();
 
         UserCreateEvent activity = (UserCreateEvent) getActivity();
-        activity.event.setMonth(month);
-        activity.event.setDay(day);
-        activity.event.setYear(year);
+        activity.event.setMonth(Integer.toString(month));
+        activity.event.setDay(Integer.toString(day));
+        activity.event.setYear(Integer.toString(year));
 
         /*
         tv.setText("Date changed...");

@@ -37,7 +37,7 @@ public class SetLocationPlacePicker extends Fragment {
 
 
     public void toEventCreationTwo(View view) {
-        Fragment fragment = new UserPickDate();
+        Fragment fragment = new UserPickDateAndTime();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
     }
