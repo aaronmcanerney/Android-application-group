@@ -1,10 +1,8 @@
 package com.example.aaron.fragmenttest;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -53,6 +51,14 @@ public class UserPickDateAndTime extends Fragment {
         int hour = initialTime.get(Calendar.HOUR_OF_DAY);
         int minute = initialTime.get(Calendar.MINUTE);
 
+        // Set current time/date for event (default)
+        UserCreateEvent activity = (UserCreateEvent) getActivity();
+        activity.event.setMonth(month);
+        activity.event.setDay(day);
+        activity.event.setYear(year);
+        activity.event.setHour(hour);
+        activity.event.setMinute(minute);
+
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
 
@@ -88,19 +94,19 @@ public class UserPickDateAndTime extends Fragment {
             @Override
             public void onClick(View v)
             {
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+                UserCreateEvent activity = (UserCreateEvent) getActivity();
+                int year = activity.event.getYear();
+                int month = activity.event.getMonth();
+                int day = activity.event.getDay();
 
                 DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Toast.makeText(getActivity(), month + "/" + day + "/" + year, Toast.LENGTH_LONG).show();
-                        display.setText(Utilities.formatDate(year, month, day));
+                        UserCreateEvent activity = (UserCreateEvent) getActivity();
+                        display.setText(Utilities.formatDateAndTime(activity.event));
 
                         // Set event data (firebase)
-                        UserCreateEvent activity = (UserCreateEvent) getActivity();
                         activity.event.setMonth(month);
                         activity.event.setDay(day);
                         activity.event.setYear(year);
@@ -128,17 +134,18 @@ public class UserPickDateAndTime extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                UserCreateEvent activity = (UserCreateEvent) getActivity();
+                int hour = activity.event.getHour();
+                int minute = activity.event.getMinute();
+
                 TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
-                        display.setText(Utilities.formatTime(selectedHour, selectedMinute));
+                        UserCreateEvent activity = (UserCreateEvent) getActivity();
+                        display.setText(Utilities.formatDateAndTime(activity.event));
 
                         // Set event data (firebase)
-                        UserCreateEvent activity = (UserCreateEvent) getActivity();
                         activity.event.setHour(selectedHour);
                         activity.event.setMinute(selectedMinute);
                     }
@@ -158,18 +165,12 @@ public class UserPickDateAndTime extends Fragment {
         backgroundParams.addRule(RelativeLayout.BELOW, timeDateButtons.getId());
         backgroundParams.leftMargin = p.x / 32;
 
-        String date = Utilities.formatDate(year, month, day);
-        String at = " @ ";
-        String time = Utilities.formatTime(hour, minute);
-
-
-
         display = new TextView(getActivity());
         background.addView(display);
         display.setBackgroundResource(R.drawable.bluerounded);
         display.setTextColor(Color.WHITE);
         display.setGravity(Gravity.CENTER);
-        display.setText(date + at + time);
+        display.setText(Utilities.formatDateAndTime(activity.event));
         RelativeLayout.LayoutParams displayParams = (RelativeLayout.LayoutParams) display.getLayoutParams();
         displayParams.width = p.x * 5 /8;
         displayParams.height = p.y /5;
@@ -214,7 +215,7 @@ public class UserPickDateAndTime extends Fragment {
     }
 
     public void toSubmitEvent(View view){
-        Fragment fragment = new SubmitEvent();
+        Fragment fragment = new UserSubmitEvent();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
     }

@@ -19,16 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class SubmitEvent extends Fragment {
+public class UserSubmitEvent extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_submit_event
                 , container, false);
         return v;
     }
-    public static SubmitEvent newInstance(String text) {
+    public static UserSubmitEvent newInstance(String text) {
 
-        SubmitEvent f = new SubmitEvent();
+        UserSubmitEvent f = new UserSubmitEvent();
         Bundle b = new Bundle();
         b.putString("msg", text);
 
@@ -37,16 +37,18 @@ public class SubmitEvent extends Fragment {
         return f;
     }
     public void onStart(){
-
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
 
         RelativeLayout container = (RelativeLayout) getActivity().findViewById(R.id.submit_layout);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
+        UserCreateEvent activity = (UserCreateEvent) getActivity();
+
         TextView name = new TextView(getActivity());
         name.setBackgroundResource(R.drawable.bluerounded);
         name.setTextColor(Color.WHITE);
+        name.setText(activity.event.getName());
         container.addView(name);
         RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams) name.getLayoutParams();
         nameParams.height = p.y / 10;
@@ -59,6 +61,7 @@ public class SubmitEvent extends Fragment {
         container.addView(date);
         date.setBackgroundResource(R.drawable.bluerounded);
         date.setTextColor(Color.WHITE);
+        date.setText(Utilities.formatDateAndTime(activity.event));
         RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
         dateParams.addRule(RelativeLayout.BELOW, name.getId());
         dateParams.height = p.y / 10;
@@ -67,12 +70,11 @@ public class SubmitEvent extends Fragment {
         date.setId(View.generateViewId());
         dateParams.leftMargin = p.x/16;
 
-
-
         TextView where = new TextView(getActivity());
         container.addView(where);
         where.setBackgroundResource(R.drawable.bluerounded);
         where.setTextColor(Color.WHITE);
+        where.setText(activity.event.getPlaceName());
         RelativeLayout.LayoutParams whereParams = (RelativeLayout.LayoutParams) where.getLayoutParams();
         whereParams.addRule(RelativeLayout.BELOW, date.getId());
         whereParams.height = p.y *3 / 20;
@@ -85,6 +87,7 @@ public class SubmitEvent extends Fragment {
         container.addView(description);
         description.setBackgroundResource(R.drawable.bluerounded);
         description.setTextColor(Color.WHITE);
+        description.setText(activity.event.getDescription());
         RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) description.getLayoutParams();
         descriptionParams.addRule(RelativeLayout.BELOW, where.getId());
         descriptionParams.height = p.y * 4 / 20;

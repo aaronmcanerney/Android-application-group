@@ -14,6 +14,10 @@ public class Utilities {
         return formatDate(year.intValue(), month.intValue(), day.intValue());
     }
 
+    public static String formatDate(Event event) {
+        return formatDate(event.getYear(), event.getMonth(), event.getDay());
+    }
+
     public static String formatTime(int hour, int minute) {
         String suffix = "AM";
         if (hour > 12) {
@@ -25,5 +29,13 @@ public class Utilities {
 
     public static String formatTime(Long hour, Long minute) {
         return formatTime(hour.intValue(), minute.intValue());
+    }
+
+    public static String formatTime(Event event) {
+        return formatTime(event.getHour(), event.getMinute());
+    }
+
+    public static String formatDateAndTime(Event event) {
+        return formatDate(event) + " @ " + formatTime(event);
     }
 }

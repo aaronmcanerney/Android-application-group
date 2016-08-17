@@ -250,7 +250,7 @@ public class HomeProfile extends Fragment {
     }
 /*
     public void test(View view){
-        Fragment fragment = new SubmitEvent();
+        Fragment fragment = new UserSubmitEvent();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.photo_repository, fragment).addToBackStack(null).commit();
     }

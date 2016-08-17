@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:andriod="http://schemas.android.com/apk/res-auto"
     android:id="@+id/submit_layout"
-    tools:context="com.example.aaron.fragmenttest.SubmitEvent">
+    tools:context=".UserSubmitEvent">
 
 
 

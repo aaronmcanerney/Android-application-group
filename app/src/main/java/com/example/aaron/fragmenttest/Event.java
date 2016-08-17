@@ -37,6 +37,15 @@ public class Event {
     public void setMonth(int month) { this.month = month; }
     public void setDay(int day) { this.day = day; }
 
+    public String getPlaceName() { return placeName; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public int getHour() { return hour; }
+    public int getMinute() { return minute; }
+    public int getYear() { return year; }
+    public int getMonth() { return month; }
+    public int getDay() { return day; }
+
     public void addConnection(String connectionId) {
         connections.add(connectionId);
     }

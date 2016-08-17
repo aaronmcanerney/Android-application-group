@@ -92,7 +92,7 @@ public class PhotoRepository extends Fragment {
     }
 
     public void toPhotoGrid(View v){
-        Fragment fragment = new SubmitEvent();
+        Fragment fragment = new UserSubmitEvent();
         FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
         //ft.replace(R.id., fragment).addToBackStack(null).commit();
     }
