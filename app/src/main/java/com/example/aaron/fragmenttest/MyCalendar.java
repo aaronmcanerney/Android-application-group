@@ -2,6 +2,7 @@ package com.example.aaron.fragmenttest;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -119,6 +120,8 @@ public class MyCalendar extends Fragment {
                 nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
                 TextView textView = (TextView) event.findViewWithTag("name");
                 textView.setText(nameFormatted);
+                textView.setTextColor(Color.WHITE);
+                textView.setBackgroundResource(R.drawable.bluerounded);
 
                 // Populate description
                 String desc = (String) map.get("description");
@@ -163,9 +166,14 @@ public class MyCalendar extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
+        linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
         RelativeLayout rl = new RelativeLayout(this.getActivity());
         linearLayout.addView(rl, 0);
-        rl.getLayoutParams().height = point.y/4;
+        rl.getLayoutParams().height = point.y/8;
+        rl.getLayoutParams().width = point.x *15/16;
+        LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
+        rlParams.leftMargin = point.x / 32;
+        rl.setBackgroundResource(R.drawable.roundedlayout);
 
         // Build Calendar Image
         ImageView img = new ImageView(this.getActivity());

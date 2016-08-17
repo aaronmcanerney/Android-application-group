@@ -49,9 +49,9 @@ public class ActivityFeed extends Fragment {
             container.addView(temp);
             temp.setBackgroundResource(R.drawable.roundedlayout);
             LinearLayout.LayoutParams tempParams = (LinearLayout.LayoutParams) temp.getLayoutParams();
-            tempParams.height = p.y * 23 / 100;
+            tempParams.height = p.y * 9 / 100;
             tempParams.width = p.x * 15 / 16;
-            tempParams.topMargin = p.y * 2 / 100;
+            tempParams.topMargin = p.y * 1 / 100;
             tempParams.leftMargin = p.x / 32;
 
 
@@ -70,8 +70,8 @@ public class ActivityFeed extends Fragment {
             RelativeLayout.LayoutParams tvParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
             tvParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             tvParams.addRule(RelativeLayout.RIGHT_OF, img.getId());
-            tvParams.height = p.y * 18 / 100;
-            tvParams.width = p.x * 9 / 16;
+            tvParams.height = p.y * 4 / 100;
+            tvParams.width = p.x *11 / 16;
             tv.setBackgroundResource(R.drawable.bluerounded);
             tv.setTextColor(Color.WHITE);
             tv.setText("Aaron Mcanerney has agreed to something");

@@ -123,7 +123,7 @@ public class SubmitEvent extends Fragment {
 
                 SubmitEvent();
 
-                Toast.makeText(getActivity(), "Hello you attempted to submit an event", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Your event has been uploaded", Toast.LENGTH_LONG).show();
             }
         });
 
