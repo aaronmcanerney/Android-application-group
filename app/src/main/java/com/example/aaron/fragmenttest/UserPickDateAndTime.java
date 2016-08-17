@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 public class UserPickDateAndTime extends Fragment {
     TextView display;
-    String displayedDate;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_user_pick_date
@@ -201,17 +201,6 @@ public class UserPickDateAndTime extends Fragment {
         });
 
         super.onStart();
-    }
-
-    public void pickDate(View v){
-        //DialogFragment newFragment = new DatePickerFragment();
-        //newFragment.show(getActivity().getFragmentManager(),"Date Picker");
-    }
-
-    public void pickTime(View v) {
-        //DialogFragment newFragment = new TimePickerFragment();
-        //newFragment.
-        //newFragment.show(getActivity().getFragmentManager(),"Time Picker");
     }
 
     public void toSubmitEvent(View view){
