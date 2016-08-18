@@ -59,6 +59,11 @@ public class Splash extends Activity {
         img.getLayoutParams().height = p.y;
         img.getLayoutParams().width = p.x;
 
+        // Insert users into database
+        //mDatabase.child("users").child("eLWBEKBOkiTos0duJsnKxc2vzTC3").child("displayName").setValue("William Hairfield");
+        //mDatabase.child("users").child("tCcyN9OMXISZQwLborMQTVqqUXm1").child("displayName").setValue("Thomas Jacky");
+        //mDatabase.child("users").child("n00esV6XBKQaWeGOtPS271HYyED2").child("displayName").setValue("Administrator");
+
         Thread thread = new Thread(){
             @Override
             public void run() {
