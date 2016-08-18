@@ -40,10 +40,7 @@ import java.util.Map;
 
 public class MyCalendar extends Fragment {
     private AlphaAnimation buttonClick = new AlphaAnimation(3F, .8F);
-    private Map<String, RelativeLayout> myEvents;
-    private List<Event> eventObjects;
-    private int eventsToLoad;
-    private int eventsLoaded;
+    private Map<String, RelativeLayout> calendarEntries;
 
     public MyCalendar() {
         // Required empty public constructor
@@ -75,23 +72,21 @@ public class MyCalendar extends Fragment {
         linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
         // Load events
-        myEvents = new HashMap<>();
+        calendarEntries = new HashMap<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;
         String uid = user.getUid();
-        DatabaseReference requests = database.child("requests");
-        requests.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference requests = database.child("requests").child(uid);
+        String now = Utilities.formatSystemDateAndTimeAtCurrentMoment();
+        requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                eventsToLoad = (int) snapshot.getChildrenCount();
-                eventsLoaded = 0;
-                eventObjects = new ArrayList<>();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    String eventId = child.getKey();
-                    String status = child.getValue(String.class);
-                    RelativeLayout event = buildCalendarEvent(status);
-                    myEvents.put(eventId, event);
+                for (DataSnapshot request : snapshot.getChildren()) {
+                    String eventId = request.getKey();
+                    String status = request.child("status").getValue(String.class);
+                    RelativeLayout entry = buildCalendarEntry(status);
+                    calendarEntries.put(eventId, entry);
                     loadEvent(eventId);
                 }
             }
@@ -113,7 +108,7 @@ public class MyCalendar extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String eventId = snapshot.getKey();
-                RelativeLayout event = myEvents.get(eventId);
+                RelativeLayout event = calendarEntries.get(eventId);
                 Map<String, Object> map = new HashMap<>();
 
                 // Get all data from firebase
@@ -166,22 +161,6 @@ public class MyCalendar extends Fragment {
 
                 // What should we do with this status? Change background color?
                 // If so, we can do that in 'buildCalendarEvent'
-
-                // Make event object, so it can be sorted later
-                Event e = new Event();
-                e.setYear(year.intValue());
-                e.setMonth(month.intValue());
-                e.setDay(day.intValue());
-                e.setHour(hour.intValue());
-                e.setMinute(minute.intValue());
-                e.setId(eventId);
-                eventObjects.add(e);
-
-                // Check if all events have been loaded
-                eventsLoaded++;
-                if (eventsLoaded == eventsToLoad) {
-                    sortEventsByDate();
-                }
             }
 
             @Override
@@ -191,31 +170,17 @@ public class MyCalendar extends Fragment {
         });
     }
 
-    private void sortEventsByDate() {
-        // Sort events
-        Collections.sort(eventObjects);
-
-        // Add views to linear layout
-        LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
-        for (Event eventObject : eventObjects) {
-            Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            Point point = getDisplaySize(d);
-
-            RelativeLayout rl = myEvents.get(eventObject.getId());
-            linearLayout.addView(rl, -1); // Add to end
-
-            LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
-            rlParams.leftMargin = point.x / 32;
-            rlParams.height = point.y / 5;
-            rlParams.width = point.x * 15 / 16;
-        }
-    }
-
-    private RelativeLayout buildCalendarEvent(String eventStatus) {
+    private RelativeLayout buildCalendarEntry(String eventStatus) {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
+        LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
         RelativeLayout rl = new RelativeLayout(this.getActivity());
+        linearLayout.addView(rl, -1); // Add to end
         rl.setBackgroundResource(R.drawable.roundedlayout);
+        LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
+        rlParams.leftMargin = point.x / 32;
+        rlParams.height = point.y / 5;
+        rlParams.width = point.x * 15 / 16;
 
         // Build Calendar Image
         ImageView img = new ImageView(this.getActivity());

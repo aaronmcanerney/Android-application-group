@@ -19,7 +19,6 @@ public class Event implements Comparable<Event> {
     private int year;
     private int month;
     private int day;
-    private String id;
     private ArrayList<String> connections; // ArrayList of uid's
 
     public Event() {
@@ -43,7 +42,6 @@ public class Event implements Comparable<Event> {
     public void setYear(int year) { this.year = year; }
     public void setMonth(int month) { this.month = month; }
     public void setDay(int day) { this.day = day; }
-    public void setId(String id) { this.id = id; }
 
     public String getPlaceName() { return placeName; }
     public String getName() { return name; }
@@ -53,7 +51,6 @@ public class Event implements Comparable<Event> {
     public int getYear() { return year; }
     public int getMonth() { return month; }
     public int getDay() { return day; }
-    public String getId() { return id; }
 
     public void addConnection(String connectionId) {
         connections.add(connectionId);
@@ -77,10 +74,13 @@ public class Event implements Comparable<Event> {
         event.child("day").setValue(day);
 
         // Push requests for event
+        String time = Utilities.formatSystemDateAndTime(this);
         DatabaseReference requests = database.child("requests");
         for (String connectionId : connections) {
             String response = (connectionId.equals(creatorId)) ? "accepted" : "pending";
-            requests.child(connectionId).child(eventId).setValue(response);
+            DatabaseReference request = requests.child(connectionId).child(eventId);
+            request.child("status").setValue(response);
+            request.child("time").setValue(time);
         }
     }
 
