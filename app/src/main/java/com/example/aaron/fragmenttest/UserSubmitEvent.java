@@ -152,7 +152,7 @@ public class UserSubmitEvent extends Fragment {
     public void SubmitEvent(){
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 5; i++) {
             manager.popBackStack();
         }
         //add firebase transaction here to complete event submission

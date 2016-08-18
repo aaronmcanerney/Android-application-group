@@ -1,6 +1,5 @@
 package com.example.aaron.fragmenttest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -12,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -36,22 +35,31 @@ import java.util.NoSuchElementException;
 public class Connections extends AppCompatActivity {
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
-    public static final int colNum = 3;
+    public static final int colNum = 4;
+    EditText search;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connections);
 
+
+
         // Set connections (users who aren't you)
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;
         String uid = user.getUid();
-        final Activity activity = new Connections();
-        final RelativeLayout container = new RelativeLayout(this);
+
+
         Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         final Point p = getDisplaySize(d);
+
+
+
+
         mDatabase.child("connections/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
             int count = 0;
 
@@ -91,16 +99,38 @@ public class Connections extends AppCompatActivity {
     }
 
     public void addImageButton(Uri profilePictureURI) {
+
+
+        Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Point p = getDisplaySize(d);
+        int x = p.x * 30 / 100;
+        //int y = point.y * 15 / 100;
+        int xMargin = p.x * 3 / 100;
+        int yMargin = p.y * 3 / 100;
+
+
         GridLayout gridLayout = (GridLayout) this.findViewById(R.id.connections_container);
         gridLayout.setColumnCount(colNum);
-        ImageButton button = new ImageButton(this);
-        //button.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        button.setClickable(true);
-        gridLayout.addView(button);
-        Point p = scaleImage(button);
-       // Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.y * 2 / 7).into(button);
-        Picasso.with(this).load(profilePictureURI).resize(p.x/3 - 15, p.x/3 - 15).transform(new CircleTransform()).into(button);
-        button.getBackground().setAlpha(0);
+        //RelativeLayout temp = new RelativeLayout(this);
+        RelativeLayout temp = new RelativeLayout(this);
+        temp.setBackgroundResource(R.drawable.roundedlayout);
+        gridLayout.addView(temp);
+        GridLayout.LayoutParams tempParams = (GridLayout.LayoutParams) temp.getLayoutParams();
+        tempParams.width = x;
+        tempParams.height = x;
+        tempParams.leftMargin = xMargin;
+        tempParams.topMargin = yMargin;
+        //temp.setBackgroundResource(R.drawable.bluerounded);
+        ImageView button = new ImageView(this);
+
+        //button.setClickable(true);
+        temp.addView(button);
+       // Point p = scaleImage(button);
+        Picasso.with(this).load(profilePictureURI).resize(p.x/4, p.y * 2 / 7).into(button);
+        Picasso.with(this).load(profilePictureURI).resize(p.x/4 - 15, p.x/4 - 15).transform(new CircleTransform()).into(button);
+        //button.getBackground().setAlpha(0);
+        RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
+        buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -127,7 +157,7 @@ public class Connections extends AppCompatActivity {
     private Point scaleImage(ImageView view) throws NoSuchElementException {
         Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
-        GridLayout.LayoutParams params = (GridLayout.LayoutParams) view.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
         params.setMargins(10, 10, 5, 5);
         params.width = p.x/3 - 15;
         params.height = p.y * 2 / 7 ;
@@ -144,5 +174,6 @@ public class Connections extends AppCompatActivity {
         }
         return point;
     }
+
 
 }

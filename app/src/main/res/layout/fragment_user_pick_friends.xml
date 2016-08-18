@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#d6dbe1"
-    android:id="@+id/connections"
+    android:id="@+id/connections_fragment"
 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -18,8 +18,16 @@
             android:background="#d6dbe1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/connections_container"></GridLayout>
+            android:id="@+id/fragment_connections_container"></GridLayout>
 
     </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/to_user_submit_event"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
 
