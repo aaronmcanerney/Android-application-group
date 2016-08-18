@@ -1,11 +1,13 @@
 package com.example.aaron.fragmenttest;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class Event {
+public class Event implements Comparable<Event> {
 
     private String creatorId;
     private String placeName;
@@ -17,7 +19,12 @@ public class Event {
     private int year;
     private int month;
     private int day;
+    private String id;
     private ArrayList<String> connections; // ArrayList of uid's
+
+    public Event() {
+
+    }
 
     public Event(String creatorId) {
         this.creatorId = creatorId;
@@ -36,6 +43,7 @@ public class Event {
     public void setYear(int year) { this.year = year; }
     public void setMonth(int month) { this.month = month; }
     public void setDay(int day) { this.day = day; }
+    public void setId(String id) { this.id = id; }
 
     public String getPlaceName() { return placeName; }
     public String getName() { return name; }
@@ -45,6 +53,7 @@ public class Event {
     public int getYear() { return year; }
     public int getMonth() { return month; }
     public int getDay() { return day; }
+    public String getId() { return id; }
 
     public void addConnection(String connectionId) {
         connections.add(connectionId);
@@ -75,4 +84,23 @@ public class Event {
         }
     }
 
+    @Override
+    public int compareTo(@NonNull Event event) {
+        if (year < event.getYear()) return -1;
+        if (year > event.getYear()) return 1;
+
+        if (month < event.getMonth()) return -1;
+        if (month > event.getMonth()) return 1;
+
+        if (day < event.getDay()) return -1;
+        if (day > event.getDay()) return 1;
+
+        if (hour < event.getHour()) return -1;
+        if (hour > event.getHour()) return 1;
+
+        if (minute < event.getMinute()) return -1;
+        if (minute > event.getMinute()) return 1;
+
+        return 0;
+    }
 }

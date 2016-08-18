@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-
 public class UserPickDateAndTime extends Fragment {
     TextView display;
 
@@ -104,12 +103,13 @@ public class UserPickDateAndTime extends Fragment {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Toast.makeText(getActivity(), month + "/" + day + "/" + year, Toast.LENGTH_LONG).show();
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
-                        display.setText(Utilities.formatDateAndTime(activity.event));
 
                         // Set event data (firebase)
                         activity.event.setMonth(month);
                         activity.event.setDay(day);
                         activity.event.setYear(year);
+
+                        display.setText(Utilities.formatDateAndTime(activity.event));
                     }
                 }, year, month, day);
                 datePicker.setTitle("Select Time");
@@ -143,11 +143,12 @@ public class UserPickDateAndTime extends Fragment {
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         Toast.makeText(getActivity(), selectedHour + ":" + selectedMinute, Toast.LENGTH_LONG).show();
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
-                        display.setText(Utilities.formatDateAndTime(activity.event));
 
                         // Set event data (firebase)
                         activity.event.setHour(selectedHour);
                         activity.event.setMinute(selectedMinute);
+
+                        display.setText(Utilities.formatDateAndTime(activity.event));
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
