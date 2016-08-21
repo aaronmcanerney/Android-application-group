@@ -28,7 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class UserSetEventInfo extends Fragment {
 
-
+    EditText editDescription;
+    EditText editName;
     RelativeLayout container;
 
     @Override
@@ -81,8 +82,10 @@ public class UserSetEventInfo extends Fragment {
        // need top margin
         eventName.setId(View.generateViewId());
 
-        EditText editName = new EditText(getActivity());
+        editName = new EditText(getActivity());
         container.addView(editName);
+        editName.setGravity(Gravity.LEFT);
+        editName.setGravity(Gravity.TOP);
         RelativeLayout.LayoutParams editNameParams = (RelativeLayout.LayoutParams) editName.getLayoutParams();
         editNameParams.height = p.y/6;
         editNameParams.width = p.x * 15/16;
@@ -94,6 +97,7 @@ public class UserSetEventInfo extends Fragment {
         editName.setId(View.generateViewId());
         editNameParams.topMargin = p.y/32;
         editName.setTag("name");
+        editName.setHint("Event Name");
 
 
 
@@ -116,8 +120,10 @@ public class UserSetEventInfo extends Fragment {
        // need top margin
         description.setId(View.generateViewId());
 
-        EditText editDescription = new EditText(getActivity());
+        editDescription = new EditText(getActivity());
         container.addView(editDescription);
+        editDescription.setGravity(Gravity.LEFT);
+        editDescription.setGravity(Gravity.TOP);
         RelativeLayout.LayoutParams editDescriptionParams = (RelativeLayout.LayoutParams) editDescription.getLayoutParams();
         editDescriptionParams.height = p.y/3;
         editDescriptionParams.width = p.x * 15/16;
@@ -129,6 +135,7 @@ public class UserSetEventInfo extends Fragment {
         editDescription.setBackgroundResource(R.drawable.roundedlayout);
         editDescription.setId(View.generateViewId());
         editDescription.setTag("desc");
+        editDescription.setHint("Event Description");
 
         Button next = new Button(getActivity());
         container.addView(next);
@@ -156,15 +163,42 @@ public class UserSetEventInfo extends Fragment {
         super.onStart();
     }
     public void toEventCreationTwo(View view){
-        Fragment fragment = new UserPickDateAndTime();
-        FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
+
+
+
 
         // Update event to add name and description
         TextView nameView = (TextView) container.findViewWithTag("name");
         TextView descView = (TextView) container.findViewWithTag("desc");
         String name = nameView.getText().toString();
         String desc = descView.getText().toString();
+
+        if(name.length() > 0){
+            editName.setBackgroundResource(R.drawable.roundedlayout);
+        }
+        if(desc.length() > 0)
+            editDescription.setBackgroundResource(R.drawable.roundedlayout);
+
+        if(name.length() <=0 && desc.length() <=0){
+            editName.setBackgroundResource(R.drawable.error);
+            editDescription.setBackgroundResource(R.drawable.error);
+            return;
+        }
+
+        if(name.length() <= 0){
+            editName.setBackgroundResource(R.drawable.error);
+
+            return;
+        }
+
+        if(desc.length() <= 0){
+            editDescription.setBackgroundResource(R.drawable.error);
+
+            return;
+        }
+
+
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
@@ -174,6 +208,12 @@ public class UserSetEventInfo extends Fragment {
         UserCreateEvent activity = (UserCreateEvent) getActivity();
         activity.event.setName(name);
         activity.event.setDescription(desc);
+
+
+
+        Fragment fragment = new UserPickDateAndTime();
+        FragmentTransaction ft = this.getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.event_container, fragment).addToBackStack(null).commit();
     }
     private static Point getDisplaySize(final Display display) {
         final Point point = new Point();

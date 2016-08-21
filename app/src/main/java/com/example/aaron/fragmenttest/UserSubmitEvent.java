@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,58 +44,76 @@ public class UserSubmitEvent extends Fragment {
         RelativeLayout container = (RelativeLayout) getActivity().findViewById(R.id.submit_layout);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
+        RelativeLayout backdrop = new RelativeLayout(getActivity());
+        container.addView(backdrop);
+        backdrop.setBackgroundResource(R.drawable.roundedlayout);
+
+
+        RelativeLayout.LayoutParams backdropParams = (RelativeLayout.LayoutParams) backdrop.getLayoutParams();
+        backdropParams.width = p.x * 15/16;
+        backdropParams.leftMargin = p.x / 32;
+        backdropParams.topMargin = p.x / 32;
+        backdropParams.height = backdropParams.WRAP_CONTENT;
+
+
         UserCreateEvent activity = (UserCreateEvent) getActivity();
 
         TextView name = new TextView(getActivity());
         name.setBackgroundResource(R.drawable.bluerounded);
         name.setTextColor(Color.WHITE);
         name.setText(activity.event.getName());
-        container.addView(name);
+        backdrop.addView(name);
         RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams) name.getLayoutParams();
-        nameParams.height = p.y / 10;
+        nameParams.height = nameParams.WRAP_CONTENT;
         nameParams.width = p.x *7/8;
         nameParams.topMargin = p.x/20;
         name.setId(View.generateViewId());
-        nameParams.leftMargin = p.x/16;
+        nameParams.leftMargin = p.x/32;
+        name.setGravity(Gravity.CENTER);
 
         TextView date = new TextView(getActivity());
-        container.addView(date);
+        backdrop.addView(date);
         date.setBackgroundResource(R.drawable.bluerounded);
         date.setTextColor(Color.WHITE);
         date.setText(Utilities.formatDateAndTime(activity.event));
         RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
         dateParams.addRule(RelativeLayout.BELOW, name.getId());
-        dateParams.height = p.y / 10;
+        dateParams.height = dateParams.WRAP_CONTENT;
         dateParams.width = p.x *7/8;
         dateParams.topMargin = p.x/20;
         date.setId(View.generateViewId());
-        dateParams.leftMargin = p.x/16;
+        dateParams.leftMargin = p.x/32;
+        date.setGravity(Gravity.CENTER);
 
         TextView where = new TextView(getActivity());
-        container.addView(where);
+        backdrop.addView(where);
         where.setBackgroundResource(R.drawable.bluerounded);
         where.setTextColor(Color.WHITE);
         where.setText(activity.event.getPlaceName());
         RelativeLayout.LayoutParams whereParams = (RelativeLayout.LayoutParams) where.getLayoutParams();
         whereParams.addRule(RelativeLayout.BELOW, date.getId());
-        whereParams.height = p.y *3 / 20;
+        whereParams.height = whereParams.WRAP_CONTENT;
         whereParams.width = p.x *7/8;
         whereParams.topMargin = p.x/20;
         where.setId(View.generateViewId());
-        whereParams.leftMargin = p.x/16;
+        whereParams.leftMargin = p.x/32;
+        where.setGravity(Gravity.CENTER);
+
 
         TextView description = new TextView(getActivity());
-        container.addView(description);
+        backdrop.addView(description);
         description.setBackgroundResource(R.drawable.bluerounded);
         description.setTextColor(Color.WHITE);
         description.setText(activity.event.getDescription());
         RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) description.getLayoutParams();
         descriptionParams.addRule(RelativeLayout.BELOW, where.getId());
-        descriptionParams.height = p.y * 4 / 20;
+        descriptionParams.height = descriptionParams.WRAP_CONTENT;
         descriptionParams.width = p.x *7/8;
         descriptionParams.topMargin = p.x/20;
         description.setId(View.generateViewId());
-        descriptionParams.leftMargin = p.x/16;
+        descriptionParams.leftMargin = p.x/32;
+        description.setGravity(Gravity.CENTER);
+
 
         Button friends = new Button(getActivity());
         container.addView(friends);
@@ -102,11 +121,11 @@ public class UserSubmitEvent extends Fragment {
         friends.setTextColor(Color.WHITE);
         friends.setText("Friends");
         RelativeLayout.LayoutParams friendsParams = (RelativeLayout.LayoutParams) friends.getLayoutParams();
-        friendsParams.height = p.y * 3 /20;
+        friendsParams.height = friendsParams.WRAP_CONTENT;
         friendsParams.width = p.x * 7 / 16 ;
         friendsParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, description.getId());
         friendsParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        friendsParams.leftMargin = p.x/16;
+        friendsParams.leftMargin = p.x/32;
 
         Button next = new Button(getActivity());
         container.addView(next);

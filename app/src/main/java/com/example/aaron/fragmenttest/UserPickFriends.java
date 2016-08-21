@@ -39,6 +39,7 @@ import java.util.NoSuchElementException;
 public class UserPickFriends extends Fragment{
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     public static final int colNum = 4;
+    GridLayout gridLayout;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +76,9 @@ public class UserPickFriends extends Fragment{
 
             final Display d = ((WindowManager) this.getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             final Point p = getDisplaySize(d);
-
+            gridLayout = (GridLayout) this.getActivity().findViewById(R.id.fragment_connections_container);
+            gridLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
+            gridLayout.setColumnCount(colNum);
 
 
 
@@ -134,8 +137,7 @@ public class UserPickFriends extends Fragment{
         int yMargin = p.y * 3 / 100;
 
 
-        GridLayout gridLayout = (GridLayout) this.getActivity().findViewById(R.id.fragment_connections_container);
-        gridLayout.setColumnCount(colNum);
+
         //RelativeLayout temp = new RelativeLayout(this);
         RelativeLayout temp = new RelativeLayout(this.getActivity());
         temp.setBackgroundResource(R.drawable.roundedlayout);

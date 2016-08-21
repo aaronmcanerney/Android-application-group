@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +44,13 @@ public class ActivityFeed extends Fragment {
         LinearLayout container =  (LinearLayout) getActivity().findViewById(R.id.activity_feed_layout);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        for(int i = 0; i < 10; i ++) {
+        for(int i = 0; i < 20; i ++) {
             //fill in data here profile picture and action taken
             RelativeLayout temp = new RelativeLayout(getActivity());
             container.addView(temp);
             temp.setBackgroundResource(R.drawable.roundedlayout);
             LinearLayout.LayoutParams tempParams = (LinearLayout.LayoutParams) temp.getLayoutParams();
-            tempParams.height = p.y * 9 / 100;
+            tempParams.height = tempParams.WRAP_CONTENT;
             tempParams.width = p.x * 15 / 16;
             tempParams.topMargin = p.y * 1 / 100;
             tempParams.leftMargin = p.x / 32;
@@ -70,11 +71,19 @@ public class ActivityFeed extends Fragment {
             RelativeLayout.LayoutParams tvParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
             tvParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             tvParams.addRule(RelativeLayout.RIGHT_OF, img.getId());
-            tvParams.height = p.y * 4 / 100;
+            tv.setGravity(Gravity.CENTER);
+            tvParams.height = tvParams.WRAP_CONTENT;
             tvParams.width = p.x *11 / 16;
             tv.setBackgroundResource(R.drawable.bluerounded);
             tv.setTextColor(Color.WHITE);
             tv.setText("Aaron Mcanerney has agreed to something");
+
+            temp.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    ViewGroup parentView = (ViewGroup) view.getParent();
+                    parentView.removeView(view);
+                }
+            });
 
         }
 

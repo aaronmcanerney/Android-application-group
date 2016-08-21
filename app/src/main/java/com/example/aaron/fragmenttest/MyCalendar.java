@@ -31,10 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -179,7 +176,8 @@ public class MyCalendar extends Fragment {
         rl.setBackgroundResource(R.drawable.roundedlayout);
         LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
         rlParams.leftMargin = point.x / 32;
-        rlParams.height = point.y / 5;
+        rlParams.topMargin = point.x/32;
+        rlParams.height = rlParams.WRAP_CONTENT;
         rlParams.width = point.x * 15 / 16;
 
         // Build Calendar Image
