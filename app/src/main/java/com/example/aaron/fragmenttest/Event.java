@@ -55,6 +55,8 @@ public class Event implements Comparable<Event> {
     public void addConnection(String connectionId) {
         connections.add(connectionId);
     }
+    public boolean hasConnection(String connectionId) { return connections.contains(connectionId); }
+    public void removeConnection(String connectionId) { connections.remove(connectionId); }
 
     public void push() {
         // Create event
@@ -76,11 +78,15 @@ public class Event implements Comparable<Event> {
         // Push requests for event
         String time = Utilities.formatSystemDateAndTime(this);
         DatabaseReference requests = database.child("requests");
+        DatabaseReference notifications = database.child("notifications");
         for (String connectionId : connections) {
             String response = (connectionId.equals(creatorId)) ? "accepted" : "pending";
             DatabaseReference request = requests.child(connectionId).child(eventId);
             request.child("status").setValue(response);
             request.child("time").setValue(time);
+
+            DatabaseReference notification = notifications.child(connectionId).push();
+            notification.child("text").setValue("This is a test notification!");
         }
     }
 

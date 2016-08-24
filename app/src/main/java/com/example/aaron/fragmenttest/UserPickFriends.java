@@ -88,12 +88,8 @@ public class UserPickFriends extends Fragment{
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     for (DataSnapshot child : snapshot.getChildren()) {
-
-
                         String connectionId = child.getKey();
                         loadConnectionPicture(connectionId, d);
-
-
                     }
                 }
 
@@ -110,13 +106,13 @@ public class UserPickFriends extends Fragment{
 
 
 
-    public void loadConnectionPicture(String connectionId, final Display d) {
+    public void loadConnectionPicture(final String connectionId, final Display d) {
         FirebaseStorage mFileStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
         storageRef.child("profile-pictures/" + connectionId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                addImageButton(uri ,d);
+                addImageButton(connectionId, uri, d);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -126,16 +122,12 @@ public class UserPickFriends extends Fragment{
         });
     }
 
-    public void addImageButton(Uri profilePictureURI, Display d) {
-
-
-
+    public void addImageButton(String connectionId, Uri profilePictureURI, Display d) {
         Point p = getDisplaySize(d);
         int x = p.x * 30 / 100;
         //int y = point.y * 15 / 100;
         int xMargin = p.x * 3 / 100;
         int yMargin = p.y * 3 / 100;
-
 
 
         //RelativeLayout temp = new RelativeLayout(this);
@@ -149,6 +141,7 @@ public class UserPickFriends extends Fragment{
         tempParams.topMargin = yMargin;
         //temp.setBackgroundResource(R.drawable.bluerounded);
         ImageView button = new ImageView(this.getActivity());
+        button.setTag(connectionId);
 
         //button.setClickable(true);
         temp.addView(button);
@@ -163,8 +156,15 @@ public class UserPickFriends extends Fragment{
             @Override
             public void onClick(View v)
             {
-               // Toast.makeText(getActivity(), "Hello you clicked your friend", Toast.LENGTH_LONG).show();
-                v.setBackgroundResource(R.drawable.greenborder);
+                String connectionId = (String) v.getTag();
+                UserCreateEvent activity = (UserCreateEvent) getActivity();
+                if (activity.event.hasConnection(connectionId)) {
+                    v.setBackgroundResource(0);
+                    activity.event.removeConnection(connectionId);
+                } else {
+                    v.setBackgroundResource(R.drawable.greenborder);
+                    activity.event.addConnection(connectionId);
+                }
             }
         });
         Button next  = (Button) this.getActivity().findViewById(R.id.to_user_submit_event);
