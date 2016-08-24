@@ -102,6 +102,15 @@ public class HomeProfile extends Fragment {
         userInfo.setBackgroundResource(R.drawable.bluerounded);
 
 
+        userInfo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getActivity(), "long ferkin click", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+
         TextView tagContainer = new TextView(getActivity());
         container.addView(tagContainer);
         tagContainer.getLayoutParams().height = p.y / 5;

@@ -99,6 +99,18 @@ public class UserPickFriends extends Fragment{
                 }
             });
 
+            Button next  = (Button) this.getActivity().findViewById(R.id.to_user_submit_event);
+            next.setBackgroundResource(R.drawable.bluerounded);
+            next.setTextColor(Color.WHITE);
+            next.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    toSubmitEvent(v);
+                }
+            });
+
 
             super.onStart();
         }
@@ -167,17 +179,7 @@ public class UserPickFriends extends Fragment{
                 }
             }
         });
-        Button next  = (Button) this.getActivity().findViewById(R.id.to_user_submit_event);
-        next.setBackgroundResource(R.drawable.bluerounded);
-        next.setTextColor(Color.WHITE);
-        next.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                toSubmitEvent(v);
-            }
-        });
+
     }
 
     public void alert(String title, String message) {

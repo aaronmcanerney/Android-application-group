@@ -5,16 +5,15 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class ActivityFeed extends Fragment {
@@ -41,8 +40,43 @@ public class ActivityFeed extends Fragment {
 
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
-        LinearLayout container =  (LinearLayout) getActivity().findViewById(R.id.activity_feed_layout);
+        ListView container =  (ListView) getActivity().findViewById(R.id.list);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+        SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh);
+        swipe.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Toast.makeText(getActivity(), "refreshing", Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+
+
+        /*Need an object to store activity feed data, will do the same thing with
+        the calendar stuff too, this may also be a good way to do friends, as it will endable for easy searching
+
+        Create an object that holds the uri for the friends profile pic and whatever data we are trying to portay and then
+        set it via the   adapter
+        */
+
+
+
+        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+                "Linux", "OS/2" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                R.layout.activity_feed_row, R.id.label, values);
+
+
+
+
+        container.setAdapter(adapter);
+
+
+        /*
 
         for(int i = 0; i < 20; i ++) {
             //fill in data here profile picture and action taken
@@ -89,10 +123,12 @@ public class ActivityFeed extends Fragment {
 
 
 
-
+        */
 
         super.onStart();
     }
+
+
 
 
 
