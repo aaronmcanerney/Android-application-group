@@ -2,6 +2,7 @@ package com.example.aaron.fragmenttest;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -21,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,12 +50,12 @@ public class MyCalendar extends Fragment {
         return fragment;
     }
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
+*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -176,7 +176,7 @@ public class MyCalendar extends Fragment {
         rl.setBackgroundResource(R.drawable.roundedlayout);
         LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
         rlParams.leftMargin = point.x / 32;
-        rlParams.topMargin = point.x/32;
+        rlParams.topMargin = point.x/64;
         rlParams.height = rlParams.WRAP_CONTENT;
         rlParams.width = point.x * 15 / 16;
 
@@ -185,12 +185,18 @@ public class MyCalendar extends Fragment {
         img.setImageResource(R.mipmap.calendar);
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         rl.addView(img);
-        rl.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                Toast.makeText(getActivity(), "Clicked layout " , Toast.LENGTH_SHORT).show();
+
+
+
+
+
+        /*rl.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                OnCalendarClicked(v);
+                return true;
             }
-        });
+        });*/
 
         // Add status (pending, accepted, rejected), but hide; will be useful later
         TextView status = new TextView(this.getActivity());
@@ -207,6 +213,7 @@ public class MyCalendar extends Fragment {
         RelativeLayout.LayoutParams pname = (RelativeLayout.LayoutParams) name.getLayoutParams();
         pname.leftMargin = point.x /2;
         name.setLayoutParams(pname);
+        name.setTextColor(Color.parseColor("#3fa9f5"));
 
         TextView desc = new TextView(this.getActivity());
         desc.setTag("description");
@@ -258,6 +265,11 @@ public class MyCalendar extends Fragment {
             point.y = display.getHeight();
         }
         return point;
+    }
+
+    public void OnCalendarClicked(View view){
+        Intent intent = new Intent(this.getActivity(), OnCalendarClicked.class);
+        startActivity(intent);
     }
 
 
