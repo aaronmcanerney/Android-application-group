@@ -20,14 +20,14 @@ import java.util.List;
 /**
  * Created by aaron_000 on 8/23/2016.
  */
-public class CustomAdapter extends BaseAdapter {
+public class ActivityFeedAdapter extends BaseAdapter {
 
     Context context;
     List<String> rowItem;
 
 
 
-    CustomAdapter(Context context, List<String> rowItem){
+    ActivityFeedAdapter(Context context, List<String> rowItem){
         this.context = context;
         this.rowItem = rowItem;
     }
