@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,16 +84,14 @@ public class ActivityFeed extends Fragment {
                 "Linux", "OS/2" };
         List<String> dur = Arrays.asList(values);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),
-                R.layout.activity_feed_row, R.id.label, values);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),
+                //R.layout.activity_feed_row, R.id.label, values);
 
-        container.setAdapter(adapter);
-        //loadNotifications();
+        //container.setAdapter(adapter);
+        loadNotifications();
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
           //      R.layout.activity_feed_row, R.id.label, values);
-
-        container.setAdapter(new ActivityFeedAdapter(this.getActivity(),dur));
 
         super.onStart();
     }
@@ -105,10 +105,14 @@ public class ActivityFeed extends Fragment {
         notifications.limitToLast(20).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                List<String> notifications = new ArrayList<>();
                 for (DataSnapshot notification : snapshot.getChildren()) {
                     String text = notification.child("text").getValue(String.class);
-                    buildNotification(text);
+                    notifications.add(0, text);
                 }
+
+                // Populate notifications
+                container.setAdapter(new ActivityFeedAdapter(getActivity(), notifications));
             }
 
             @Override
@@ -116,47 +120,6 @@ public class ActivityFeed extends Fragment {
 
             }
         });
-    }
-
-    public void buildNotification(String text) {
-        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point p = getDisplaySize(d);
-        RelativeLayout temp = new RelativeLayout(getActivity());
-        container.addView(temp);
-        temp.setBackgroundResource(R.drawable.roundedlayout);
-        LinearLayout.LayoutParams tempParams = (LinearLayout.LayoutParams) temp.getLayoutParams();
-        tempParams.height = tempParams.WRAP_CONTENT;
-        tempParams.width = p.x * 15 / 16;
-        tempParams.topMargin = p.y * 1 / 100;
-        tempParams.leftMargin = p.x / 32;
-
-        ImageView img = new ImageView(getActivity());
-        temp.addView(img);
-        RelativeLayout.LayoutParams imgParams = (RelativeLayout.LayoutParams) img.getLayoutParams();
-        imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        imgParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        imgParams.leftMargin = p.x / 32;
-        img.setBackgroundResource(R.mipmap.ic_launcher);
-        img.setId(View.generateViewId());
-
-        TextView tv = new TextView(getActivity());
-        temp.addView(tv, 0);
-        RelativeLayout.LayoutParams tvParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-        tvParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        tvParams.addRule(RelativeLayout.RIGHT_OF, img.getId());
-        tv.setGravity(Gravity.CENTER);
-        tvParams.height = tvParams.WRAP_CONTENT;
-        tvParams.width = p.x *11 / 16;
-        tv.setBackgroundResource(R.drawable.bluerounded);
-        tv.setTextColor(Color.WHITE);
-        tv.setText(text);
-
-        /*temp.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                ViewGroup parentView = (ViewGroup) view.getParent();
-                parentView.removeView(view);
-            }
-        });*/
     }
 
     private static Point getDisplaySize(final Display display) {
