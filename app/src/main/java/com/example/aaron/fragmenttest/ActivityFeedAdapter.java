@@ -64,18 +64,14 @@ public class ActivityFeedAdapter extends BaseAdapter {
 
             holder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_layout);
             holder.message = (TextView) convertView.findViewById(R.id.label);
-            holder.message.setText(rowItem.get(position) + ": " + position);
+            holder.message.setText(rowItem.get(position));
             holder.profile_pic = (ImageView) convertView.findViewById(R.id.icon);
-
 
             RelativeLayout.LayoutParams relativeParams = (RelativeLayout.LayoutParams) holder.relativeLayout.getLayoutParams();
             relativeParams.leftMargin = point.x/32;
             relativeParams.topMargin = point.y /128;
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
-
-
-
 
             RelativeLayout.LayoutParams imgParams = (RelativeLayout.LayoutParams) holder.profile_pic.getLayoutParams();
             imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
