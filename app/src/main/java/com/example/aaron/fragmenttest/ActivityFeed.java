@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class ActivityFeed extends Fragment {
@@ -66,14 +68,15 @@ public class ActivityFeed extends Fragment {
         String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
                 "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
                 "Linux", "OS/2" };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-                R.layout.activity_feed_row, R.id.label, values);
+        List<String> dur = Arrays.asList(values);
 
 
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+          //      R.layout.activity_feed_row, R.id.label, values);
+
+        container.setAdapter(new CustomAdapter(this.getActivity(),dur));
 
 
-        container.setAdapter(adapter);
 
 
         /*
@@ -127,6 +130,10 @@ public class ActivityFeed extends Fragment {
 
         super.onStart();
     }
+
+
+
+
 
 
 

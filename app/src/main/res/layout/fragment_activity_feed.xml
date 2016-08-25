@@ -11,6 +11,8 @@
         android:id="@+id/list"
         android:background="#d6dbe1"
         tools:context="com.example.aaron_000.unisonversion1.TestCalendar"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         >
 
 
