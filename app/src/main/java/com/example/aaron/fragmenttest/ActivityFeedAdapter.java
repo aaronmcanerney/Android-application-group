@@ -70,7 +70,7 @@ public class ActivityFeedAdapter extends BaseAdapter {
 
             RelativeLayout.LayoutParams relativeParams = (RelativeLayout.LayoutParams) holder.relativeLayout.getLayoutParams();
             relativeParams.leftMargin = point.x/32;
-            relativeParams.topMargin = point.y /64;
+            relativeParams.topMargin = point.y /128;
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
 
