@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 
@@ -29,13 +30,13 @@ import java.util.List;
 public class CalendarAdapter extends BaseAdapter {
 
     Context context;
-    List<String> rowItem;
+    List<Event> rowItem;
 
     //Need a list of events here, for instance, List<Event> rowItem;
 
 
 
-    CalendarAdapter(Context context, List<String> rowItem){
+    CalendarAdapter(Context context, List<Event> rowItem){
         this.context = context;
         this.rowItem = rowItem;
     }
@@ -74,7 +75,7 @@ public class CalendarAdapter extends BaseAdapter {
         ViewHolder holder = null;
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.activity_feed_row, null);
+            convertView = mInflater.inflate(R.layout.calendar_row, null);
             holder = new ViewHolder();
 
 
@@ -98,9 +99,9 @@ public class CalendarAdapter extends BaseAdapter {
 
 
 
-            holder.status.setTag("status");
+           // holder.status.setTag("status");
             //holder.status.setText(eventStatus);
-            holder.status.setVisibility(View.GONE);
+            //holder.status.setVisibility(View.GONE);
 
             holder.name.setTag("name");
             holder.name.setId(View.generateViewId());
@@ -109,6 +110,7 @@ public class CalendarAdapter extends BaseAdapter {
             pname.leftMargin = point.x /2;
             holder.name.setLayoutParams(pname);
             holder.name.setTextColor(Color.parseColor("#3fa9f5"));
+            holder.name.setText(rowItem.get(position).getName());
 
 
 
@@ -118,6 +120,7 @@ public class CalendarAdapter extends BaseAdapter {
             pdesc.leftMargin = point.x / 2;
             pdesc.addRule(RelativeLayout.BELOW, holder.name.getId());
             holder.description.setLayoutParams(pdesc);
+            holder.description.setText(rowItem.get(position).getDescription());
 
 
             holder.location.setTag("placeName");
@@ -126,6 +129,7 @@ public class CalendarAdapter extends BaseAdapter {
             ploc.leftMargin = point.x / 2;
             ploc.addRule(RelativeLayout.BELOW, holder.description.getId());
             holder.location.setLayoutParams(ploc);
+            holder.location.setText(rowItem.get(position).getPlaceName());
 
 
             holder.date.setTag("date");
@@ -134,6 +138,7 @@ public class CalendarAdapter extends BaseAdapter {
             pdate.leftMargin = point.x / 2;
             pdate.addRule(RelativeLayout.BELOW, holder.location.getId());
             holder.date.setLayoutParams(pdate);
+            holder.date.setText(rowItem.get(position).getDate());
 
 
             holder.time.setTag("time");
@@ -142,6 +147,7 @@ public class CalendarAdapter extends BaseAdapter {
             ptime.leftMargin = point.x / 2;
             ptime.addRule(RelativeLayout.BELOW, holder.date.getId());
             holder.time.setLayoutParams(ptime);
+            holder.time.setText(rowItem.get(position).getTime());
 
 
 

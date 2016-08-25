@@ -19,6 +19,8 @@ public class Event implements Comparable<Event> {
     private int year;
     private int month;
     private int day;
+    private String date;
+    private String time;
     private ArrayList<String> connections; // ArrayList of uid's
 
     public Event() {
@@ -42,6 +44,9 @@ public class Event implements Comparable<Event> {
     public void setYear(int year) { this.year = year; }
     public void setMonth(int month) { this.month = month; }
     public void setDay(int day) { this.day = day; }
+    public void setDate(String date){this.date = date;}
+    public void setTime(String time){this.time = time;}
+
 
     public String getPlaceName() { return placeName; }
     public String getName() { return name; }
@@ -51,6 +56,8 @@ public class Event implements Comparable<Event> {
     public int getYear() { return year; }
     public int getMonth() { return month; }
     public int getDay() { return day; }
+    public String getDate(){return date;}
+    public String getTime(){return time;}
 
     public void addConnection(String connectionId) {
         connections.add(connectionId);

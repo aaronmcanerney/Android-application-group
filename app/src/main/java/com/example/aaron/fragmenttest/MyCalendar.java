@@ -1,27 +1,23 @@
 package com.example.aaron.fragmenttest;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,17 +27,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class MyCalendar extends Fragment {
     private AlphaAnimation buttonClick = new AlphaAnimation(3F, .8F);
-    private Map<String, RelativeLayout> calendarEntries;
+    private ListView hold;
+   // private Map<String, RelativeLayout> calendarEntries;
 
-    public MyCalendar() {
-        // Required empty public constructor
-    }
+    private final ArrayList<Event> eventContainer = new ArrayList<Event>();
+
+
 
     public static MyCalendar newInstance(String param1, String param2) {
         MyCalendar fragment = new MyCalendar();
@@ -65,35 +65,35 @@ public class MyCalendar extends Fragment {
     @Override
     public void onStart(){
         // Set BGColor of fragment
-        LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
-        linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+        //LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
+        //linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
         // Load events
-        calendarEntries = new HashMap<>();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) return;
-        String uid = user.getUid();
-        DatabaseReference requests = database.child("requests").child(uid);
-        String now = Utilities.formatSystemDateAndTimeAtCurrentMoment();
-        requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot request : snapshot.getChildren()) {
-                    String eventId = request.getKey();
-                    String status = request.child("status").getValue(String.class);
-                    RelativeLayout entry = buildCalendarEntry(status);
-                    calendarEntries.put(eventId, entry);
-                    loadEvent(eventId);
+      //  calendarEntries = new HashMap<>();
+        hold = (ListView) getActivity().findViewById(R.id.calender_list);
+        hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
+        loadEvents();
+
+        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
+        swipe.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Toast.makeText(getActivity(), "refreshing", Toast.LENGTH_LONG).show();
+                        loadEvents();
+                        swipe.setRefreshing(false);
+                    }
                 }
-            }
+        );
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+        Event[] temp =  eventContainer.toArray(new Event[eventContainer.size()]);
+        List<Event> eventList = Arrays.asList(temp);
 
+
+
+        hold.setAdapter(new CalendarAdapter(getActivity() ,eventList));
 
         super.onStart();
     }
@@ -105,7 +105,7 @@ public class MyCalendar extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String eventId = snapshot.getKey();
-                RelativeLayout event = calendarEntries.get(eventId);
+               // RelativeLayout event = calendarEntries.get(eventId);
                 Map<String, Object> map = new HashMap<>();
 
                 // Get all data from firebase
@@ -117,12 +117,37 @@ public class MyCalendar extends Fragment {
 
                 if (map.isEmpty()) return;
 
+
+                Event temp = new Event();
+
+
                 // Populate name
                 String name = (String) map.get("name");
                 SpannableString nameFormatted = new SpannableString(name);
                 nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
+
+
+                temp.setName(nameFormatted.toString());
+                temp.setDescription((String) map.get("description"));
+                temp.setPlaceName((String) map.get("placeName"));
+                Long year = (Long) map.get("year");
+                Long month = (Long) map.get("month");
+                Long day = (Long) map.get("day");
+                String date = Utilities.formatDate(year, month, day);
+                temp.setDate(date);
+                Long hour = (Long) map.get("hour");
+                Long minute = (Long) map.get("minute");
+                String time = Utilities.formatTime(hour, minute);
+                temp.setTime(time);
+
+
+                eventContainer.add(temp);
+
+
+
+                /*
                 TextView textView = (TextView) event.findViewWithTag("name");
                 textView.setText(nameFormatted);
                 textView.setTextColor(Color.WHITE);
@@ -158,6 +183,7 @@ public class MyCalendar extends Fragment {
 
                 // What should we do with this status? Change background color?
                 // If so, we can do that in 'buildCalendarEvent'
+                */
             }
 
             @Override
@@ -166,7 +192,7 @@ public class MyCalendar extends Fragment {
             }
         });
     }
-
+    /*
     private RelativeLayout buildCalendarEntry(String eventStatus) {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
@@ -190,13 +216,7 @@ public class MyCalendar extends Fragment {
 
 
 
-        /*rl.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                OnCalendarClicked(v);
-                return true;
-            }
-        });*/
+
 
         // Add status (pending, accepted, rejected), but hide; will be useful later
         TextView status = new TextView(this.getActivity());
@@ -253,6 +273,7 @@ public class MyCalendar extends Fragment {
 
         return rl;
     }
+    */
 
     private static Point getDisplaySize(final Display display) {
 
@@ -270,6 +291,32 @@ public class MyCalendar extends Fragment {
     public void OnCalendarClicked(View view){
         Intent intent = new Intent(this.getActivity(), OnCalendarClicked.class);
         startActivity(intent);
+    }
+
+    private void loadEvents(){
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+        String uid = user.getUid();
+        DatabaseReference requests = database.child("requests").child(uid);
+        String now = Utilities.formatSystemDateAndTimeAtCurrentMoment();
+        requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot request : snapshot.getChildren()) {
+                    String eventId = request.getKey();
+                    String status = request.child("status").getValue(String.class);
+                    //RelativeLayout entry = buildCalendarEntry(status);
+                    //calendarEntries.put(eventId, entry);
+                    loadEvent(eventId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

@@ -12,12 +12,12 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="22px"
-            android:layout_height="22px"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginLeft="4px"
             android:layout_marginRight="10px"
             android:layout_marginTop="4px"
-            android:src="@mipmap/ic_launcher" >
+            android:src="@mipmap/calendar" >
         </ImageView>
 
         <TextView

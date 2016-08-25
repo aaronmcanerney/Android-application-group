@@ -1,18 +1,20 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_scroll_view"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar_swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#d6dbe1"
-    >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent">
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/fragment_layout"
+        android:id="@+id/calender_list"
+        android:background="#d6dbe1"
         tools:context="com.example.aaron_000.unisonversion1.TestCalendar"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         >
 
 
-    </LinearLayout>
-</ScrollView>
+    </ListView>
+</android.support.v4.widget.SwipeRefreshLayout>

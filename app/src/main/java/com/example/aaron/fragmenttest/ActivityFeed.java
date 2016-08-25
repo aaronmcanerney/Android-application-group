@@ -7,17 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -57,16 +50,17 @@ public class ActivityFeed extends Fragment {
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
 
-        container = (ListView) getActivity().findViewById(R.id.list);
+        container = (ListView) getActivity().findViewById(R.id.activity_list);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh);
+        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
         swipe.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         Toast.makeText(getActivity(), "refreshing", Toast.LENGTH_LONG).show();
                         loadNotifications();
+                        swipe.setRefreshing(false);
                     }
                 }
         );
@@ -79,19 +73,12 @@ public class ActivityFeed extends Fragment {
         set it via the   adapter
         */
 
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
-        List<String> dur = Arrays.asList(values);
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),
-                //R.layout.activity_feed_row, R.id.label, values);
 
-        //container.setAdapter(adapter);
+
         loadNotifications();
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-          //      R.layout.activity_feed_row, R.id.label, values);
+
 
         super.onStart();
     }
