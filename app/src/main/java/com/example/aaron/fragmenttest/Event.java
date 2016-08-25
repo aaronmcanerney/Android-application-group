@@ -86,7 +86,7 @@ public class Event implements Comparable<Event> {
             request.child("time").setValue(time);
 
             DatabaseReference notification = notifications.child(connectionId).push();
-            notification.child("text").setValue("This is a test notification!");
+            notification.child("text").setValue("This is a newer test notification!");
         }
     }
 
