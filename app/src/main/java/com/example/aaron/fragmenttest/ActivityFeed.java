@@ -74,7 +74,7 @@ public class ActivityFeed extends Fragment {
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
           //      R.layout.activity_feed_row, R.id.label, values);
 
-        container.setAdapter(new CustomAdapter(this.getActivity(),dur));
+        container.setAdapter(new ActivityFeedAdapter(this.getActivity(),dur));
 
 
 
