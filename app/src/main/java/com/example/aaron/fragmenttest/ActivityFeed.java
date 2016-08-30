@@ -27,6 +27,7 @@ import java.util.List;
 
 public class ActivityFeed extends Fragment {
     private ListView container;
+    private SwipeRefreshLayout swipe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,14 +54,13 @@ public class ActivityFeed extends Fragment {
         container = (ListView) getActivity().findViewById(R.id.activity_list);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
+        swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
         swipe.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         Toast.makeText(getActivity(), "refreshing", Toast.LENGTH_LONG).show();
                         loadNotifications();
-                        swipe.setRefreshing(false);
                     }
                 }
         );
@@ -97,6 +97,9 @@ public class ActivityFeed extends Fragment {
                     String text = notification.child("text").getValue(String.class);
                     notifications.add(0, text);
                 }
+
+                // End refreshing
+                swipe.setRefreshing(false);
 
                 // Populate notifications
                 container.setAdapter(new ActivityFeedAdapter(getActivity(), notifications));

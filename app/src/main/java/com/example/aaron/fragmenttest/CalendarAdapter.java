@@ -34,8 +34,6 @@ public class CalendarAdapter extends BaseAdapter {
 
     //Need a list of events here, for instance, List<Event> rowItem;
 
-
-
     CalendarAdapter(Context context, List<Event> rowItem){
         this.context = context;
         this.rowItem = rowItem;

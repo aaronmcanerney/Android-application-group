@@ -37,11 +37,11 @@ import java.util.Map;
 public class MyCalendar extends Fragment {
     private AlphaAnimation buttonClick = new AlphaAnimation(3F, .8F);
     private ListView hold;
-   // private Map<String, RelativeLayout> calendarEntries;
+    private SwipeRefreshLayout swipe;
 
     private final ArrayList<Event> eventContainer = new ArrayList<Event>();
-
-
+    private int numEntriesLoaded;
+    private int numEntriesToLoad;
 
     public static MyCalendar newInstance(String param1, String param2) {
         MyCalendar fragment = new MyCalendar();
@@ -70,30 +70,20 @@ public class MyCalendar extends Fragment {
         //linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
         // Load events
-      //  calendarEntries = new HashMap<>();
         hold = (ListView) getActivity().findViewById(R.id.calender_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
         loadEvents();
 
-        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
+        swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.calendar_swipe_refresh);
         swipe.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         Toast.makeText(getActivity(), "refreshing", Toast.LENGTH_LONG).show();
                         loadEvents();
-                        swipe.setRefreshing(false);
                     }
                 }
         );
-
-
-        Event[] temp =  eventContainer.toArray(new Event[eventContainer.size()]);
-        List<Event> eventList = Arrays.asList(temp);
-
-
-
-        hold.setAdapter(new CalendarAdapter(getActivity() ,eventList));
 
         super.onStart();
     }
@@ -105,7 +95,6 @@ public class MyCalendar extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String eventId = snapshot.getKey();
-               // RelativeLayout event = calendarEntries.get(eventId);
                 Map<String, Object> map = new HashMap<>();
 
                 // Get all data from firebase
@@ -117,9 +106,7 @@ public class MyCalendar extends Fragment {
 
                 if (map.isEmpty()) return;
 
-
                 Event temp = new Event();
-
 
                 // Populate name
                 String name = (String) map.get("name");
@@ -127,7 +114,6 @@ public class MyCalendar extends Fragment {
                 nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
-
 
                 temp.setName(nameFormatted.toString());
                 temp.setDescription((String) map.get("description"));
@@ -142,10 +128,15 @@ public class MyCalendar extends Fragment {
                 String time = Utilities.formatTime(hour, minute);
                 temp.setTime(time);
 
-
                 eventContainer.add(temp);
+                numEntriesLoaded++;
 
-
+                if (numEntriesLoaded == numEntriesToLoad) {
+                    swipe.setRefreshing(false);
+                    Event[] tempArray = eventContainer.toArray(new Event[eventContainer.size()]);
+                    List<Event> eventList = Arrays.asList(tempArray);
+                    hold.setAdapter(new CalendarAdapter(getActivity(), eventList));
+                }
 
                 /*
                 TextView textView = (TextView) event.findViewWithTag("name");
@@ -192,88 +183,6 @@ public class MyCalendar extends Fragment {
             }
         });
     }
-    /*
-    private RelativeLayout buildCalendarEntry(String eventStatus) {
-        Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point point = getDisplaySize(d);
-        LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
-        RelativeLayout rl = new RelativeLayout(this.getActivity());
-        linearLayout.addView(rl, -1); // Add to end
-        rl.setBackgroundResource(R.drawable.roundedlayout);
-        LinearLayout.LayoutParams rlParams = (LinearLayout.LayoutParams) rl.getLayoutParams();
-        rlParams.leftMargin = point.x / 32;
-        rlParams.topMargin = point.x/64;
-        rlParams.height = rlParams.WRAP_CONTENT;
-        rlParams.width = point.x * 15 / 16;
-
-        // Build Calendar Image
-        ImageView img = new ImageView(this.getActivity());
-        img.setImageResource(R.mipmap.calendar);
-        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        rl.addView(img);
-
-
-
-
-
-
-
-        // Add status (pending, accepted, rejected), but hide; will be useful later
-        TextView status = new TextView(this.getActivity());
-        status.setTag("status");
-        status.setText(eventStatus);
-        status.setVisibility(View.GONE);
-        rl.addView(status);
-
-        TextView name = new TextView(this.getActivity());
-        name.setTag("name");
-        name.setId(View.generateViewId());
-        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-        rl.addView(name);
-        RelativeLayout.LayoutParams pname = (RelativeLayout.LayoutParams) name.getLayoutParams();
-        pname.leftMargin = point.x /2;
-        name.setLayoutParams(pname);
-        name.setTextColor(Color.parseColor("#3fa9f5"));
-
-        TextView desc = new TextView(this.getActivity());
-        desc.setTag("description");
-        desc.setId(View.generateViewId());
-        rl.addView(desc);
-        RelativeLayout.LayoutParams pdesc = (RelativeLayout.LayoutParams) desc.getLayoutParams();
-        pdesc.leftMargin = point.x / 2;
-        pdesc.addRule(RelativeLayout.BELOW, name.getId());
-        desc.setLayoutParams(pdesc);
-
-        TextView loc = new TextView(this.getActivity());
-        loc.setTag("placeName");
-        loc.setId(View.generateViewId());
-        rl.addView(loc);
-        RelativeLayout.LayoutParams ploc = (RelativeLayout.LayoutParams) loc.getLayoutParams();
-        ploc.leftMargin = point.x / 2;
-        ploc.addRule(RelativeLayout.BELOW, desc.getId());
-        loc.setLayoutParams(ploc);
-
-        TextView date = new TextView(this.getActivity());
-        date.setTag("date");
-        date.setId(View.generateViewId());
-        rl.addView(date);
-        RelativeLayout.LayoutParams pdate = (RelativeLayout.LayoutParams) date.getLayoutParams();
-        pdate.leftMargin = point.x / 2;
-        pdate.addRule(RelativeLayout.BELOW, loc.getId());
-        date.setLayoutParams(pdate);
-
-        TextView time = new TextView(this.getActivity());
-        time.setTag("time");
-        time.setId(View.generateViewId());
-        rl.addView(time);
-        RelativeLayout.LayoutParams ptime = (RelativeLayout.LayoutParams) time.getLayoutParams();
-        ptime.leftMargin = point.x / 2;
-        ptime.addRule(RelativeLayout.BELOW, date.getId());
-        time.setLayoutParams(ptime);
-
-        return rl;
-    }
-    */
 
     private static Point getDisplaySize(final Display display) {
 
@@ -294,6 +203,7 @@ public class MyCalendar extends Fragment {
     }
 
     private void loadEvents(){
+        numEntriesLoaded = 0;
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;
@@ -303,11 +213,10 @@ public class MyCalendar extends Fragment {
         requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                numEntriesToLoad = (int) snapshot.getChildrenCount();
                 for (DataSnapshot request : snapshot.getChildren()) {
                     String eventId = request.getKey();
                     String status = request.child("status").getValue(String.class);
-                    //RelativeLayout entry = buildCalendarEntry(status);
-                    //calendarEntries.put(eventId, entry);
                     loadEvent(eventId);
                 }
             }
