@@ -2,6 +2,7 @@ package com.example.aaron.fragmenttest;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,13 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,15 +26,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Connections extends AppCompatActivity {
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     public static final int colNum = 4;
-    EditText search;
+    private ArrayList<Friends> friends;
+    ListView hold;
 
 
 
@@ -89,7 +90,9 @@ public class Connections extends AppCompatActivity {
         storageRef.child("profile-pictures/" + connectionId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    addImageButton(uri);
+                    //addImageButton(uri);
+                    Friends temp = new Friends(uri);
+                    friends.add(temp);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -99,6 +102,21 @@ public class Connections extends AppCompatActivity {
             });
     }
 
+    public void addFriends(){
+        hold = (ListView) findViewById(R.id.calender_list);
+        hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+
+        Friends[] temp =  friends.toArray(new Friends[friends.size()]);
+        List<Friends> friendsList = Arrays.asList(temp);
+
+
+
+        hold.setAdapter(new FriendsAdapter(this ,friendsList));
+    }
+
+
+    /*
     public void addImageButton(Uri profilePictureURI) {
 
 
@@ -130,6 +148,7 @@ public class Connections extends AppCompatActivity {
         Picasso.with(this).load(profilePictureURI).resize(p.x/4, p.y * 2 / 7).into(button);
         Picasso.with(this).load(profilePictureURI).resize(p.x/4 - 15, p.x/4 - 15).transform(new CircleTransform()).into(button);
         //button.getBackground().setAlpha(0);
+
         RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
         buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         button.setOnClickListener(new View.OnClickListener()
@@ -141,6 +160,7 @@ public class Connections extends AppCompatActivity {
             }
         });
     }
+    */
 
     public void alert(String title, String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();

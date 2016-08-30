@@ -54,8 +54,8 @@ public class OnCalendarClicked extends AppCompatActivity {
 
         TextView date = new TextView(this);
         backdrop.addView(date);
-        date.setBackgroundResource(R.drawable.bluerounded);
-        date.setTextColor(Color.WHITE);
+        //date.setBackgroundResource(R.drawable.bluerounded);
+        //date.setTextColor(Color.WHITE);
         date.setText("date");
         RelativeLayout.LayoutParams dateParams = (RelativeLayout.LayoutParams) date.getLayoutParams();
         dateParams.addRule(RelativeLayout.BELOW, name.getId());
@@ -68,8 +68,8 @@ public class OnCalendarClicked extends AppCompatActivity {
 
         TextView where = new TextView(this);
         backdrop.addView(where);
-        where.setBackgroundResource(R.drawable.bluerounded);
-        where.setTextColor(Color.WHITE);
+        //where.setBackgroundResource(R.drawable.bluerounded);
+        //where.setTextColor(Color.WHITE);
         where.setText("Place");
         RelativeLayout.LayoutParams whereParams = (RelativeLayout.LayoutParams) where.getLayoutParams();
         whereParams.addRule(RelativeLayout.BELOW, date.getId());
@@ -83,8 +83,8 @@ public class OnCalendarClicked extends AppCompatActivity {
 
         TextView description = new TextView(this);
         backdrop.addView(description);
-        description.setBackgroundResource(R.drawable.bluerounded);
-        description.setTextColor(Color.WHITE);
+        //description.setBackgroundResource(R.drawable.bluerounded);
+        //description.setTextColor(Color.WHITE);
         description.setText("Description");
         RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) description.getLayoutParams();
         descriptionParams.addRule(RelativeLayout.BELOW, where.getId());
@@ -98,8 +98,8 @@ public class OnCalendarClicked extends AppCompatActivity {
 
         Button friends = new Button(this);
         container.addView(friends);
-        friends.setBackgroundResource(R.drawable.bluerounded);
-        friends.setTextColor(Color.WHITE);
+        //friends.setBackgroundResource(R.drawable.bluerounded);
+        //friends.setTextColor(Color.WHITE);
         friends.setText("Friends");
         RelativeLayout.LayoutParams friendsParams = (RelativeLayout.LayoutParams) friends.getLayoutParams();
         friendsParams.height = friendsParams.WRAP_CONTENT;

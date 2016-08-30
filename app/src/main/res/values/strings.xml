@@ -7,4 +7,6 @@
     <string name="title_activity_activity_fee">ActivityFee</string>
     <string name="title_activity_select_location">Map</string>
     <string name="title_activity_on_calendar_clicked">OnCalendarClicked</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_camera_test">CameraTest</string>
 </resources>

@@ -24,7 +24,7 @@ public class NeedsToBeDeleted extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_feed1);
+        setContentView(R.layout.do_not_use);
         Display d = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
         //hello
