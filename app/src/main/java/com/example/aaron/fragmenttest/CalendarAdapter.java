@@ -95,8 +95,6 @@ public class CalendarAdapter extends BaseAdapter {
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
 
-
-
            // holder.status.setTag("status");
             //holder.status.setText(eventStatus);
             //holder.status.setVisibility(View.GONE);

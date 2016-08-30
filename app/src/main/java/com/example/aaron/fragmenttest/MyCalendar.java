@@ -38,8 +38,7 @@ public class MyCalendar extends Fragment {
     private AlphaAnimation buttonClick = new AlphaAnimation(3F, .8F);
     private ListView hold;
     private SwipeRefreshLayout swipe;
-
-    private final ArrayList<Event> eventContainer = new ArrayList<Event>();
+    private ArrayList<Event> eventContainer;
     private int numEntriesLoaded;
     private int numEntriesToLoad;
 
@@ -204,6 +203,7 @@ public class MyCalendar extends Fragment {
 
     private void loadEvents(){
         numEntriesLoaded = 0;
+        eventContainer = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;
