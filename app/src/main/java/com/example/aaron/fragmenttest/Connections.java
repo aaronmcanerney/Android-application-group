@@ -37,6 +37,8 @@ public class Connections extends AppCompatActivity {
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     public static final int colNum = 4;
     private ArrayList<Friends> friends;
+    private int numFriendsLoaded;
+    private int numFriendsToLoad;
     ListView hold;
 
 
@@ -46,8 +48,6 @@ public class Connections extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connections);
-
-
 
         // Set connections (users who aren't you)
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -60,13 +60,14 @@ public class Connections extends AppCompatActivity {
         final Point p = getDisplaySize(d);
 
 
-
-
         mDatabase.child("connections/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            int count = 0;
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                numFriendsLoaded = 0;
+                numFriendsToLoad = (int) snapshot.getChildrenCount();
+                friends = new ArrayList<>();
+
                 for (DataSnapshot child : snapshot.getChildren()) {
 
 
@@ -93,6 +94,8 @@ public class Connections extends AppCompatActivity {
                     //addImageButton(uri);
                     Friends temp = new Friends(uri);
                     friends.add(temp);
+                    numFriendsLoaded++;
+                    if (numFriendsLoaded == numFriendsToLoad) addFriends();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -103,14 +106,11 @@ public class Connections extends AppCompatActivity {
     }
 
     public void addFriends(){
-        hold = (ListView) findViewById(R.id.calender_list);
+        hold = (ListView) findViewById(R.id.friends_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
-
 
         Friends[] temp =  friends.toArray(new Friends[friends.size()]);
         List<Friends> friendsList = Arrays.asList(temp);
-
-
 
         hold.setAdapter(new FriendsAdapter(this ,friendsList));
     }
