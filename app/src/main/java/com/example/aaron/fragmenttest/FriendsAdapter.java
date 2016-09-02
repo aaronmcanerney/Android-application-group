@@ -25,11 +25,11 @@ import java.util.List;
 public class FriendsAdapter extends BaseAdapter {
 
     Context context;
-    List<Friends> rowItem;
+    List<Friend> rowItem;
 
 
 
-    FriendsAdapter(Context context, List<Friends> rowItem){
+    FriendsAdapter(Context context, List<Friend> rowItem){
         this.context = context;
         this.rowItem = rowItem;
     }

@@ -35,7 +35,8 @@ import java.util.NoSuchElementException;
 public class Connections extends AppCompatActivity {
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
-    private ArrayList<Friends> friends;
+    public static final int colNum = 4;
+    private ArrayList<Friend> friends;
     private int numFriendsLoaded;
     private int numFriendsToLoad;
     ListView hold;
@@ -91,7 +92,7 @@ public class Connections extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     //addImageButton(uri);
-                    Friends temp = new Friends(uri);
+                    Friend temp = new Friend(uri);
                     friends.add(temp);
                     numFriendsLoaded++;
                     if (numFriendsLoaded == numFriendsToLoad) addFriends();
@@ -104,14 +105,12 @@ public class Connections extends AppCompatActivity {
             });
     }
 
-
-
     public void addFriends(){
         hold = (ListView) findViewById(R.id.friends_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        Friends[] temp =  friends.toArray(new Friends[friends.size()]);
-        List<Friends> friendsList = Arrays.asList(temp);
+        Friend[] temp =  friends.toArray(new Friend[friends.size()]);
+        List<Friend> friendsList = Arrays.asList(temp);
 
         hold.setAdapter(new FriendsAdapter(this ,friendsList));
     }

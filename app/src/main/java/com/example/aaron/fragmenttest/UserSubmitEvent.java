@@ -119,7 +119,7 @@ public class UserSubmitEvent extends Fragment {
         container.addView(friends);
         friends.setBackgroundResource(R.drawable.bluerounded);
         friends.setTextColor(Color.WHITE);
-        friends.setText("Friends");
+        friends.setText("Friend");
         RelativeLayout.LayoutParams friendsParams = (RelativeLayout.LayoutParams) friends.getLayoutParams();
         friendsParams.height = friendsParams.WRAP_CONTENT;
         friendsParams.width = p.x * 7 / 16 ;
