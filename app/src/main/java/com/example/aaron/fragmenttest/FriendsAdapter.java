@@ -73,17 +73,18 @@ public class FriendsAdapter extends BaseAdapter {
             relativeParams.topMargin = point.y /128;
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
-//hello
+            //hello
             RelativeLayout.LayoutParams imgParams = (RelativeLayout.LayoutParams) holder.profile_pic.getLayoutParams();
             imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             imgParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            imgParams.leftMargin = point.x / 32;
-            Picasso.with(context).load(rowItem.get(position).getUri()).resize(point.x/4, point.y * 2 / 7).into(holder.profile_pic);
+            imgParams.leftMargin = point.x / 64;
+            Picasso.with(context).load(rowItem.get(position).getUri()).resize(point.x/7, point.y * 2 / 7).transform(new CircleTransform()).into(holder.profile_pic);
             holder.profile_pic.setId(View.generateViewId());
 
             RelativeLayout.LayoutParams messageParams = (RelativeLayout.LayoutParams) holder.user_name.getLayoutParams();
             messageParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             messageParams.addRule(RelativeLayout.RIGHT_OF, holder.profile_pic.getId());
+            messageParams.leftMargin = point.x / 64;
             holder.user_name.setGravity(Gravity.CENTER);
             messageParams.height = messageParams.WRAP_CONTENT;
             messageParams.width = point.x *11 / 16;
