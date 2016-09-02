@@ -147,7 +147,7 @@ public class UserPickFriends extends Fragment{
         Friend[] temp =  friends.toArray(new Friend[friends.size()]);
         List<Friend> friendsList = Arrays.asList(temp);
 
-        hold.setAdapter(new FriendsAdapter(this.getActivity() ,friendsList));
+        hold.setAdapter(new UserPickFriendsAdapter(this.getActivity() ,friendsList));
     }
 
 

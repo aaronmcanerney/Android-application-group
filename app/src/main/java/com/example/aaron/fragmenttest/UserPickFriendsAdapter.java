@@ -20,16 +20,16 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by aaron_000 on 8/23/2016.
+ * Created by aaron_000 on 9/1/2016.
  */
-public class FriendsAdapter extends BaseAdapter {
+public class UserPickFriendsAdapter extends BaseAdapter{
 
     Context context;
     List<Friend> rowItem;
 
 
 
-    FriendsAdapter(Context context, List<Friend> rowItem){
+    UserPickFriendsAdapter(Context context, List<Friend> rowItem){
         this.context = context;
         this.rowItem = rowItem;
     }
@@ -74,7 +74,7 @@ public class FriendsAdapter extends BaseAdapter {
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
             holder.relativeLayout.setTag("uid");
-            
+
             RelativeLayout.LayoutParams imgParams = (RelativeLayout.LayoutParams) holder.profile_pic.getLayoutParams();
             imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             imgParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -127,5 +127,8 @@ public class FriendsAdapter extends BaseAdapter {
         return point;
     }
 
-}
 
+
+
+
+}
