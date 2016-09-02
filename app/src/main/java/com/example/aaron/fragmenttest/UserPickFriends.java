@@ -16,9 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,19 +29,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class UserPickFriends extends Fragment{
+
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     public static final int colNum = 4;
+    GridLayout gridLayout;
     private ArrayList<Friend> friends;
     private int numFriendsLoaded;
     private int numFriendsToLoad;
-    GridLayout gridLayout;
+    ListView hold;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,29 +72,31 @@ public class UserPickFriends extends Fragment{
 
         public void onStart(){
 
-            // Set connections (users who aren't you)
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user == null) return;
             String uid = user.getUid();
 
 
-            final Display d = ((WindowManager) this.getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            Display d = ((WindowManager) this.getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             final Point p = getDisplaySize(d);
-            gridLayout = (GridLayout) this.getActivity().findViewById(R.id.fragment_connections_container);
-            gridLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
-            gridLayout.setColumnCount(colNum);
-
 
 
             mDatabase.child("connections/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                int count = 0;
 
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    numFriendsLoaded = 0;
+                    numFriendsToLoad = (int) snapshot.getChildrenCount();
+                    friends = new ArrayList<>();
+
                     for (DataSnapshot child : snapshot.getChildren()) {
+
+
                         String connectionId = child.getKey();
-                        loadConnectionPicture(connectionId, d);
+                        loadConnectionPicture(connectionId);
+
+
                     }
                 }
 
@@ -119,16 +122,17 @@ public class UserPickFriends extends Fragment{
             super.onStart();
         }
 
-
-
-
-    public void loadConnectionPicture(final String connectionId, final Display d) {
+    public void loadConnectionPicture(String connectionId) {
         FirebaseStorage mFileStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
         storageRef.child("profile-pictures/" + connectionId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                addImageButton(connectionId, uri, d);
+                //addImageButton(uri);
+                Friend temp = new Friend(uri);
+                friends.add(temp);
+                numFriendsLoaded++;
+                if (numFriendsLoaded == numFriendsToLoad) addFriends();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -138,53 +142,18 @@ public class UserPickFriends extends Fragment{
         });
     }
 
-    public void addImageButton(String connectionId, Uri profilePictureURI, Display d) {
-        Point p = getDisplaySize(d);
-        int x = p.x * 30 / 100;
-        //int y = point.y * 15 / 100;
-        int xMargin = p.x * 3 / 100;
-        int yMargin = p.y * 3 / 100;
+    public void addFriends(){
+        hold = (ListView) getActivity().findViewById(R.id.friends_list);
+        hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
+        Friend[] temp =  friends.toArray(new Friend[friends.size()]);
+        List<Friend> friendsList = Arrays.asList(temp);
 
-        //RelativeLayout temp = new RelativeLayout(this);
-        RelativeLayout temp = new RelativeLayout(this.getActivity());
-        temp.setBackgroundResource(R.drawable.roundedlayout);
-        gridLayout.addView(temp);
-        GridLayout.LayoutParams tempParams = (GridLayout.LayoutParams) temp.getLayoutParams();
-        tempParams.width = x;
-        tempParams.height = x;
-        tempParams.leftMargin = xMargin;
-        tempParams.topMargin = yMargin;
-        //temp.setBackgroundResource(R.drawable.bluerounded);
-        ImageView button = new ImageView(this.getActivity());
-        button.setTag(connectionId);
-
-        //button.setClickable(true);
-        temp.addView(button);
-        // Point p = scaleImage(button);
-        Picasso.with(this.getActivity()).load(profilePictureURI).resize(p.x/4, p.y * 2 / 7).into(button);
-        Picasso.with(this.getActivity()).load(profilePictureURI).resize(p.x/4 - 15, p.x/4 - 15).transform(new CircleTransform()).into(button);
-        //button.getBackground().setAlpha(0);
-        RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
-        buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                String connectionId = (String) v.getTag();
-                UserCreateEvent activity = (UserCreateEvent) getActivity();
-                if (activity.event.hasConnection(connectionId)) {
-                    v.setBackgroundResource(0);
-                    activity.event.removeConnection(connectionId);
-                } else {
-                    v.setBackgroundResource(R.drawable.greenborder);
-                    activity.event.addConnection(connectionId);
-                }
-            }
-        });
-
+        hold.setAdapter(new FriendsAdapter(this.getActivity() ,friendsList));
     }
+
+
+
 
     public void alert(String title, String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(this.getActivity()).create();
@@ -199,16 +168,7 @@ public class UserPickFriends extends Fragment{
         alertDialog.show();
     }
 
-    private Point scaleImage(ImageView view) throws NoSuchElementException {
-        Display d = ((WindowManager) this.getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point p = getDisplaySize(d);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
-        params.setMargins(10, 10, 5, 5);
-        params.width = p.x/3 - 15;
-        params.height = p.y * 2 / 7 ;
-        view.setLayoutParams(params);
-        return p;
-    }
+
     private static Point getDisplaySize(final Display display) {
         final Point point = new Point();
         try {

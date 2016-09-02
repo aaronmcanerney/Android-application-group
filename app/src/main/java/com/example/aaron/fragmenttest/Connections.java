@@ -35,7 +35,6 @@ import java.util.NoSuchElementException;
 public class Connections extends AppCompatActivity {
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
-    public static final int colNum = 4;
     private ArrayList<Friend> friends;
     private int numFriendsLoaded;
     private int numFriendsToLoad;
@@ -116,51 +115,7 @@ public class Connections extends AppCompatActivity {
     }
 
 
-    /*
-    public void addImageButton(Uri profilePictureURI) {
 
-
-        Display d = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        Point p = getDisplaySize(d);
-        int x = p.x * 30 / 100;
-        //int y = point.y * 15 / 100;
-        int xMargin = p.x * 3 / 100;
-        int yMargin = p.y * 3 / 100;
-
-
-        GridLayout gridLayout = (GridLayout) this.findViewById(R.id.connections_container);
-        gridLayout.setColumnCount(colNum);
-        //RelativeLayout temp = new RelativeLayout(this);
-        RelativeLayout temp = new RelativeLayout(this);
-        temp.setBackgroundResource(R.drawable.roundedlayout);
-        gridLayout.addView(temp);
-        GridLayout.LayoutParams tempParams = (GridLayout.LayoutParams) temp.getLayoutParams();
-        tempParams.width = x;
-        tempParams.height = x;
-        tempParams.leftMargin = xMargin;
-        tempParams.topMargin = yMargin;
-        //temp.setBackgroundResource(R.drawable.bluerounded);
-        ImageView button = new ImageView(this);
-
-        //button.setClickable(true);
-        temp.addView(button);
-       // Point p = scaleImage(button);
-        Picasso.with(this).load(profilePictureURI).resize(p.x/4, p.y * 2 / 7).into(button);
-        Picasso.with(this).load(profilePictureURI).resize(p.x/4 - 15, p.x/4 - 15).transform(new CircleTransform()).into(button);
-        //button.getBackground().setAlpha(0);
-
-        RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) button.getLayoutParams();
-        buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(Connections.this, "Hello you clicked your friend", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-    */
 
     public void alert(String title, String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
