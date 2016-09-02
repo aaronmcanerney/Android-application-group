@@ -214,6 +214,7 @@ public class MyCalendar extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 numEntriesToLoad = (int) snapshot.getChildrenCount();
+                if (numEntriesToLoad == 0) swipe.setRefreshing(false);
                 for (DataSnapshot request : snapshot.getChildren()) {
                     String eventId = request.getKey();
                     String status = request.child("status").getValue(String.class);

@@ -5,23 +5,23 @@ import android.net.Uri;
 /**
  * Created by aaron_000 on 8/29/2016.
  */
-public class Friends {
+public class Friend {
     private Uri uri;
     private String name;
     private String location;
 
-    public Friends(){
+    public Friend(){
         uri = null;
         name = "";
         location = "";
     }
-    public Friends(Uri uri, String name, String location ){
+    public Friend(Uri uri, String name, String location ){
         this.uri = uri;
         this.name = name;
         this.location = location;
 
     }
-    public Friends(Uri uri){
+    public Friend(Uri uri){
         this.uri = uri;
     }
 
