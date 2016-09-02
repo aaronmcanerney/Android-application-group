@@ -31,7 +31,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +39,6 @@ public class UserPickFriends extends Fragment{
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
     public static final int colNum = 4;
-    GridLayout gridLayout;
     private ArrayList<Friend> friends;
     private int numFriendsLoaded;
     private int numFriendsToLoad;
