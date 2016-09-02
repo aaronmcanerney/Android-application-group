@@ -73,7 +73,7 @@ public class FriendsAdapter extends BaseAdapter {
             relativeParams.topMargin = point.y /128;
             relativeParams.height = relativeParams.WRAP_CONTENT;
             relativeParams.width = point.x * 15/16;
-            
+
             RelativeLayout.LayoutParams imgParams = (RelativeLayout.LayoutParams) holder.profile_pic.getLayoutParams();
             imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             imgParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
