@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -76,6 +78,7 @@ public class FriendsAdapter extends BaseAdapter {
             imgParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             imgParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             imgParams.leftMargin = point.x / 32;
+            Picasso.with(context).load(rowItem.get(position).getUri()).resize(point.x/4, point.y * 2 / 7).into(holder.profile_pic);
             holder.profile_pic.setId(View.generateViewId());
 
             RelativeLayout.LayoutParams messageParams = (RelativeLayout.LayoutParams) holder.user_name.getLayoutParams();
@@ -86,6 +89,7 @@ public class FriendsAdapter extends BaseAdapter {
             messageParams.width = point.x *11 / 16;
             holder.user_name.setBackgroundResource(R.drawable.bluerounded);
             holder.user_name.setTextColor(Color.WHITE);
+            holder.user_name.setText("Blargenfargul");
 
 
 

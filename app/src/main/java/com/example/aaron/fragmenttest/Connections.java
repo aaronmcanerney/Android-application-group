@@ -35,7 +35,6 @@ import java.util.NoSuchElementException;
 public class Connections extends AppCompatActivity {
 
     private static final String FIREBASE_STORAGE_BUCKET = "gs://unisin-1351.appspot.com";
-    public static final int colNum = 4;
     private ArrayList<Friends> friends;
     private int numFriendsLoaded;
     private int numFriendsToLoad;
@@ -104,6 +103,8 @@ public class Connections extends AppCompatActivity {
                 }
             });
     }
+
+
 
     public void addFriends(){
         hold = (ListView) findViewById(R.id.friends_list);
