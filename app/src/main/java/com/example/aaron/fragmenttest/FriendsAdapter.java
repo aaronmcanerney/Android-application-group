@@ -91,7 +91,7 @@ public class FriendsAdapter extends BaseAdapter {
             messageParams.width = point.x *11 / 16;
             holder.user_name.setBackgroundResource(R.drawable.bluerounded);
             holder.user_name.setTextColor(Color.WHITE);
-            holder.user_name.setText("Blargenfargul");
+            holder.user_name.setText(rowItem.get(position).getName());
 
 
 
@@ -118,8 +118,7 @@ public class FriendsAdapter extends BaseAdapter {
     }
 
     public void filter(String charText) {
-
-         notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     private static Point getDisplaySize(final Display display) {
