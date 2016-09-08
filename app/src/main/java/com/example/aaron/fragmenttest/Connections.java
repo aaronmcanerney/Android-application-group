@@ -32,7 +32,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class Connections extends AppCompatActivity {
@@ -75,7 +77,7 @@ public class Connections extends AppCompatActivity {
 
 
                         String connectionId = child.getKey();
-                        loadConnectionPicture(connectionId);
+                        loadPublicInfo(connectionId);
 
 
                 }
@@ -88,24 +90,36 @@ public class Connections extends AppCompatActivity {
         });
     }
 
-    public void loadConnectionPicture(String connectionId) {
-        FirebaseStorage mFileStorage = FirebaseStorage.getInstance();
-        StorageReference storageRef = mFileStorage.getReferenceFromUrl(FIREBASE_STORAGE_BUCKET);
-        storageRef.child("profile-pictures/" + connectionId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    //addImageButton(uri);
-                    Friend temp = new Friend(uri);
-                    friends.add(temp);
-                    numFriendsLoaded++;
-                    if (numFriendsLoaded == numFriendsToLoad) addFriends();
+    public void loadPublicInfo(String connectionId) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users/" + connectionId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Map<String, Object> map = new HashMap<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    // Get all data from firebase
+                    String key = child.getKey();
+                    Object value = child.getValue(Object.class);
+                    map.put(key, value);
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
+
+                String profilePictureURI = (String) map.get("profilePictureURI");
+                String displayName = (String) map.get("displayName");
+                String location = (String) map.get("location");
+                String connectionId = snapshot.getKey();
+
+                Friend temp = new Friend(Uri.parse(profilePictureURI), displayName, location, connectionId);
+                friends.add(temp);
+                numFriendsLoaded++;
+                if (numFriendsLoaded == numFriendsToLoad) addFriends();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void addFriends(){
