@@ -42,6 +42,7 @@ public class Connections extends AppCompatActivity {
     private int numFriendsLoaded;
     private int numFriendsToLoad;
     ListView hold;
+    FriendsAdapter friendsAdapter;
 
 
 
@@ -111,11 +112,11 @@ public class Connections extends AppCompatActivity {
         hold = (ListView) findViewById(R.id.friends_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
 
-        Friend[] temp =  friends.toArray(new Friend[friends.size()]);
+        final Friend[] temp =  friends.toArray(new Friend[friends.size()]);
         List<Friend> friendsList = Arrays.asList(temp);
 
         EditText search = (EditText) findViewById(R.id.inputSearch);
-        final FriendsAdapter friendsAdapter = new FriendsAdapter(this,friendsList);
+        friendsAdapter = new FriendsAdapter(this,friendsList);
 
         hold.setAdapter(friendsAdapter);
 
@@ -123,8 +124,17 @@ public class Connections extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-                //friendsAdapter.filter(cs);
+                int textLength = cs.length();
+                ArrayList<Friend> tempArrayList = new ArrayList<>();
+                for(Friend c: temp){
+                    if (textLength <= c.getName().length()) {
+                        if (c.getName().toLowerCase().contains(cs.toString().toLowerCase())) {
+                            tempArrayList.add(c);
+                        }
+                    }
+                }
+                friendsAdapter = new FriendsAdapter(Connections.this, tempArrayList);
+                hold.setAdapter(friendsAdapter);
             }
 
             @Override
@@ -176,6 +186,14 @@ public class Connections extends AppCompatActivity {
             point.y = display.getHeight();
         }
         return point;
+    }
+
+    public ArrayList<String> getFriendsAsArray(){
+        ArrayList<String> temp = new ArrayList<>();
+        for(Friend f: friends){
+            temp.add(f.getName());
+        }
+        return temp;
     }
 
 

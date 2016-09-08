@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,9 +24,12 @@ import java.util.List;
 /**
  * Created by aaron_000 on 8/23/2016.
  */
-public class FriendsAdapter extends BaseAdapter {
+public class FriendsAdapter extends BaseAdapter implements Filterable{
 
     Context context;
+
+
+
     List<Friend> rowItem;
 
 
@@ -117,9 +122,7 @@ public class FriendsAdapter extends BaseAdapter {
 
     }
 
-    public void filter(String charText) {
-        notifyDataSetChanged();
-    }
+
 
     private static Point getDisplaySize(final Display display) {
 
@@ -132,6 +135,14 @@ public class FriendsAdapter extends BaseAdapter {
             point.y = display.getHeight();
         }
         return point;
+    }
+
+
+
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
 }
