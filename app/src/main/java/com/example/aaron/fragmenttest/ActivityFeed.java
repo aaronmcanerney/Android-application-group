@@ -6,11 +6,13 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,6 +55,32 @@ public class ActivityFeed extends Fragment {
 
         container = (ListView) getActivity().findViewById(R.id.activity_list);
         container.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+
+        container.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    Log.i("SCROLLING DOWN","TRUE");
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    Log.i("SCROLLING UP","TRUE");
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+
+            }
+        });
 
         swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.activity_feed_swipe_refresh);
         swipe.setOnRefreshListener(

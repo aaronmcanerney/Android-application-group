@@ -107,11 +107,19 @@ public class FriendsAdapter extends BaseAdapter {
             return convertView;
             // return holder;
         }
+        else{
+            return convertView;
+        }
 
 
 
-        return null;
 
+
+    }
+
+    public void filter(String charText) {
+
+         notifyDataSetChanged();
     }
 
     private static Point getDisplaySize(final Display display) {

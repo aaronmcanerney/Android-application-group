@@ -10,11 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -143,6 +145,31 @@ public class UserPickFriends extends Fragment{
     public void addFriends(){
         hold = (ListView) getActivity().findViewById(R.id.friends_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
+
+        hold.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    Log.i("SCROLLING DOWN","TRUE");
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    Log.i("SCROLLING UP","TRUE");
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+
+            }
+        });
 
         Friend[] temp =  friends.toArray(new Friend[friends.size()]);
         List<Friend> friendsList = Arrays.asList(temp);

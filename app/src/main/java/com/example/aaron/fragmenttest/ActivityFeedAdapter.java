@@ -56,7 +56,7 @@ public class ActivityFeedAdapter extends BaseAdapter {
 
         Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = getDisplaySize(d);
-        ViewHolder holder = null;
+        ViewHolder holder;
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.activity_feed_row, null);
@@ -96,13 +96,17 @@ public class ActivityFeedAdapter extends BaseAdapter {
 
             convertView.setTag(holder);
 
+
             return convertView;
            // return holder;
+        }
+        else{
+            return convertView;
         }
 
 
 
-        return null;
+
 
     }
 

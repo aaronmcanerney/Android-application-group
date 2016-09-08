@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -111,7 +114,31 @@ public class Connections extends AppCompatActivity {
         Friend[] temp =  friends.toArray(new Friend[friends.size()]);
         List<Friend> friendsList = Arrays.asList(temp);
 
-        hold.setAdapter(new FriendsAdapter(this ,friendsList));
+        EditText search = (EditText) findViewById(R.id.inputSearch);
+        final FriendsAdapter friendsAdapter = new FriendsAdapter(this,friendsList);
+
+        hold.setAdapter(friendsAdapter);
+
+        search.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                //friendsAdapter.filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
 

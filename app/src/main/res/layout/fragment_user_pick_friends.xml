@@ -7,24 +7,28 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container_scroll_view"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/friends_list"
         android:background="#d6dbe1"
-        android:fillViewport="false">
-        <GridLayout
-            android:background="#d6dbe1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_connections_container"></GridLayout>
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        >
 
-    </ScrollView>
+    </ListView>
+
+
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
         android:text="Next"
         android:id="@+id/to_user_submit_event"
         android:layout_alignParentBottom="true"
