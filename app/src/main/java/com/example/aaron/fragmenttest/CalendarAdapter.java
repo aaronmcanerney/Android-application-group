@@ -156,10 +156,13 @@ public class CalendarAdapter extends BaseAdapter {
             return convertView;
             // return holder;
         }
+        else{
+            return convertView;
+        }
 
 
 
-        return null;
+
 
     }
 

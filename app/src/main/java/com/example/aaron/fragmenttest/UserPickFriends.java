@@ -93,7 +93,7 @@ public class UserPickFriends extends Fragment{
 
 
                         String connectionId = child.getKey();
-                       // loadConnectionPicture(connectionId);
+                        loadConnectionPicture(connectionId);
 
 
                     }
