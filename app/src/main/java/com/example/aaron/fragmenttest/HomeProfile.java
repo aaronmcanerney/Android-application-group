@@ -140,7 +140,7 @@ public class HomeProfile extends Fragment {
             @Override
             public void onClick(View v)
             {
-                toOnEventCreation(v);
+                toCamera(v);
             }
         });
 
@@ -256,6 +256,12 @@ public class HomeProfile extends Fragment {
                 startActivity(intent);
             }
         }
+    }
+
+    public void toCamera(View v){
+        Intent intent = new Intent(this.getActivity(), CameraTest.class) ;
+        startActivity(intent);
+
     }
 /*
     public void test(View view){

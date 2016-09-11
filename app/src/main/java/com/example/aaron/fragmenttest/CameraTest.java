@@ -21,7 +21,7 @@ import java.util.Date;
 public class CameraTest extends Activity {
         private Camera mCamera;
         private CameraPreview mPreview;
-        private android.hardware.Camera.PictureCallback mPicture;
+        private Camera.PictureCallback mPicture;
         private Button capture, switchCamera;
         private Context myContext;
         private LinearLayout cameraPreview;
@@ -34,7 +34,7 @@ public class CameraTest extends Activity {
             setContentView(R.layout.activity_main);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             myContext = this;
-            //initialize();
+          //  initialize()
         }
 
 
@@ -101,7 +101,7 @@ public class CameraTest extends Activity {
             //if the camera preview is the front
             if (cameraFront) {
                 int cameraId = findBackFacingCamera();
-                if (cameraId >= 0) {
+                if (cameraId <= 0) {
                     //open the backFacingCamera
                     //set a picture callback
                     //refresh the preview

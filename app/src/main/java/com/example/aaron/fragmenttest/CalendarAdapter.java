@@ -8,6 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -55,7 +59,7 @@ public class CalendarAdapter extends BaseAdapter {
 
         ImageView place_picture;
         RelativeLayout relativeLayout;
-        TextView status;
+
         TextView name;
         TextView description;
         TextView location;
@@ -80,7 +84,7 @@ public class CalendarAdapter extends BaseAdapter {
 
             //here are all of the compenets that make up our current calendar view
             holder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_layout);
-            holder.status = (TextView) convertView.findViewById(R.id.status);
+           // holder.status = (TextView) convertView.findViewById(R.id.status);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.description = (TextView) convertView.findViewById(R.id.description);
             holder.location = (TextView) convertView.findViewById(R.id.location);
@@ -99,6 +103,12 @@ public class CalendarAdapter extends BaseAdapter {
             //holder.status.setText(eventStatus);
             //holder.status.setVisibility(View.GONE);
 
+            String name =  rowItem.get(position).getName();
+            SpannableString nameFormatted = new SpannableString(name);
+            nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
+            nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
+            nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
+
             holder.name.setTag("name");
             holder.name.setId(View.generateViewId());
             holder.name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
@@ -106,7 +116,7 @@ public class CalendarAdapter extends BaseAdapter {
             pname.leftMargin = point.x /2;
             holder.name.setLayoutParams(pname);
             holder.name.setTextColor(Color.parseColor("#3fa9f5"));
-            holder.name.setText(rowItem.get(position).getName());
+            holder.name.setText(nameFormatted);
 
 
 
@@ -145,6 +155,7 @@ public class CalendarAdapter extends BaseAdapter {
             holder.time.setLayoutParams(ptime);
             holder.time.setText(rowItem.get(position).getTime());
 
+           // holder.status.setVisibility(View.GONE);
 
 
 

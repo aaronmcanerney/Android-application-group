@@ -20,24 +20,18 @@
             android:src="@mipmap/calendar" >
         </ImageView>
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@+id/label"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
-        </TextView>
+
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@+id/label"
+            android:textStyle="bold|italic"
+
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
+            android:textColor="#3fa9f5"
+            >
         </TextView>
 
         <TextView
@@ -46,8 +40,8 @@
             android:layout_height="wrap_content"
             android:text="@+id/label"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
+            android:textColor="#3fa9f5"
+            >
         </TextView>
 
         <TextView
@@ -56,8 +50,8 @@
             android:layout_height="wrap_content"
             android:text="@+id/label"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
+            android:textColor="#3fa9f5"
+           >
         </TextView>
 
         <TextView
@@ -66,8 +60,8 @@
             android:layout_height="wrap_content"
             android:text="@+id/label"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
+            android:textColor="#3fa9f5"
+            >
         </TextView>
 
         <TextView
@@ -76,8 +70,8 @@
             android:layout_height="wrap_content"
             android:text="@+id/label"
             android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/bluerounded">
+            android:textColor="#3fa9f5"
+            >
         </TextView>
     </RelativeLayout>
 </RelativeLayout>
