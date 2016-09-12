@@ -30,6 +30,8 @@ import java.util.List;
 public class ActivityFeed extends Fragment {
     private ListView container;
     private SwipeRefreshLayout swipe;
+    private List<SharedNotification> notificationsList;
+    private FirebaseWaitLoader loader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,6 +115,7 @@ public class ActivityFeed extends Fragment {
 
 
     public void loadNotifications() {
+        notificationsList = new ArrayList<>();
         MainActivity activity = (MainActivity) getActivity();
         FirebaseUser user = activity.getCurrentUser();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -120,17 +123,41 @@ public class ActivityFeed extends Fragment {
         notifications.limitToLast(20).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                List<String> notifications = new ArrayList<>();
+                loader = new FirebaseWaitLoader((int) snapshot.getChildrenCount());
                 for (DataSnapshot notification : snapshot.getChildren()) {
-                    String text = notification.child("text").getValue(String.class);
-                    notifications.add(0, text);
+                    String notificationId = notification.getKey();
+                    loadNotification(notificationId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadNotification(String notificationId) {
+        Toast.makeText(getActivity(), "loading notification " + notificationId, Toast.LENGTH_LONG);
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference notification = database.child("shared-notifications").child(notificationId);
+        notification.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                SharedNotification notification = snapshot.getValue(SharedNotification.class);
+                notificationsList.add(0, notification);
+
+                loader.update();
+
+                if (loader.done()) {
+                    // End refreshing
+                    swipe.setRefreshing(false);
+
+                    // Populate notifications
+                    container.setAdapter(new ActivityFeedAdapter(getActivity(), notificationsList));
                 }
 
-                // End refreshing
-                swipe.setRefreshing(false);
 
-                // Populate notifications
-                container.setAdapter(new ActivityFeedAdapter(getActivity(), notifications));
             }
 
             @Override

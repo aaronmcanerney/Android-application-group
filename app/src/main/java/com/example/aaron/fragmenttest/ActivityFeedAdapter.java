@@ -23,11 +23,11 @@ import java.util.List;
 public class ActivityFeedAdapter extends BaseAdapter {
 
     Context context;
-    List<String> rowItem;
+    List<SharedNotification> rowItem;
 
 
 
-    ActivityFeedAdapter(Context context, List<String> rowItem){
+    ActivityFeedAdapter(Context context, List<SharedNotification> rowItem){
         this.context = context;
         this.rowItem = rowItem;
     }
@@ -64,7 +64,8 @@ public class ActivityFeedAdapter extends BaseAdapter {
 
             holder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_layout);
             holder.message = (TextView) convertView.findViewById(R.id.label);
-            holder.message.setText(rowItem.get(position));
+            SharedNotification notification = rowItem.get(position);
+            holder.message.setText(notification.text);
             holder.profile_pic = (ImageView) convertView.findViewById(R.id.icon);
 
             RelativeLayout.LayoutParams relativeParams = (RelativeLayout.LayoutParams) holder.relativeLayout.getLayoutParams();

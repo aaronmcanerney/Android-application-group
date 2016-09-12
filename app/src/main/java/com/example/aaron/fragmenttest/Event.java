@@ -57,6 +57,15 @@ public class Event implements Comparable<Event> {
         String eventId = event.getKey();
         event.setValue(this);
 
+        // Set shared notification info
+        DatabaseReference sharedNotifications = database.child("shared-notifications");
+        DatabaseReference notificationRef = sharedNotifications.push();
+        String notificationId = notificationRef.getKey();
+        SharedNotification notification = new SharedNotification();
+        notification.profilePictureURI = "";
+        notification.text = "Roman Rogowski has invited you to an event!";
+        notificationRef.setValue(notification);
+
         // Push requests/notifications for event
         String time = Utilities.formatSystemDateAndTime(this);
         DatabaseReference requests = database.child("requests");
@@ -69,8 +78,7 @@ public class Event implements Comparable<Event> {
             r.time = time;
             request.setValue(r);
 
-            DatabaseReference notification = notifications.child(connectionId).push();
-            //notification.child("text").setValue("This is a newer test notification!");
+            notifications.child(connectionId).child(notificationId).setValue(true);
         }
     }
 
