@@ -72,7 +72,7 @@ public class Connections extends AppCompatActivity {
 
 
                         String connectionId = child.getKey();
-                        loadPublicInfo(connectionId);
+                        loadConnection(connectionId);
 
 
                 }
@@ -85,23 +85,17 @@ public class Connections extends AppCompatActivity {
         });
     }
 
-    public void loadPublicInfo(String connectionId) {
+    public void loadConnection(String connectionId) {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users/" + connectionId).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Map<String, Object> map = new HashMap<>();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    // Get all data from firebase
-                    String key = child.getKey();
-                    Object value = child.getValue(Object.class);
-                    map.put(key, value);
-                }
+                User user = snapshot.getValue(User.class);
 
-                String profilePictureURI = (String) map.get("profilePictureURI");
-                String displayName = (String) map.get("displayName");
-                String location = (String) map.get("location");
+                String profilePictureURI = user.profilePictureURI;
+                String displayName = user.displayName;
+                String location = user.location;
                 String connectionId = snapshot.getKey();
 
                 Friend temp = new Friend(Uri.parse(profilePictureURI), displayName, location, connectionId);

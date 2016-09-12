@@ -61,7 +61,7 @@ public class UserSubmitEvent extends Fragment {
         TextView name = new TextView(getActivity());
         name.setBackgroundResource(R.drawable.bluerounded);
         name.setTextColor(Color.WHITE);
-        name.setText(activity.event.getName());
+        name.setText(activity.event.name);
         backdrop.addView(name);
         RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams) name.getLayoutParams();
         nameParams.height = nameParams.WRAP_CONTENT;
@@ -89,7 +89,7 @@ public class UserSubmitEvent extends Fragment {
         backdrop.addView(where);
         where.setBackgroundResource(R.drawable.bluerounded);
         where.setTextColor(Color.WHITE);
-        where.setText(activity.event.getPlaceName());
+        where.setText(activity.event.placeName);
         RelativeLayout.LayoutParams whereParams = (RelativeLayout.LayoutParams) where.getLayoutParams();
         whereParams.addRule(RelativeLayout.BELOW, date.getId());
         whereParams.height = whereParams.WRAP_CONTENT;
@@ -104,7 +104,7 @@ public class UserSubmitEvent extends Fragment {
         backdrop.addView(description);
         description.setBackgroundResource(R.drawable.bluerounded);
         description.setTextColor(Color.WHITE);
-        description.setText(activity.event.getDescription());
+        description.setText(activity.event.description);
         RelativeLayout.LayoutParams descriptionParams = (RelativeLayout.LayoutParams) description.getLayoutParams();
         descriptionParams.addRule(RelativeLayout.BELOW, where.getId());
         descriptionParams.height = descriptionParams.WRAP_CONTENT;

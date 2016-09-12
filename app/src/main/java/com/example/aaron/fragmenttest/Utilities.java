@@ -17,7 +17,7 @@ public class Utilities {
     }
 
     public static String formatDate(Event event) {
-        return formatDate(event.getYear(), event.getMonth(), event.getDay());
+        return formatDate(event.year, event.month, event.day);
     }
 
     public static String formatTime(int hour, int minute) {
@@ -35,7 +35,7 @@ public class Utilities {
     }
 
     public static String formatTime(Event event) {
-        return formatTime(event.getHour(), event.getMinute());
+        return formatTime(event.hour, event.minute);
     }
 
     public static String formatDateAndTime(Event event) {
@@ -43,11 +43,11 @@ public class Utilities {
     }
 
     public static String formatSystemDateAndTime(Event event) {
-        int year = event.getYear();
-        int month = event.getMonth();
-        int day = event.getDay();
-        int hour = event.getHour();
-        int minute = event.getMinute();
+        int year = event.year;
+        int month = event.month;
+        int day = event.day;
+        int hour = event.hour;
+        int minute = event.minute;
 
         return String.format("%04d-%02d-%02d %02d:%02d", year, month, day, hour, minute);
     }
@@ -61,11 +61,11 @@ public class Utilities {
         int minute = initialTime.get(Calendar.MINUTE);
 
         Event event = new Event();
-        event.setYear(year);
-        event.setMonth(month);
-        event.setDay(day);
-        event.setHour(hour);
-        event.setMinute(minute);
+        event.year = year;
+        event.month = month;
+        event.day = day;
+        event.hour = hour;
+        event.minute = minute;
 
         return formatSystemDateAndTime(event);
     }

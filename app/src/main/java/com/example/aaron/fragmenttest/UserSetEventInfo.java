@@ -206,8 +206,8 @@ public class UserSetEventInfo extends Fragment {
             return;
         }
         UserCreateEvent activity = (UserCreateEvent) getActivity();
-        activity.event.setName(name);
-        activity.event.setDescription(desc);
+        activity.event.name = name;
+        activity.event.description = desc;
 
 
 

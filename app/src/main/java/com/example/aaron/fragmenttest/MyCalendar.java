@@ -39,8 +39,7 @@ public class MyCalendar extends Fragment {
     private ListView hold;
     private SwipeRefreshLayout swipe;
     private ArrayList<Event> eventContainer;
-    private int numEntriesLoaded;
-    private int numEntriesToLoad;
+    private FirebaseWaitLoader loader;
 
     public static MyCalendar newInstance(String param1, String param2) {
         MyCalendar fragment = new MyCalendar();
@@ -63,11 +62,6 @@ public class MyCalendar extends Fragment {
     }
     @Override
     public void onStart(){
-        // Set BGColor of fragment
-
-        //LinearLayout linearLayout = (LinearLayout) this.getActivity().findViewById(R.id.fragment_layout);
-        //linearLayout.setBackgroundColor(Color.parseColor("#d6dbe1"));
-
         // Load events
         hold = (ListView) getActivity().findViewById(R.id.calender_list);
         hold.setBackgroundColor(Color.parseColor("#d6dbe1"));
@@ -87,6 +81,35 @@ public class MyCalendar extends Fragment {
         super.onStart();
     }
 
+    private void loadEvents(){
+        eventContainer = new ArrayList<>();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+        String uid = user.getUid();
+        DatabaseReference requests = database.child("requests").child(uid);
+        String now = Utilities.formatSystemDateAndTimeAtCurrentMoment();
+        requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                int numToLoad = (int) snapshot.getChildrenCount();
+                loader = new FirebaseWaitLoader(numToLoad);
+                if (loader.done()) swipe.setRefreshing(false);
+                for (DataSnapshot request : snapshot.getChildren()) {
+                    Request r = request.getValue(Request.class);
+                    String eventId = request.getKey();
+                    String status = r.status;
+                    loadEvent(eventId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void loadEvent(String eventId) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference events = database.child("events");
@@ -94,94 +117,39 @@ public class MyCalendar extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 String eventId = snapshot.getKey();
-                Map<String, Object> map = new HashMap<>();
+                Event event = snapshot.getValue(Event.class);
 
-                // Get all data from firebase
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    String key = child.getKey();
-                    Object value = child.getValue(Object.class);
-                    map.put(key, value);
-                }
-
-                if (map.isEmpty()) return;
-
-                Event temp = new Event();
-
-                // Populate name
-                String address = (String) map.get("address");
-               // Log.i
-
-                String name = (String) map.get("name");
-                SpannableString nameFormatted = new SpannableString(name);
+                // Populate name and other data
+                SpannableString nameFormatted = new SpannableString(event.name);
                 nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
                 nameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, nameFormatted.length(), 0);
+                event.name = nameFormatted.toString();
 
-                temp.setName(nameFormatted.toString());
-                temp.setDescription((String) map.get("description"));
-                temp.setPlaceName((String) map.get("placeName"));
-                Long year = (Long) map.get("year");
-                Long month = (Long) map.get("month");
-                Long day = (Long) map.get("day");
+                int year = event.year;
+                int month = event.month;
+                int day = event.day;
                 String date = Utilities.formatDate(year, month, day);
-                temp.setDate(date);
-                Long hour = (Long) map.get("hour");
-                Long minute = (Long) map.get("minute");
+                event.setDate(date);
+                int hour = event.hour;
+                int minute = event.minute;
                 String time = Utilities.formatTime(hour, minute);
-                temp.setTime(time);
+                event.setTime(time);
 
-                eventContainer.add(temp);
-                numEntriesLoaded++;
+                eventContainer.add(event);
+                loader.update();
 
-                if (numEntriesLoaded == numEntriesToLoad) {
+                if (loader.done()) {
                     swipe.setRefreshing(false);
                     Event[] tempArray = eventContainer.toArray(new Event[eventContainer.size()]);
                     List<Event> eventList = Arrays.asList(tempArray);
                     hold.setAdapter(new CalendarAdapter(getActivity(), eventList));
                 }
-
-                /*
-                TextView textView = (TextView) event.findViewWithTag("name");
-                textView.setText(nameFormatted);
-                textView.setTextColor(Color.WHITE);
-                textView.setBackgroundResource(R.drawable.bluerounded);
-
-                // Populate description
-                String desc = (String) map.get("description");
-                textView = (TextView) event.findViewWithTag("description");
-                textView.setText(desc);
-
-                // Populate place name
-                String placeName = (String) map.get("placeName");
-                textView = (TextView) event.findViewWithTag("placeName");
-                textView.setText(placeName);
-
-                // Populate date
-                Long year = (Long) map.get("year");
-                Long month = (Long) map.get("month");
-                Long day = (Long) map.get("day");
-                String date = Utilities.formatDate(year, month, day);
-                textView = (TextView) event.findViewWithTag("date");
-                textView.setText(date);
-
-                // Populate time
-                Long hour = (Long) map.get("hour");
-                Long minute = (Long) map.get("minute");
-                String time = Utilities.formatTime(hour, minute);
-                textView = (TextView) event.findViewWithTag("time");
-                textView.setText(time);
-
-                TextView status = (TextView) event.findViewWithTag("status");
-                String eventStatus = (String) status.getText();
-
-                // What should we do with this status? Change background color?
-                // If so, we can do that in 'buildCalendarEvent'
-                */
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                loader.update();
             }
         });
     }
@@ -204,33 +172,7 @@ public class MyCalendar extends Fragment {
         startActivity(intent);
     }
 
-    private void loadEvents(){
-        numEntriesLoaded = 0;
-        eventContainer = new ArrayList<>();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) return;
-        String uid = user.getUid();
-        DatabaseReference requests = database.child("requests").child(uid);
-        String now = Utilities.formatSystemDateAndTimeAtCurrentMoment();
-        requests.orderByChild("time").startAt(now).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                numEntriesToLoad = (int) snapshot.getChildrenCount();
-                if (numEntriesToLoad == 0) swipe.setRefreshing(false);
-                for (DataSnapshot request : snapshot.getChildren()) {
-                    String eventId = request.getKey();
-                    String status = request.child("status").getValue(String.class);
-                    loadEvent(eventId);
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }

@@ -103,7 +103,7 @@ public class CalendarAdapter extends BaseAdapter {
             //holder.status.setText(eventStatus);
             //holder.status.setVisibility(View.GONE);
 
-            String name =  rowItem.get(position).getName();
+            String name =  rowItem.get(position).name;
             SpannableString nameFormatted = new SpannableString(name);
             nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);
             nameFormatted.setSpan(new StyleSpan(Typeface.BOLD), 0, nameFormatted.length(), 0);
@@ -126,7 +126,7 @@ public class CalendarAdapter extends BaseAdapter {
             pdesc.leftMargin = point.x / 2;
             pdesc.addRule(RelativeLayout.BELOW, holder.name.getId());
             holder.description.setLayoutParams(pdesc);
-            holder.description.setText(rowItem.get(position).getDescription());
+            holder.description.setText(rowItem.get(position).description);
 
 
             holder.location.setTag("placeName");
@@ -135,7 +135,7 @@ public class CalendarAdapter extends BaseAdapter {
             ploc.leftMargin = point.x / 2;
             ploc.addRule(RelativeLayout.BELOW, holder.description.getId());
             holder.location.setLayoutParams(ploc);
-            holder.location.setText(rowItem.get(position).getPlaceName());
+            holder.location.setText(rowItem.get(position).placeName);
 
 
             holder.date.setTag("date");

@@ -54,6 +54,14 @@ public class UserPickDateAndTime extends Fragment {
         int hour = initialTime.get(Calendar.HOUR_OF_DAY);
         int minute = initialTime.get(Calendar.MINUTE);
 
+        UserCreateEvent activity = (UserCreateEvent) getActivity();
+        Event event = activity.event;
+        event.month = month;
+        event.day = day;
+        event.year = year;
+        event.hour = hour;
+        event.minute = minute;
+
         Display d = ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point p = getDisplaySize(d);
 
@@ -102,9 +110,10 @@ public class UserPickDateAndTime extends Fragment {
 
                         // Set event data (firebase)
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
-                        activity.event.setMonth(month);
-                        activity.event.setDay(day);
-                        activity.event.setYear(year);
+                        Event event = activity.event;
+                        event.month = month;
+                        event.day = day;
+                        event.year = year;
                     }
                 }, year, month, day);
                 datePicker.setTitle("Select Time");
@@ -140,8 +149,10 @@ public class UserPickDateAndTime extends Fragment {
 
                         // Set event data (firebase)
                         UserCreateEvent activity = (UserCreateEvent) getActivity();
-                        activity.event.setHour(selectedHour);
-                        activity.event.setMinute(selectedMinute);
+                        Event event = activity.event;
+                        event.hour = selectedHour;
+                        event.minute = selectedMinute;
+
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");

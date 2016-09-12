@@ -9,25 +9,26 @@ import java.util.ArrayList;
 
 public class Event implements Comparable<Event> {
 
-    private String creatorId;
-    private String placeName;
-    private String placeAddress;
-    private String name;
-    private String description;
-    private int hour;
-    private int minute;
-    private int year;
-    private int month;
-    private int day;
+    public String creatorId;
+    public String placeName;
+    public String placeAddress;
+    public String name;
+    public String description;
+    public int hour;
+    public int minute;
+    public int year;
+    public int month;
+    public int day;
     private String date;
     private String time;
     private ArrayList<String> connections; // ArrayList of uid's
 
     public Event() {
-
+        connections = new ArrayList<>();
     }
 
     public Event(String creatorId) {
+        this();
         this.creatorId = creatorId;
         this.connections = new ArrayList<>();
 
@@ -35,27 +36,10 @@ public class Event implements Comparable<Event> {
         addConnection(creatorId);
     }
 
-    public void setPlaceName(String placeName) { this.placeName = placeName; }
-    public void setPlaceAddress(String placeAddress) { this.placeAddress = placeAddress; }
-    public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setHour(int hour) { this.hour = hour; }
-    public void setMinute(int minute) { this.minute = minute; }
-    public void setYear(int year) { this.year = year; }
-    public void setMonth(int month) { this.month = month; }
-    public void setDay(int day) { this.day = day; }
+
     public void setDate(String date){this.date = date;}
     public void setTime(String time){this.time = time;}
 
-
-    public String getPlaceName() { return placeName; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public int getHour() { return hour; }
-    public int getMinute() { return minute; }
-    public int getYear() { return year; }
-    public int getMonth() { return month; }
-    public int getDay() { return day; }
     public String getDate(){return date;}
     public String getTime(){return time;}
 
@@ -69,50 +53,43 @@ public class Event implements Comparable<Event> {
         // Create event
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference events = database.child("events");
-        String eventId = events.push().getKey();
-        DatabaseReference event = events.child(eventId);
-        event.child("creatorId").setValue(creatorId);
-        event.child("placeName").setValue(placeName);
-        event.child("placeAddress").setValue(placeAddress);
-        event.child("name").setValue(name);
-        event.child("description").setValue(description);
-        event.child("hour").setValue(hour);
-        event.child("minute").setValue(minute);
-        event.child("year").setValue(year);
-        event.child("month").setValue(month);
-        event.child("day").setValue(day);
+        DatabaseReference event = events.push();
+        String eventId = event.getKey();
+        event.setValue(this);
 
-        // Push requests for event
+        // Push requests/notifications for event
         String time = Utilities.formatSystemDateAndTime(this);
         DatabaseReference requests = database.child("requests");
         DatabaseReference notifications = database.child("notifications");
         for (String connectionId : connections) {
-            String response = (connectionId.equals(creatorId)) ? "accepted" : "pending";
+            String status = (connectionId.equals(creatorId)) ? "accepted" : "pending";
             DatabaseReference request = requests.child(connectionId).child(eventId);
-            request.child("status").setValue(response);
-            request.child("time").setValue(time);
+            Request r = new Request();
+            r.status = status;
+            r.time = time;
+            request.setValue(r);
 
             DatabaseReference notification = notifications.child(connectionId).push();
-            notification.child("text").setValue("This is a newer test notification!");
+            //notification.child("text").setValue("This is a newer test notification!");
         }
     }
 
     @Override
     public int compareTo(@NonNull Event event) {
-        if (year < event.getYear()) return -1;
-        if (year > event.getYear()) return 1;
+        if (year < event.year) return -1;
+        if (year > event.year) return 1;
 
-        if (month < event.getMonth()) return -1;
-        if (month > event.getMonth()) return 1;
+        if (month < event.month) return -1;
+        if (month > event.month) return 1;
 
-        if (day < event.getDay()) return -1;
-        if (day > event.getDay()) return 1;
+        if (day < event.day) return -1;
+        if (day > event.day) return 1;
 
-        if (hour < event.getHour()) return -1;
-        if (hour > event.getHour()) return 1;
+        if (hour < event.hour) return -1;
+        if (hour > event.hour) return 1;
 
-        if (minute < event.getMinute()) return -1;
-        if (minute > event.getMinute()) return 1;
+        if (minute < event.minute) return -1;
+        if (minute > event.minute) return 1;
 
         return 0;
     }
