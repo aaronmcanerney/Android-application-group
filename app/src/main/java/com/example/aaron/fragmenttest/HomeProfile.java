@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -123,26 +122,18 @@ public class HomeProfile extends Fragment {
         tagContainer.setLayoutParams(tagParams);
         tagContainer.setBackgroundResource(R.drawable.bluerounded);
         tagContainer.setId(View.generateViewId());
-
-
-
-        Button edit = new Button(getActivity());
-        container.addView(edit);
-        edit.setText("edit");
-        edit.setTextColor(Color.parseColor("#3fa9f5"));
-        RelativeLayout.LayoutParams editParams = (RelativeLayout.LayoutParams) edit.getLayoutParams();
-        editParams.addRule(RelativeLayout.RIGHT_OF, tagContainer.getId());
-        editParams.addRule(RelativeLayout.ALIGN_BOTTOM, tagContainer.getId());
-        editParams.leftMargin = 20;
-        edit.setBackgroundResource(R.drawable.roundedlayout);
-        edit.setOnClickListener(new View.OnClickListener()
+        tagContainer.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                toCamera(v);
+                toGroups(v);
             }
         });
+
+
+
+
 
         RelativeLayout friends = new RelativeLayout(getActivity());
         container.addView(friends);
@@ -258,8 +249,8 @@ public class HomeProfile extends Fragment {
         }
     }
 
-    public void toCamera(View v){
-        Intent intent = new Intent(this.getActivity(), CameraTest.class) ;
+    public void toGroups(View v){
+        Intent intent = new Intent(this.getActivity(), Groups.class) ;
         startActivity(intent);
 
     }
