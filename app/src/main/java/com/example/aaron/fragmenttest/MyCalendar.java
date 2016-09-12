@@ -108,6 +108,9 @@ public class MyCalendar extends Fragment {
                 Event temp = new Event();
 
                 // Populate name
+                String address = (String) map.get("address");
+               // Log.i
+
                 String name = (String) map.get("name");
                 SpannableString nameFormatted = new SpannableString(name);
                 nameFormatted.setSpan(new UnderlineSpan(), 0, nameFormatted.length(), 0);

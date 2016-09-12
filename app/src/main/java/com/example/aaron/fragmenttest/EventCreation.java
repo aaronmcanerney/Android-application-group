@@ -9,17 +9,13 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-
-import java.util.NoSuchElementException;
 
 
 public class EventCreation extends Fragment {
@@ -56,16 +52,7 @@ public class EventCreation extends Fragment {
 
         super.onStart();
     }
-    private void scaleImage(ImageView view, Point point) throws NoSuchElementException {
 
-        // ImageView imageView = (ImageView) this.getActivity().findViewById(R.id.imageView);
-
-        GridLayout.LayoutParams params = (GridLayout.LayoutParams) view.getLayoutParams();
-        params.width = point.x/3;
-        params.height = point.x *2 / 7;
-        view.setLayoutParams(params);
-
-    }
     private static Point getDisplaySize(final Display display) {
 
 
@@ -98,6 +85,7 @@ public class EventCreation extends Fragment {
                 Place place = PlacePicker.getPlace(data, this.getActivity());
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this.getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+
 
                 Intent intent = new Intent(this.getActivity(), UserCreateEvent.class);
                 intent.putExtra("placeName", place.getName());

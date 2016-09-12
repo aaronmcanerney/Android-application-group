@@ -178,6 +178,7 @@ public class UserSubmitEvent extends Fragment {
         UserCreateEvent activity = (UserCreateEvent) getActivity();
         activity.event.push();
 
+
         Intent intent  =  new Intent(getActivity().getApplicationContext(), MainActivity.class);
         startActivity(intent);
         getActivity().finish();
