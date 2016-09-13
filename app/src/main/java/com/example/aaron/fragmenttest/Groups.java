@@ -241,23 +241,17 @@ public class Groups extends AppCompatActivity {
 
 
     public void CreateGroup(View view){
-        ArrayList<Friend> ret = new ArrayList<>();
-
+        Group group = new Group();
+        group.connectionIds = new ArrayList<>();
         for(Friend key : selection.keySet()){
             if(selection.containsKey(key)){
                 if(selection.get(key))
-                    ret.add(key);
-
+                    group.connectionIds.add(key.getName());
             }
         }
-        SubmitGroupToFireBase(ret);
-    }
 
-    public void SubmitGroupToFireBase(ArrayList<Friend> arr){
-        for(Friend key : arr)
-        {
-            //submit key to firebase
-        }
+        // Submit group to firebase
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
 

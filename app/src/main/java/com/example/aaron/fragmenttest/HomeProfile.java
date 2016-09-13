@@ -78,6 +78,10 @@ public class HomeProfile extends Fragment {
         profileContent.addView(profilePicture);
         scaleImage(profilePicture, p, p.y / 4);
         profilePicture.setId(View.generateViewId());
+
+        // Hardcoded profile picture
+        profilePictureUri = Uri.parse("http://media.vanityfair.com/photos/56cb5d18ab73e22d6d9321f6/master/h_590,c_limit/donald-trump-short-fingered-vulgarian-fingers-bruce-handy-ss13.jpg");
+
         Picasso.with(activity).load(profilePictureUri).transform(new CircleTransform()).into(profilePicture);
         RelativeLayout.LayoutParams picture = (RelativeLayout.LayoutParams) profilePicture.getLayoutParams();
         picture.addRule(RelativeLayout.CENTER_IN_PARENT);

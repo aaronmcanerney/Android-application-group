@@ -138,7 +138,6 @@ public class ActivityFeed extends Fragment {
     }
 
     public void loadNotification(String notificationId) {
-        Toast.makeText(getActivity(), "loading notification " + notificationId, Toast.LENGTH_LONG);
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference notification = database.child("shared-notifications").child(notificationId);
         notification.addListenerForSingleValueEvent(new ValueEventListener() {
