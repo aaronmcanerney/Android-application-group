@@ -59,7 +59,9 @@
             android:label="@string/title_activity_on_calendar_clicked"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CameraTest" />
-        <activity android:name=".Groups"></activity>
+        <activity android:name=".Groups">
+            android:windowSoftInputMode="adjustNothing"
+        </activity>
     </application>
 
 </manifest>

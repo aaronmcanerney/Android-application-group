@@ -2,6 +2,7 @@ package com.example.aaron.fragmenttest;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -252,6 +253,10 @@ public class Groups extends AppCompatActivity {
 
         // Submit group to firebase
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        Intent intent  =  new Intent(this.getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
