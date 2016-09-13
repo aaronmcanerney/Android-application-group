@@ -14,6 +14,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -50,7 +51,7 @@ public class Groups extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connections);
+        setContentView(R.layout.activity_groups);
 
 
         selection = new HashMap<>();
@@ -136,6 +137,16 @@ public class Groups extends AppCompatActivity {
 
         EditText search = (EditText) findViewById(R.id.inputSearch);
         groupAdapter = new GroupAdapter(this,friendsList);
+
+        Button button = (Button) findViewById(R.id.create_group);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                CreateGroup(v);
+            }
+        });
 
         hold.setAdapter(groupAdapter);
 
@@ -227,4 +238,27 @@ public class Groups extends AppCompatActivity {
         }
         return point;
     }
+
+
+    public void CreateGroup(View view){
+        ArrayList<Friend> ret = new ArrayList<>();
+
+        for(Friend key : selection.keySet()){
+            if(selection.containsKey(key)){
+                if(selection.get(key))
+                    ret.add(key);
+
+            }
+        }
+        SubmitGroupToFireBase(ret);
+    }
+
+    public void SubmitGroupToFireBase(ArrayList<Friend> arr){
+        for(Friend key : arr)
+        {
+            //submit key to firebase
+        }
+    }
+
+
 }
